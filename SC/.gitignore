@@ -1,0 +1,12 @@
+.idea
+build/
+tests/account.dat
+node_modules
+.secret
+package.json
+package-lock.json
+test.js
+yarn.lock
+.env
+account.dat
+.celo-account-priv
