@@ -1,7 +1,7 @@
 // 인증서 등록이 필요한지
 import { Button, Row, Col, Breadcrumb, Radio, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import "./style/userissue.css";
+import "./style/holderIssue.css";
 
 const fileList = [];
 const props = {

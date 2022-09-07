@@ -7,11 +7,11 @@ import "antd/dist/antd.min.css";
 import Home from "./page/home";
 import Nav from "./component/nav";
 import SignIn from "./page/signIn";
-import SignUp from "./page/signUp";
+import SignUp from "./page/holderSignUp";
 import FooterBar from "./component/footerBar";
-import UserManage from "./page/userManage";
-import UserIssue from "./page/userIssue";
-import UserSubmit from "./page/userSubmit";
+import UserManage from "./page/holderManage";
+import UserIssue from "./page/holderIssue";
+import UserSubmit from "./page/holderSubmit";
 
 const { Header, Content, Footer } = Layout;
 function App() {

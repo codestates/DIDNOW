@@ -1,5 +1,5 @@
 import { Breadcrumb, Row, Col } from "antd";
-import "./style/usermanage.css";
+import "./style/holderManage.css";
 import Vc from "../component/vc";
 import dummyData from "../assets/dummyVc";
 import { useEffect, useState } from "react";

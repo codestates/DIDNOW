@@ -1,5 +1,5 @@
 import { Row, Col } from "antd";
-import "./style/signup.css";
+import "./style/holderSignUp.css";
 import signUpImage from "../img/signup.jpg";
 const SignUp = () => {
   return (

@@ -1,7 +1,7 @@
 import { Row, Col, Breadcrumb, Radio } from "antd";
 import { useLocation } from "react-router-dom";
 import { SafetyOutlined } from "@ant-design/icons";
-import "./style/usersubmit.css";
+import "./style/holderSubmit.css";
 
 const UserSubmit = () => {
   const location = useLocation();
