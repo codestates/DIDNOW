@@ -303,29 +303,6 @@ library StorageUtils {
     }
 
     /**
-     * @dev query controller list
-     * @param controllerList controller list
-     */
-    function getAllController(IterableMapping.itmap storage controllerList)
-        public
-        view
-        returns (string[] memory)
-    {
-        string[] memory result = new string[](controllerList.size);
-        uint256 count = 0;
-        for (
-            uint256 i = controllerList.iterate_start();
-            controllerList.iterate_valid(i);
-            i = controllerList.iterate_next(i)
-        ) {
-            (, bytes memory ctx) = controllerList.iterate_get(i);
-            result[count] = string(ctx);
-            count++;
-        }
-        return result;
-    }
-
-    /**
      * @dev query service list
      * @param serviceList service list
      */
@@ -350,8 +327,7 @@ library StorageUtils {
 
     struct Service {
         string serviceId;
-        string serviceType;
-        string serviceEndpoint;
+        string publicKey;
     }
 
     function serializeService(Service memory service)
@@ -362,17 +338,10 @@ library StorageUtils {
         bytes memory idBytes = ZeroCopySink.WriteVarBytes(
             bytes(service.serviceId)
         );
-        bytes memory typeBytes = ZeroCopySink.WriteVarBytes(
-            bytes(service.serviceType)
+        bytes memory publicKeyBytes = ZeroCopySink.WriteVarBytes(
+            bytes(service.publicKey)
         );
-        bytes memory endpointBytes = ZeroCopySink.WriteVarBytes(
-            bytes(service.serviceEndpoint)
-        );
-        bytes memory serviceBytes = abi.encodePacked(
-            idBytes,
-            typeBytes,
-            endpointBytes
-        );
+        bytes memory serviceBytes = abi.encodePacked(idBytes, publicKeyBytes);
         return serviceBytes;
     }
 
@@ -385,14 +354,9 @@ library StorageUtils {
             serviceBytes,
             0
         );
-        bytes memory serviceType = new bytes(0);
-        (serviceType, offset) = ZeroCopySource.NextVarBytes(
-            serviceBytes,
-            offset
-        );
         bytes memory endpoint = new bytes(0);
         (endpoint, offset) = ZeroCopySource.NextVarBytes(serviceBytes, offset);
-        return Service(string(id), string(serviceType), string(endpoint));
+        return Service(string(id), string(endpoint));
     }
 
     struct DIDDocument {
@@ -400,7 +364,6 @@ library StorageUtils {
         string id;
         PublicKey[] publicKey;
         PublicKey[] authentication;
-        string[] controller;
         Service[] service;
         uint256 updated;
     }

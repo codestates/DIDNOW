@@ -69,32 +69,6 @@ contract DIDContract is MixinDidStorage, IDid {
     }
 
     /**
-     * @dev add a new address to did public key list only, the key doesn't enter authentication list
-     * @param did did
-     * @param addr new address
-     * @param controller controller of newPubKey, they are some did
-     * @param singer tx signer, could be public key or address
-     */
-    function addAddr(
-        string memory did,
-        address addr,
-        string[] memory controller,
-        bytes memory singer
-    ) public {
-        did = checkWhenAddKey(did, singer, controller);
-        addNewPubKey(
-            did,
-            new bytes(0),
-            addr,
-            "EcdsaSecp256k1RecoveryMethod2020",
-            controller,
-            true,
-            false
-        );
-        emit AddAddr(did, addr, controller);
-    }
-
-    /**
      * @dev add a new public key to authentication list only, doesn't enter public key list
      * @param did did
      * @param pubKey the new public key
@@ -118,98 +92,6 @@ contract DIDContract is MixinDidStorage, IDid {
             true
         );
         emit AddNewAuthKey(did, pubKey, controller);
-    }
-
-    /**
-     * @dev add a new address to authentication list only, doesn't enter public key list
-     * @param did did
-     * @param addr the new address
-     * @param controller controller of newPubKey, they are some did
-     * @param singer tx signer, could be public key or address
-     */
-    function addNewAuthAddr(
-        string memory did,
-        address addr,
-        string[] memory controller,
-        bytes memory singer
-    ) public {
-        did = checkWhenAddKey(did, singer, controller);
-        addNewPubKey(
-            did,
-            new bytes(0),
-            addr,
-            "EcdsaSecp256k1RecoveryMethod2020",
-            controller,
-            false,
-            true
-        );
-        emit AddNewAuthAddr(did, addr, controller);
-    }
-
-    /**
-     * @dev controller add a new public key to authentication list only, doesn't enter public key list
-     * @param did did
-     * @param pubKey the new public key
-     * @param controller controller of newPubKey, they are some did
-     * @param controllerSigner tx signer should be one of did controller
-     * @param singer tx signer, could be public key or address
-     */
-    function addNewAuthKeyByController(
-        string memory did,
-        bytes memory pubKey,
-        string[] memory controller,
-        string memory controllerSigner,
-        bytes memory singer
-    ) public {
-        did = checkWhenAddKeyByController(
-            did,
-            singer,
-            controllerSigner,
-            controller
-        );
-        addNewPubKey(
-            did,
-            pubKey,
-            address(0),
-            "EcdsaSecp256k1VerificationKey2019",
-            controller,
-            false,
-            true
-        );
-        emit AddNewAuthKey(did, pubKey, controller);
-    }
-
-    /**
-     * @dev controller add a new address to authentication list only, doesn't enter public key list
-     * @param did did
-     * @param addr the new address
-     * @param controller controller of newPubKey, they are some did
-     * @param controllerSigner tx signer should be one of did controller
-     * @param singer tx signer, could be public key or address
-     */
-    function addNewAuthAddrByController(
-        string memory did,
-        address addr,
-        string[] memory controller,
-        string memory controllerSigner,
-        bytes memory singer
-    ) public {
-        did = checkWhenAddKeyByController(
-            did,
-            singer,
-            controllerSigner,
-            controller
-        );
-        addNewPubKey(
-            did,
-            new bytes(0),
-            addr,
-            "EcdsaSecp256k1RecoveryMethod2020",
-            controller,
-            false,
-            true
-        );
-        emit AddNewAuthAddr(did, addr, controller);
     }
 
     function addNewPubKey(
@@ -259,58 +141,6 @@ contract DIDContract is MixinDidStorage, IDid {
         emit SetAuthKey(did, pubKey);
     }
 
-    /**
-     * @dev add one address existed in publicKey list to authentication list
-     * @param did did
-     * @param addr address
-     * @param singer tx signer, could be public key or address
-     */
-    function setAuthAddr(
-        string memory did,
-        address addr,
-        bytes memory singer
-    ) public {
-        did = checkWhenOperate(did, singer);
-        authPubKey(did, new bytes(0), addr);
-        emit SetAuthAddr(did, addr);
-    }
-
-    /**
-     * @dev controller add one key existed in publicKey list to authentication list
-     * @param did did
-     * @param pubKey public key
-     * @param controller one of did controller
-     * @param singer tx signer, could be public key or address
-     */
-    function setAuthKeyByController(
-        string memory did,
-        bytes memory pubKey,
-        string memory controller,
-        bytes memory singer
-    ) public {
-        did = checkWhenOperateByController(did, controller, singer);
-        authPubKey(did, pubKey, address(0));
-        emit SetAuthKey(did, pubKey);
-    }
-
-    /**
-     * @dev controller add one address existed in publicKey list to authentication list
-     * @param did did
-     * @param addr address
-     * @param controller one of did controller
-     * @param singer tx signer, could be public key or address
-     */
-    function setAuthAddrByController(
-        string memory did,
-        address addr,
-        string memory controller,
-        bytes memory singer
-    ) public {
-        did = checkWhenOperateByController(did, controller, singer);
-        authPubKey(did, new bytes(0), addr);
-        emit SetAuthAddr(did, addr);
-    }
-
     function authPubKey(
         string memory did,
         bytes memory pubKey,
@@ -348,22 +178,6 @@ contract DIDContract is MixinDidStorage, IDid {
         emit DeactivateKey(did, pubKey);
     }
 
-    /**
-     * @dev deactivate one addr that existed in public key list
-     * @param did did
-     * @param addr address
-     * @param singer tx signer, could be public key or address
-     */
-    function deactivateAddr(
-        string memory did,
-        address addr,
-        bytes memory singer
-    ) public {
-        did = checkWhenOperate(did, singer);
-        deactivatePubKey(did, new bytes(0), addr);
-        emit DeactivateAddr(did, addr);
-    }
-
     function deactivatePubKey(
         string memory did,
         bytes memory pubKey,
@@ -391,58 +205,6 @@ contract DIDContract is MixinDidStorage, IDid {
         did = checkWhenOperate(did, singer);
         deAuthPubKey(did, pubKey, address(0));
         emit DeactivateAuthKey(did, pubKey);
-    }
-
-    /**
-     * @dev remove one address from authentication list
-     * @param did did
-     * @param addr address
-     * @param singer tx signer, could be public key or address
-     */
-    function deactivateAuthAddr(
-        string memory did,
-        address addr,
-        bytes memory singer
-    ) public {
-        did = checkWhenOperate(did, singer);
-        deAuthPubKey(did, new bytes(0), addr);
-        emit DeactivateAuthAddr(did, addr);
-    }
-
-    /**
-     * @dev controller remove one key from authentication list
-     * @param did did
-     * @param pubKey public key
-     * @param controller one of did controller
-     * @param singer tx signer, could be public key or address
-     */
-    function deactivateAuthKeyByController(
-        string memory did,
-        bytes memory pubKey,
-        string memory controller,
-        bytes memory singer
-    ) public {
-        did = checkWhenOperateByController(did, controller, singer);
-        deAuthPubKey(did, pubKey, address(0));
-        emit DeactivateAuthKey(did, pubKey);
-    }
-
-    /**
-     * @dev controller remove one address from authentication list
-     * @param did did
-     * @param addr address
-     * @param controller one of did controller
-     * @param singer tx signer, could be public key or address
-     */
-    function deactivateAuthAddrByController(
-        string memory did,
-        address addr,
-        string memory controller,
-        bytes memory singer
-    ) public {
-        did = checkWhenOperateByController(did, controller, singer);
-        deAuthPubKey(did, new bytes(0), addr);
-        emit DeactivateAuthAddr(did, addr);
     }
 
     function deAuthPubKey(
@@ -520,58 +282,16 @@ contract DIDContract is MixinDidStorage, IDid {
     }
 
     /**
-     * @dev add one controller to did controller list
-     * @param did did
-     * @param controller one of did controller
-     * @param singer tx signer, could be public key or address
-     */
-    function addController(
-        string memory did,
-        string memory controller,
-        bytes memory singer
-    ) public {
-        did = checkWhenOperate(did, singer);
-        string memory controllerKey = KeyUtils.genControllerKey(did);
-        bytes32 key = KeyUtils.genControllerSecondKey(controller);
-        bool replaced = data[controllerKey].insert(key, bytes(controller));
-        require(!replaced, "controller existed");
-        updateTime(did);
-        emit AddController(did, controller);
-    }
-
-    /**
-     * @dev remove controller from controller list
-     * @param did did
-     * @param controller one of did controller
-     * @param singer tx signer, could be public key or address
-     */
-    function removeController(
-        string memory did,
-        string memory controller,
-        bytes memory singer
-    ) public {
-        did = checkWhenOperate(did, singer);
-        string memory controllerKey = KeyUtils.genControllerKey(did);
-        bytes32 key = KeyUtils.genControllerSecondKey(controller);
-        bool success = data[controllerKey].remove(key);
-        require(success, "controller not exist");
-        updateTime(did);
-        emit RemoveController(did, controller);
-    }
-
-    /**
      * @dev add service to did service list
      * @param did did
      * @param serviceId service id
-     * @param serviceType service type
-     * @param serviceEndpoint service endpoint
+     * @param publicKey public Key For Decode(Not Wallet Key)
      * @param singer tx signer, could be public key or address
      */
     function addService(
         string memory did,
         string memory serviceId,
-        string memory serviceType,
-        string memory serviceEndpoint,
+        string memory publicKey,
         bytes memory singer
     ) public {
         did = checkWhenOperate(did, singer);
@@ -579,14 +299,13 @@ contract DIDContract is MixinDidStorage, IDid {
         bytes32 key = KeyUtils.genServiceSecondKey(serviceId);
         StorageUtils.Service memory service = StorageUtils.Service(
             serviceId,
-            serviceType,
-            serviceEndpoint
+            publicKey
         );
         bytes memory serviceBytes = StorageUtils.serializeService(service);
         bool replaced = data[serviceKey].insert(key, serviceBytes);
         require(!replaced, "service existed");
         updateTime(did);
-        emit AddService(did, serviceId, serviceType, serviceEndpoint);
+        emit AddService(did, serviceId, publicKey);
     }
 
     function dataSize(string memory dataId) public view returns (uint256) {
@@ -605,15 +324,13 @@ contract DIDContract is MixinDidStorage, IDid {
      * @dev update service
      * @param did did
      * @param serviceId service id
-     * @param serviceType service type
-     * @param serviceEndpoint service endpoint
+     * @param publicKey publicKey For Decode(Not Wallet Key)
      * @param singer tx signer, could be public key or address
      */
     function updateService(
         string memory did,
         string memory serviceId,
-        string memory serviceType,
-        string memory serviceEndpoint,
+        string memory publicKey,
         bytes memory singer
     ) public {
         did = checkWhenOperate(did, singer);
@@ -621,14 +338,13 @@ contract DIDContract is MixinDidStorage, IDid {
         bytes32 key = KeyUtils.genServiceSecondKey(serviceId);
         StorageUtils.Service memory service = StorageUtils.Service(
             serviceId,
-            serviceType,
-            serviceEndpoint
+            publicKey
         );
         bytes memory serviceBytes = StorageUtils.serializeService(service);
         bool replaced = data[serviceKey].insert(key, serviceBytes);
         require(replaced, "service not exist");
         updateTime(did);
-        emit UpdateService(did, serviceId, serviceType, serviceEndpoint);
+        emit UpdateService(did, serviceId, publicKey);
     }
 
     /**
@@ -671,21 +387,6 @@ contract DIDContract is MixinDidStorage, IDid {
         return checkWhenOperate(did, singer);
     }
 
-    function checkWhenAddKeyByController(
-        string memory did,
-        bytes memory singer,
-        string memory sigController,
-        string[] memory keyController
-    ) internal view returns (string memory) {
-        for (uint256 i = 0; i < keyController.length; i++) {
-            require(
-                DidUtils.verifyDIDFormat(keyController[i]),
-                "illegal controller"
-            );
-        }
-        return checkWhenOperateByController(did, sigController, singer);
-    }
-
     function checkWhenOperate(string memory did, bytes memory singer)
         public
         view
@@ -696,20 +397,6 @@ contract DIDContract is MixinDidStorage, IDid {
             singer
         );
         require(verified, "check sig failed");
-        return lowerDid;
-    }
-
-    function checkWhenOperateByController(
-        string memory did,
-        string memory controller,
-        bytes memory singer
-    ) internal view returns (string memory) {
-        (bool verified, string memory lowerDid) = verifyDIDController(
-            did,
-            controller,
-            singer
-        );
-        require(verified, "check controller failed");
         return lowerDid;
     }
 
@@ -786,42 +473,6 @@ contract DIDContract is MixinDidStorage, IDid {
     }
 
     /**
-     * @dev verify tx has signed by did controller
-     * @param did did
-     * @param controller one of did controller
-     * @param singer tx signer, could be public key or address
-     */
-    function verifyController(
-        string memory did,
-        string memory controller,
-        bytes memory singer
-    ) public view returns (bool) {
-        (bool verified, ) = verifyDIDController(did, controller, singer);
-        return verified;
-    }
-
-    function verifyDIDController(
-        string memory did,
-        string memory controller,
-        bytes memory singer
-    ) internal view returns (bool, string memory) {
-        did = BytesUtils.toLower(did);
-        if (!DidUtils.verifyDIDFormat(did)) {
-            return (false, did);
-        }
-        if (didStatus[did].deactivated) {
-            return (false, did);
-        }
-        string memory controllerKey = KeyUtils.genControllerKey(did);
-        bytes32 key = KeyUtils.genControllerSecondKey(controller);
-        if (!data[controllerKey].contains(key)) {
-            return (false, did);
-        }
-        (bool verified, ) = verifyDIDSignature(controller, singer);
-        return (verified, did);
-    }
-
-    /**
      * @dev query public key list
      * @param did did
      */
@@ -881,20 +532,6 @@ contract DIDContract is MixinDidStorage, IDid {
     }
 
     /**
-     * @dev query controller list
-     * @param did did
-     */
-    function getAllController(string memory did)
-        public
-        view
-        returns (string[] memory)
-    {
-        string memory controllerListKey = KeyUtils.genControllerKey(did);
-        IterableMapping.itmap storage controllerList = data[controllerListKey];
-        return StorageUtils.getAllController(controllerList);
-    }
-
-    /**
      * @dev query service list
      * @param did did
      */
@@ -935,7 +572,6 @@ contract DIDContract is MixinDidStorage, IDid {
         string[] memory context = getContext(did);
         StorageUtils.PublicKey[] memory publicKey = getAllPubKey(did);
         StorageUtils.PublicKey[] memory authentication = getAllAuthKey(did);
-        string[] memory controller = getAllController(did);
         StorageUtils.Service[] memory service = getAllService(did);
         uint256 updated = getUpdatedTime(did);
         // always set created time as 0
@@ -945,7 +581,6 @@ contract DIDContract is MixinDidStorage, IDid {
                 did,
                 publicKey,
                 authentication,
-                controller,
                 service,
                 updated
             );
