@@ -9,42 +9,42 @@ const props = {
   listType: "picture",
   defaultFileList: [...fileList],
 };
-const UserIssue = () => {
+const HolderIssue = () => {
   return (
-    <div className="userissue">
-      <Breadcrumb className="usermanage--breadcrumb" separator=">">
+    <div className="holderissue">
+      <Breadcrumb className="holdermanage--breadcrumb" separator=">">
         <Breadcrumb.Item href="/">홈</Breadcrumb.Item>
         <Breadcrumb.Item href="/">내 지갑</Breadcrumb.Item>
-        <Breadcrumb.Item href="/usermanage">인증서 등록</Breadcrumb.Item>
+        <Breadcrumb.Item href="/holdermanage">인증서 등록</Breadcrumb.Item>
       </Breadcrumb>
-      <div className="userissue--form">
-        <Row className="userissue--row">
+      <div className="holderissue--form">
+        <Row className="holderissue--row">
           <Col span={20} offset={2}>
-            <div className="userissue--title">인증서 발급기관 정보 등록</div>
+            <div className="holderissue--title">인증서 발급기관 정보 등록</div>
             <hr />
 
-            <Row className="userissue--row">
+            <Row className="holderissue--row">
               <Col span={6}>
-                <span className="userissue--sub--title">발급 인증서 명</span>
+                <span className="holderissue--sub--title">발급 인증서 명</span>
               </Col>
               <Col span={16}>
                 <input
-                  className="userissue--input"
+                  className="holderissue--input"
                   type="text"
                   placeholder="e.g) BEB-05기-수료내역서"
                 />
               </Col>
               <Col span={2}></Col>
             </Row>
-            <Row className="userissue--row">
+            <Row className="holderissue--row">
               <Col span={6}>
                 <div>
-                  <span className="userissue--sub--title">발급 기관 명</span>
+                  <span className="holderissue--sub--title">발급 기관 명</span>
                 </div>
               </Col>
               <Col span={16}>
                 <input
-                  className="userissue--input"
+                  className="holderissue--input"
                   type="text"
                   placeholder="e.g) 코드스테이츠"
                 />
@@ -52,10 +52,10 @@ const UserIssue = () => {
               <Col span={2}></Col>
             </Row>
 
-            <Row className="userissue--row">
+            <Row className="holderissue--row">
               <Col span={6}>
                 <div>
-                  <span className="userissue--sub--title">발급일자</span>
+                  <span className="holderissue--sub--title">발급일자</span>
                 </div>
               </Col>
               <Col span={16}>
@@ -79,26 +79,26 @@ const UserIssue = () => {
               <Col span={2}></Col>
             </Row>
 
-            <Row className="userissue--row">
+            <Row className="holderissue--row">
               <Col span={6}>
                 <div>
-                  <span className="userissue--sub--title">자격일련번호</span>
+                  <span className="holderissue--sub--title">자격일련번호</span>
                 </div>
               </Col>
               <Col span={16}>
                 <input
                   type="text"
                   placeholder="e.g) vbjm2022512"
-                  className="userissue--input"
+                  className="holderissue--input"
                 />
               </Col>
               <Col span={2}></Col>
             </Row>
 
-            <Row className="userissue--row">
+            <Row className="holderissue--row">
               <Col span={6}>
                 <div>
-                  <span className="userissue--sub--title">인증서 종류</span>
+                  <span className="holderissue--sub--title">인증서 종류</span>
                 </div>
               </Col>
               <Col span={16}>
@@ -114,10 +114,10 @@ const UserIssue = () => {
               <Col span={2}></Col>
             </Row>
 
-            <Row className="userissue--row">
+            <Row className="holderissue--row">
               <Col span={6}>
                 <div>
-                  <span className="userissue--sub--title">첨부파일</span>
+                  <span className="holderissue--sub--title">첨부파일</span>
                 </div>
               </Col>
               <Col span={16}>
@@ -130,9 +130,9 @@ const UserIssue = () => {
               <Col span={2}></Col>
             </Row>
             <hr />
-            <Row className="userissue--regist--container">
+            <Row className="holderissue--regist--container">
               <Col span={2} offset={11}>
-                <button className="userissue--regist">등록 완료</button>
+                <button className="holderissue--regist">등록 완료</button>
               </Col>
             </Row>
           </Col>
@@ -142,4 +142,4 @@ const UserIssue = () => {
   );
 };
 
-export default UserIssue;
+export default HolderIssue;

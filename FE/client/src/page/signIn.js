@@ -1,6 +1,10 @@
 import { Row, Col } from "antd";
 import "./style/signin.css";
 import signInImage from "../img/signin.jpg";
+
+// signin axios
+// plz api endpoint
+const signin = () => {};
 const SignIn = () => {
   return (
     <div className="signin">
@@ -13,19 +17,16 @@ const SignIn = () => {
         <Col span={12}>
           <div className="signin--right">
             <div className="signin--canvas">
-              <span className="signin--title">LOGIN</span>
-              <label className="signin--label">ID</label>
-              <input type="text" />
-              <label className="signin--label">PASSWORD</label>
-              <input type="password" />
-              <input type="checkbox" />
-              로그인 상태 유지
-              <button>로그인</button>
-              <Row>
-                <Col span={8}>회원가입</Col>
-                <Col span={8}>아이디찾기</Col>
-                <Col span={8}>비밀번호 찾기</Col>
-              </Row>
+              <span className="signin--title">🔐 SIGN-IN</span>
+              <input type="text" className="signin--id" placeholder="ID" />
+              <input
+                type="password"
+                className="signin--id"
+                placeholder="PASSWORD"
+              />
+              <button className="signin--signinbtn" onClick={signin}>
+                SIGNIN
+              </button>
             </div>
           </div>
         </Col>

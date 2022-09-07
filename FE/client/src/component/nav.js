@@ -14,13 +14,13 @@ const menu = (
     <Menu.Item>내 정보 수정</Menu.Item>
     <SubMenu title="내 지갑">
       <Menu.Item>
-        <Link to="/usermanage">인증서 관리</Link>
+        <Link to="/holdermanage">인증서 관리</Link>
       </Menu.Item>
       <Menu.Item>
-        <Link to="/userissue">인증서 등록</Link>
+        <Link to="/holderissue">인증서 등록</Link>
       </Menu.Item>
       <Menu.Item>
-        <Link to="/usersubmit">인증서 제출</Link>
+        <Link to="/holdersubmit">인증서 제출</Link>
       </Menu.Item>
     </SubMenu>
     <Menu.Item>로그아웃</Menu.Item>

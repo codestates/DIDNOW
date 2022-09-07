@@ -1,23 +1,23 @@
-.usermanage {
+.holdermanage {
   padding: 0;
 }
 
-.usermanage--breadcrumb {
+.holdermanage--breadcrumb {
   font-size: 3rem;
   font-weight: 700;
   margin: 5% 0 0 5%;
 }
 
-.usermanage--description {
+.holdermanage--description {
   font-size: 1.5rem;
   margin: 0 0 0 5%;
 }
 
-.usermanage--total {
+.holdermanage--total {
   margin: 20px 0 40px 5%;
 }
 
-.usermanage--total--label {
+.holdermanage--total--label {
   width: 80%;
   height: 3rem;
   border-radius: 15px;
@@ -34,7 +34,7 @@
   );
 }
 
-.usermanage--submit--label {
+.holdermanage--submit--label {
   width: 80%;
   height: 3rem;
   border-radius: 15px;
@@ -51,7 +51,7 @@
   );
 }
 
-.usermanage--submit--label:hover {
+.holdermanage--submit--label:hover {
   cursor: pointer;
   transform: scale(1.1); /*  default */
   -webkit-transform: scale(1.1); /*  크롬 */
@@ -59,6 +59,6 @@
   -o-transform: scale(1.1); /* Opera */
 }
 
-.usermanage--vc {
+.holdermanage--vc {
   margin: 0 5% 0 5%;
 }

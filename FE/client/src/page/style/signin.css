@@ -49,3 +49,43 @@
   font-weight: 700;
   color: #555555;
 }
+
+.signin--id {
+  border-top: 0px;
+  border-bottom: 1px solid #555555;
+  border-left: 0px;
+  border-right: 0px;
+  height: 3rem;
+  text-indent: 10px;
+  color: #555555;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 40px 0;
+}
+
+.signin--signinbtn {
+  height: 3rem;
+  width: 50%;
+  margin: 20px auto;
+  cursor: pointer;
+  border-radius: 20px;
+  border: 1px solid #777777;
+  background-color: white;
+  box-shadow: 2px 2px 5px #777777;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.signin--signinbtn:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(13, 108, 201, 1) 0%,
+    rgba(22, 178, 166, 1) 100%
+  );
+  color: white;
+  cursor: pointer;
+  transform: scale(1.2); /*  default */
+  -webkit-transform: scale(1.2); /*  크롬 */
+  -moz-transform: scale(1.2); /* FireFox */
+  -o-transform: scale(1.2); /* Opera */
+}
