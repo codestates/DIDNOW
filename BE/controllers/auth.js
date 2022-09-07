@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 const createError = require("../utils/Error");
 const jwt = require("jsonwebtoken");
 
+
 /************/
 /* Register */
 /************/
@@ -255,6 +256,36 @@ const getKeyPair = async (req, res, next) => {
   }
 };
 
+/*
+    @ dev : Get AccessToken
+    @ desc : 
+         - 현재 로그인한 사용자의 AccessToken을 반환합니다.
+         - Front에서 로그인을 유지하기 위해 사용됩니다.
+    @ subject : Issuer, Holder, Verifier
+*/
+const getAccessToken = async (req, res, next) => {
+  try {
+    switch (req.user.type) {
+      case "issuer":
+        const issuer = await Issuer.findById(req.user.id);
+
+        return res.status(200).json(issuer);
+      case "holder":
+        const holder = await Holder.findById(req.user.id);
+
+        return res.status(200).json(holder);
+      case "verifier":
+        const verifier = await Verifier.findById(req.user.id);
+        return res.status(200).json(verifier);
+
+      default:
+        return next(createError(403, "User Not Found"));
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registerIssuer,
   registerHolder,
@@ -264,4 +295,5 @@ module.exports = {
   loginVerifier,
   logout,
   getKeyPair,
+  getAccessToken
 };

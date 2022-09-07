@@ -53,6 +53,11 @@ const requestVC = async (req, res, next) => {
           },
         },
       };
+
+      // 비밀키로 암호화 과정
+
+      // 컨트랙트에 pubKey // updateDIDDocument(pubKey).send({form:Issuerwallet});
+
       // IPFS에 VC 저장
       const signedVC = jwt.sign(VC, req.body.password);
       const cid = await storeFiles(makeFileObjects(signedVC, req.body.VC_title), process.env.WEB3STORAGE_TOKEN);
@@ -136,7 +141,7 @@ const createVerifyRequest = async (req, res, next) => {
         vp: {
           '@context': ['https://www.w3.org/2018/credentials/v1'],
           type: ['VerifiablePresentation'],
-          verifiableCredential: []
+          verifiableCredential: ["vc"]
         }
       }
 
@@ -214,8 +219,8 @@ const closeVerifyReqest = async (req, res, next) => {
         // 1. DID Document에서 PubKey 2개 가져옴
         // 2. jwt.verify(vcJWT) 2번 실행
         // 3. 사용자 정보와 VC내의 정보 비교 검증
+        // - body 이름 / birthDate / 
         // 4. 결과에 따라 응답
-
 
         res.status(200).json(JSON.parse(verifyList.vp));
       }else{

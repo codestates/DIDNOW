@@ -37,7 +37,7 @@ router.post("/save-vc-ipfs", verifyToken, passwordCheck);
 router.get("/get-holder-vc-list", verifyToken, getHolderVCList);
 
 /*
-    @ dev : Delete VC From IPFS
+    @ dev : Delete V    C From IPFS
     @ desc : 사용자가 가진 VC List를 삭제합니다. 
     @ subject : Holder
     @ required : IPFS module

@@ -9,6 +9,7 @@ const verifyToken = require('../utils/VerifyToken');
 const {genKey , genPrivateKey} = require('../utils/keyPairGenerator')
 
 // JWT 토큰 암호화/복호화 테스팅
+// Issuer + Hodler
 router.post('/security',verifyToken, async (req, res, next)=>{
     const {pubKey, privateKey} = await KeyPair.findOne({ownerOf : req.user.id});
     
