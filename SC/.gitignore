@@ -1,5 +1,6 @@
 .idea
 build/
+artifacts/
 tests/account.dat
 node_modules
 .secret
