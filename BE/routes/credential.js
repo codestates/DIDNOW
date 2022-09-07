@@ -15,6 +15,7 @@ const {
   getAllVerifyRequest,
   getHolderVCList,
   deleteHolderVCList,
+  closeVerifyReqest,
 } = require("../controllers/credential");
 /*
     @ dev : IPFS VC 저장
@@ -99,6 +100,6 @@ router.get("/find/request-auths", verifyToken, getAllVerifyRequest);
     @ subject : Verifer
     @ required : Smart Contract
 */
-router.post("/auth-vp/:verifiyListId", verifyToken);
+router.post("/auth-vp/:verifiyListId", verifyToken, closeVerifyReqest);
 
 module.exports = router;

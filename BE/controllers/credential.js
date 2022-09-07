@@ -131,8 +131,19 @@ const deleteHolderVCList = async (req, res, next) => {
 const createVerifyRequest = async (req, res, next) => {
   if (req.user.type === "holder") {
     try {
+      // VP payload 생성
+      const vpPayload = {
+        vp: {
+          '@context': ['https://www.w3.org/2018/credentials/v1'],
+          type: ['VerifiablePresentation'],
+          verifiableCredential: []
+        }
+      }
+
+      // Verify List 생성
       const newVerifyList = new VerifyList({
         ...req.body,
+        vp : JSON.stringify(vpPayload),
         requestOwner: req.user.id,
         verifyOwner: req.params.verifierId,
       });
@@ -190,6 +201,28 @@ const getAllVerifyRequest = async (req, res, next) => {
 const closeVerifyReqest = async (req, res, next) => {
   if (req.user.type === "verifier") {
     try {
+
+      
+      // Verify할 VerifyList를 불러옴
+      const verifyList = await VerifyList.findById(req.params.verifiyListId);
+      
+      // 본인에게 요청된 VerifyList만 인증가능
+      if(verifyList.verifyOwner === req.user.id){
+
+        // 인증 로직
+
+        // 1. DID Document에서 PubKey 2개 가져옴
+        // 2. jwt.verify(vcJWT) 2번 실행
+        // 3. 사용자 정보와 VC내의 정보 비교 검증
+        // 4. 결과에 따라 응답
+
+
+        res.status(200).json(JSON.parse(verifyList.vp));
+      }else{
+        next(createError(403, "인가되지 않은 접근입니다."));
+      }
+
+      
     } catch (error) {
       next(error);
     }
@@ -218,4 +251,5 @@ module.exports = {
   getAllVerifyRequest,
   getHolderVCList,
   deleteHolderVCList,
+  closeVerifyReqest,
 };
