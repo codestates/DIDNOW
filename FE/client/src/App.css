@@ -1,0 +1,11 @@
+main {
+  background-color: white !important;
+}
+
+.font--red {
+  color: rgb(255, 93, 93);
+}
+
+.font--blue {
+  color: rgba(13, 108, 201, 1);
+}

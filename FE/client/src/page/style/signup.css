@@ -1,0 +1,51 @@
+.signup {
+  padding: 0;
+  height: 85vh;
+}
+
+.signup--left {
+  width: 100%;
+  padding: 10% 0 0% 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.signup--right {
+  width: 100%;
+  height: 100%;
+  padding: 10% 20% 0% 0;
+}
+
+.signup--image {
+  width: 100%;
+  height: 600px;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+  box-shadow: 2px 2px 5px #777777;
+}
+
+.signup--canvas {
+  background-color: rgb(196, 226, 243);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+  box-shadow: 2px 2px 5px #777777;
+  padding: 10%;
+}
+
+.signup--title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 30px 0;
+}
+
+.signup--label {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #555555;
+}

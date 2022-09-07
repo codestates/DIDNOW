@@ -1,0 +1,77 @@
+.userissue {
+  padding: 0;
+}
+
+.userissue--regist {
+  border-radius: 30px;
+  width: 200px;
+  height: 50px;
+  border: 1px solid #777777;
+  background-color: white;
+  box-shadow: 2px 2px 5px #777777;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.userissue--regist--container {
+  margin: 50px 0 0 0;
+}
+
+.userissue--regist:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(13, 108, 201, 1) 0%,
+    rgba(22, 178, 166, 1) 100%
+  );
+  color: white;
+  cursor: pointer;
+  transform: scale(1.2); /*  default */
+  -webkit-transform: scale(1.2); /*  크롬 */
+  -moz-transform: scale(1.2); /* FireFox */
+  -o-transform: scale(1.2); /* Opera */
+}
+
+.userissue--form {
+  margin: 5%;
+  background-color: white;
+  border-radius: 20px;
+  padding: 5% 0;
+  box-shadow: 2px 2px 5px #777777;
+}
+
+.userissue--title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.userissue--sub--title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #777777;
+  margin: 0 0 0 30%;
+}
+
+.userissue--input {
+  text-indent: 15px;
+  border-radius: 50px;
+  width: 100%;
+  height: 3rem;
+  border: 1px solid #aaaaaa;
+}
+
+.userissue--row {
+  margin: 30px 0;
+}
+
+/* tile uploaded pictures */
+.upload-list-inline .ant-upload-list-item {
+  float: left;
+  width: 200px;
+  margin-right: 8px;
+}
+.upload-list-inline .ant-upload-animate-enter {
+  animation-name: uploadAnimateInlineIn;
+}
+.upload-list-inline .ant-upload-animate-leave {
+  animation-name: uploadAnimateInlineOut;
+}
