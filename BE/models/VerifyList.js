@@ -13,9 +13,11 @@ const VerifyListSchema = new mongoose.Schema(
         status : {
             type : String,
             required : true,
+            default : 'status'
         },
         requestAt : {
             type : Date,
+            default : new Date(),
         },
         completeAt : {
             type : Date,
