@@ -3,11 +3,10 @@ import { useLocation } from "react-router-dom";
 import { SafetyOutlined } from "@ant-design/icons";
 import "./style/usersubmit.css";
 
-const arr = new Array(5).fill("");
 const UserSubmit = () => {
   const location = useLocation();
   const selected = location.state.selected;
-  console.log(selected);
+
   return (
     <div className="usersubmit">
       <Breadcrumb className="usermanage--breadcrumb" separator=">">
@@ -29,10 +28,10 @@ const UserSubmit = () => {
             </Col>
           </Row>
           <div className="usersubmit--vclist">
-            {arr.map((e) => {
+            {selected.map((e, idx) => {
               return (
                 <Row className="usersubmit--vc">
-                  <Col span={1}>1</Col>
+                  <Col span={1}>{idx + 1}</Col>
                   <Col span={6}>{new Date().toLocaleString()}</Col>
                   <Col span={2}>
                     <SafetyOutlined />
@@ -54,6 +53,22 @@ const UserSubmit = () => {
             </Row>
             <Row>
               <Col span={3}>제출할 기업</Col>
+              <Col span={12}>
+                <input
+                  type="text"
+                  placeholder="코드스테이츠"
+                  className="userissue--input"
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col span={4} offset></Col>
+            </Row>
+            <hr />
+            <Row className="userissue--regist--container">
+              <Col span={2} offset={10}>
+                <button className="userissue--regist">등록 완료</button>
+              </Col>
             </Row>
           </div>
         </div>
