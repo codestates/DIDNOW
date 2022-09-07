@@ -48,6 +48,20 @@ library DidUtils {
         return BytesUtils.bytesToAddress(addressBytes);
     }
 
+    function parseAddrFromDID2(bytes memory did)
+        public
+        pure
+        returns (bytes memory)
+    {
+        uint256 prefixLen = 9;
+        bytes memory addressBytesData = BytesUtils.slice(
+            did,
+            prefixLen,
+            did.length - prefixLen
+        );
+        return addressBytesData;
+    }
+
     /**
      * @dev parse public key to address
      * @param pubKey public key

@@ -589,6 +589,18 @@ contract DIDContract is MixinDidStorage, IDid {
         emit AddService(did, serviceId, serviceType, serviceEndpoint);
     }
 
+    function dataSize(string memory dataId) public view returns (uint256) {
+        return data[dataId].getSize();
+    }
+
+    function dataValue(string memory dataId, bytes32 key)
+        public
+        view
+        returns (bytes memory)
+    {
+        return data[dataId].getValue(key);
+    }
+
     /**
      * @dev update service
      * @param did did
@@ -675,7 +687,7 @@ contract DIDContract is MixinDidStorage, IDid {
     }
 
     function checkWhenOperate(string memory did, bytes memory singer)
-        internal
+        public
         view
         returns (string memory)
     {
@@ -716,22 +728,25 @@ contract DIDContract is MixinDidStorage, IDid {
     }
 
     function verifyDIDSignature(string memory did, bytes memory singer)
-        internal
+        public
         view
         returns (bool, string memory)
     {
         did = BytesUtils.toLower(did);
         if (!DidUtils.verifyDIDFormat(did)) {
-            return (false, did);
+            return (false, "!DidUtils.verifyDIDFormat(did)");
         }
         if (didStatus[did].deactivated) {
-            return (false, did);
+            return (false, "didStatus[did].deactivated");
         }
         // if singer.length > 0, verify singer is listed in self public key list and authenticated
         // else verify msg.sender is did
         address didAddr = DidUtils.parseAddrFromDID(bytes(did));
         if (singer.length == 0) {
-            return (didAddr == msg.sender || didAddr == tx.origin, did);
+            return (
+                didAddr == msg.sender || didAddr == tx.origin,
+                "singer.length == 0"
+            );
         } else {
             address signer;
             bytes32 pubKeyListSecondKey;
@@ -746,22 +761,25 @@ contract DIDContract is MixinDidStorage, IDid {
                     encodePubKeyAndAddr(singer, address(0))
                 );
             }
-            if (signer != msg.sender && signer != tx.origin) {
-                return (false, did);
-            }
+            // if (signer != msg.sender && signer != tx.origin) {
+            //     return (false, "signer != msg.sender && signer != tx.origin");
+            // }
             // self sign
             if (signer == didAddr) {
                 return (true, did);
             }
             string memory pubKeyListKey = KeyUtils.genPubKeyListKey(did);
             if (!data[pubKeyListKey].contains(pubKeyListSecondKey)) {
-                return (false, did);
+                return (
+                    false,
+                    "!data[pubKeyListKey].contains(pubKeyListSecondKey"
+                );
             }
             StorageUtils.PublicKey memory pub = StorageUtils.deserializePubKey(
                 data[pubKeyListKey].data[pubKeyListSecondKey].value
             );
             if (pub.deactivated || pub.authIndex == 0) {
-                return (false, did);
+                return (false, "pub.deactivated || pub.authIndex == 0");
             }
             return (true, did);
         }

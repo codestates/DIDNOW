@@ -2,12 +2,20 @@
 pragma solidity 0.5.6;
 
 library BytesUtils {
+    function stringToBytes(string memory str)
+        public
+        pure
+        returns (bytes memory)
+    {
+        return bytes(str);
+    }
+
     /* @notice      Convert bytes to address
      *  @param _bs   Source bytes: bytes length must be 20
      *  @return      Converted address from source bytes
      */
     function bytesToAddress(bytes memory _bs)
-        internal
+        public
         pure
         returns (address addr)
     {
@@ -24,7 +32,7 @@ library BytesUtils {
      *  @return      Converted bytes from address
      */
     function addressToBytes(address _addr)
-        internal
+        public
         pure
         returns (bytes memory bs)
     {

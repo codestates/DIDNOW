@@ -22,45 +22,93 @@ library StorageUtils {
         bool deactivated; // is deactivated or not
         bool isPubKey; // existed in public key list or not
         //        bool isAuth; // existed in authentication list or not
-        uint authIndex; // index at authentication list, 0 means no auth
+        uint256 authIndex; // index at authentication list, 0 means no auth
     }
 
-    function genPublicKeyFromDID(string memory did, string memory keyType) public pure returns (PublicKey memory){
+    function genPublicKeyFromDID(string memory did, string memory keyType)
+        public
+        pure
+        returns (PublicKey memory)
+    {
         address didAddr = DidUtils.parseAddrFromDID(bytes(did));
         bytes memory id = abi.encodePacked(did, "#keys-1");
         string[] memory controller = new string[](1);
         controller[0] = did;
-        return PublicKey(string(id), keyType, controller, abi.encodePacked(didAddr), false, true, 1);
+        return
+            PublicKey(
+                string(id),
+                keyType,
+                controller,
+                abi.encodePacked(didAddr),
+                false,
+                true,
+                1
+            );
     }
 
-    function serializePubKey(PublicKey memory publicKey) public pure returns (bytes memory){
+    function serializePubKey(PublicKey memory publicKey)
+        public
+        pure
+        returns (bytes memory)
+    {
         bytes memory idBytes = ZeroCopySink.WriteVarBytes(bytes(publicKey.id));
-        bytes memory keyTypeBytes = ZeroCopySink.WriteVarBytes(bytes(publicKey.keyType));
-        bytes memory controllerLenBytes = ZeroCopySink.WriteUint255(publicKey.controller.length);
+        bytes memory keyTypeBytes = ZeroCopySink.WriteVarBytes(
+            bytes(publicKey.keyType)
+        );
+        bytes memory controllerLenBytes = ZeroCopySink.WriteUint255(
+            publicKey.controller.length
+        );
         bytes memory controllerBytes = new bytes(0);
-        for (uint i = 0; i < publicKey.controller.length; i++) {
-            controllerBytes = abi.encodePacked(controllerBytes,
-                ZeroCopySink.WriteVarBytes(bytes(publicKey.controller[i])));
+        for (uint256 i = 0; i < publicKey.controller.length; i++) {
+            controllerBytes = abi.encodePacked(
+                controllerBytes,
+                ZeroCopySink.WriteVarBytes(bytes(publicKey.controller[i]))
+            );
         }
-        bytes memory pubKeyBytes = ZeroCopySink.WriteVarBytes(publicKey.pubKeyData);
+        bytes memory pubKeyBytes = ZeroCopySink.WriteVarBytes(
+            publicKey.pubKeyData
+        );
         //        bytes memory ethAddrBytes = ZeroCopySink.WriteUint255(uint256(publicKey.ethAddr));
-        bytes memory deactivatedBytes = ZeroCopySink.WriteBool(publicKey.deactivated);
+        bytes memory deactivatedBytes = ZeroCopySink.WriteBool(
+            publicKey.deactivated
+        );
         bytes memory isPubKeyBytes = ZeroCopySink.WriteBool(publicKey.isPubKey);
         //        bytes memory isAuthKeyBytes = ZeroCopySink.WriteBool(publicKey.isAuth);
-        bytes memory authIndexBytes = ZeroCopySink.WriteUint255(publicKey.authIndex);
+        bytes memory authIndexBytes = ZeroCopySink.WriteUint255(
+            publicKey.authIndex
+        );
         // split result into two phase in case of too deep stack slots compiler error
-        bytes memory result = abi.encodePacked(idBytes, keyTypeBytes, controllerLenBytes, controllerBytes, pubKeyBytes);
-        return abi.encodePacked(result, deactivatedBytes, isPubKeyBytes, authIndexBytes);
+        bytes memory result = abi.encodePacked(
+            idBytes,
+            keyTypeBytes,
+            controllerLenBytes,
+            controllerBytes,
+            pubKeyBytes
+        );
+        return
+            abi.encodePacked(
+                result,
+                deactivatedBytes,
+                isPubKeyBytes,
+                authIndexBytes
+            );
     }
 
-    function deserializePubKey(bytes memory data) public pure returns (PublicKey memory){
-        (bytes memory id, uint offset) = ZeroCopySource.NextVarBytes(data, 0);
+    function deserializePubKey(bytes memory data)
+        public
+        pure
+        returns (PublicKey memory)
+    {
+        (bytes memory id, uint256 offset) = ZeroCopySource.NextVarBytes(
+            data,
+            0
+        );
         bytes memory keyType;
         (keyType, offset) = ZeroCopySource.NextVarBytes(data, offset);
-        uint controllerLen;
+        uint256 controllerLen;
         (controllerLen, offset) = ZeroCopySource.NextUint255(data, offset);
-        string[]memory controller = new string[](controllerLen);
-        for (uint i = 0; i < controllerLen; i++) {
+        string[] memory controller = new string[](controllerLen);
+        for (uint256 i = 0; i < controllerLen; i++) {
             bytes memory ctrl;
             (ctrl, offset) = ZeroCopySource.NextVarBytes(data, offset);
             controller[i] = string(ctrl);
@@ -75,24 +123,35 @@ library StorageUtils {
         (deactivated, offset) = ZeroCopySource.NextBool(data, offset);
         (isPubKey, offset) = ZeroCopySource.NextBool(data, offset);
         //        (isAuth, offset) = ZeroCopySource.NextBool(data, offset);
-        uint authIndex;
+        uint256 authIndex;
         (authIndex, offset) = ZeroCopySource.NextUint255(data, offset);
-        return PublicKey(string(id), string(keyType), controller, pubKey,
-            deactivated, isPubKey, authIndex);
+        return
+            PublicKey(
+                string(id),
+                string(keyType),
+                controller,
+                pubKey,
+                deactivated,
+                isPubKey,
+                authIndex
+            );
     }
 
     /**
-   * @dev query public key list
-   * @param pubKeyList public key list
-   */
-    function getAllPubKey(string memory did, string memory typeOfDefaultKey, IterableMapping.itmap storage pubKeyList)
-    public view returns (PublicKey[] memory) {
+     * @dev query public key list
+     * @param pubKeyList public key list
+     */
+    function getAllPubKey(
+        string memory did,
+        string memory typeOfDefaultKey,
+        IterableMapping.itmap storage pubKeyList
+    ) public view returns (PublicKey[] memory) {
         // first loop to calculate dynamic array size
-        uint validKeySize = 0;
+        uint256 validKeySize = 0;
         PublicKey[] memory allKey = new PublicKey[](pubKeyList.size);
-        uint count = 0;
+        uint256 count = 0;
         for (
-            uint i = pubKeyList.iterate_start();
+            uint256 i = pubKeyList.iterate_start();
             pubKeyList.iterate_valid(i);
             i = pubKeyList.iterate_next(i)
         ) {
@@ -107,7 +166,7 @@ library StorageUtils {
         PublicKey[] memory result = new PublicKey[](validKeySize + 1);
         result[0] = genPublicKeyFromDID(did, typeOfDefaultKey);
         count = 1;
-        for (uint i = 0; i < allKey.length; i++) {
+        for (uint256 i = 0; i < allKey.length; i++) {
             if (!allKey[i].deactivated && allKey[i].isPubKey) {
                 result[count] = allKey[i];
                 count++;
@@ -117,17 +176,20 @@ library StorageUtils {
     }
 
     /**
-   * @dev query authentication list
-   * @param pubKeyList public key list
-   */
-    function getAllAuthKey(string memory did, string memory typeOfDefaultKey, IterableMapping.itmap storage pubKeyList)
-    public view returns (PublicKey[] memory) {
+     * @dev query authentication list
+     * @param pubKeyList public key list
+     */
+    function getAllAuthKey(
+        string memory did,
+        string memory typeOfDefaultKey,
+        IterableMapping.itmap storage pubKeyList
+    ) public view returns (PublicKey[] memory) {
         // first loop to calculate dynamic array size
-        uint authKeySize = 0;
+        uint256 authKeySize = 0;
         PublicKey[] memory allKey = new PublicKey[](pubKeyList.size);
-        uint count = 0;
+        uint256 count = 0;
         for (
-            uint i = pubKeyList.iterate_start();
+            uint256 i = pubKeyList.iterate_start();
             pubKeyList.iterate_valid(i);
             i = pubKeyList.iterate_next(i)
         ) {
@@ -138,8 +200,8 @@ library StorageUtils {
             }
             count++;
         }
-        for (uint i = 0; i < allKey.length; i++) {
-            for (uint j = i + 1; j < allKey.length; j++) {
+        for (uint256 i = 0; i < allKey.length; i++) {
+            for (uint256 j = i + 1; j < allKey.length; j++) {
                 if (allKey[i].authIndex > allKey[j].authIndex) {
                     PublicKey memory temp = allKey[i];
                     allKey[i] = allKey[j];
@@ -150,22 +212,29 @@ library StorageUtils {
         // copy allKey to result
         PublicKey[] memory result = new PublicKey[](authKeySize + 1);
         result[0] = genPublicKeyFromDID(did, typeOfDefaultKey);
-        for (uint i = 0; i < authKeySize; i++) {
+        for (uint256 i = 0; i < authKeySize; i++) {
             result[i + 1] = allKey[count - authKeySize + i];
         }
         return result;
     }
 
-    function insertNewPubKey(IterableMapping.itmap storage pubKeyList, PublicKey memory pub)
-    public {
-        bytes32 pubKeyListSecondKey = KeyUtils.genPubKeyListSecondKey(pub.pubKeyData);
+    function insertNewPubKey(
+        IterableMapping.itmap storage pubKeyList,
+        PublicKey memory pub
+    ) public {
+        bytes32 pubKeyListSecondKey = KeyUtils.genPubKeyListSecondKey(
+            pub.pubKeyData
+        );
         bytes memory encodedPubKey = serializePubKey(pub);
         bool replaced = pubKeyList.insert(pubKeyListSecondKey, encodedPubKey);
         require(!replaced, "key existed");
     }
 
-    function authPubKey(IterableMapping.itmap storage pubKeyList, bytes memory pubKey, uint authIndex)
-    public {
+    function authPubKey(
+        IterableMapping.itmap storage pubKeyList,
+        bytes memory pubKey,
+        uint256 authIndex
+    ) public {
         bytes32 pubKeyListSecondKey = KeyUtils.genPubKeyListSecondKey(pubKey);
         bytes memory pubKeyData = pubKeyList.data[pubKeyListSecondKey].value;
         require(pubKeyData.length > 0, "key not exist");
@@ -178,8 +247,10 @@ library StorageUtils {
         pubKeyList.insert(pubKeyListSecondKey, encodedPubKey);
     }
 
-    function deactivatePubKey(IterableMapping.itmap storage pubKeyList, bytes memory pubKey)
-    public {
+    function deactivatePubKey(
+        IterableMapping.itmap storage pubKeyList,
+        bytes memory pubKey
+    ) public {
         bytes32 pubKeyListSecondKey = KeyUtils.genPubKeyListSecondKey(pubKey);
         bytes memory pubKeyData = pubKeyList.data[pubKeyListSecondKey].value;
         require(pubKeyData.length > 0, "key not exist");
@@ -192,8 +263,10 @@ library StorageUtils {
         pubKeyList.insert(pubKeyListSecondKey, encodedPubKey);
     }
 
-    function deAuthPubKey(IterableMapping.itmap storage pubKeyList, bytes memory pubKey)
-    public {
+    function deAuthPubKey(
+        IterableMapping.itmap storage pubKeyList,
+        bytes memory pubKey
+    ) public {
         bytes32 pubKeyListSecondKey = KeyUtils.genPubKeyListSecondKey(pubKey);
         bytes memory pubKeyData = pubKeyList.data[pubKeyListSecondKey].value;
         require(pubKeyData.length > 0, "key not exist");
@@ -204,17 +277,21 @@ library StorageUtils {
         bytes memory encodedPubKey = serializePubKey(key);
         pubKeyList.insert(pubKeyListSecondKey, encodedPubKey);
     }
+
     /**
-   * @dev query context list
-   * @param ctxList context list
-   */
-    function getContext(IterableMapping.itmap storage ctxList, string memory defaultCtx) public view returns (string[] memory) {
+     * @dev query context list
+     * @param ctxList context list
+     */
+    function getContext(
+        IterableMapping.itmap storage ctxList,
+        string memory defaultCtx
+    ) public view returns (string[] memory) {
         string[] memory result = new string[](ctxList.size + 1);
         // add default context
         result[0] = defaultCtx;
-        uint count = 1;
+        uint256 count = 1;
         for (
-            uint i = ctxList.iterate_start();
+            uint256 i = ctxList.iterate_start();
             ctxList.iterate_valid(i);
             i = ctxList.iterate_next(i)
         ) {
@@ -226,15 +303,18 @@ library StorageUtils {
     }
 
     /**
-    * @dev query controller list
-    * @param controllerList controller list
-    */
+     * @dev query controller list
+     * @param controllerList controller list
+     */
     function getAllController(IterableMapping.itmap storage controllerList)
-    public view returns (string[] memory){
+        public
+        view
+        returns (string[] memory)
+    {
         string[] memory result = new string[](controllerList.size);
-        uint count = 0;
+        uint256 count = 0;
         for (
-            uint i = controllerList.iterate_start();
+            uint256 i = controllerList.iterate_start();
             controllerList.iterate_valid(i);
             i = controllerList.iterate_next(i)
         ) {
@@ -246,15 +326,18 @@ library StorageUtils {
     }
 
     /**
-    * @dev query service list
-    * @param serviceList service list
-    */
+     * @dev query service list
+     * @param serviceList service list
+     */
     function getAllService(IterableMapping.itmap storage serviceList)
-    public view returns (Service[] memory){
+        public
+        view
+        returns (Service[] memory)
+    {
         Service[] memory result = new Service[](serviceList.size);
-        uint count = 0;
+        uint256 count = 0;
         for (
-            uint i = serviceList.iterate_start();
+            uint256 i = serviceList.iterate_start();
             serviceList.iterate_valid(i);
             i = serviceList.iterate_next(i)
         ) {
@@ -271,18 +354,42 @@ library StorageUtils {
         string serviceEndpoint;
     }
 
-    function serializeService(Service memory service) public pure returns (bytes memory){
-        bytes memory idBytes = ZeroCopySink.WriteVarBytes(bytes(service.serviceId));
-        bytes memory typeBytes = ZeroCopySink.WriteVarBytes(bytes(service.serviceType));
-        bytes memory endpointBytes = ZeroCopySink.WriteVarBytes(bytes(service.serviceEndpoint));
-        bytes memory serviceBytes = abi.encodePacked(idBytes, typeBytes, endpointBytes);
+    function serializeService(Service memory service)
+        public
+        pure
+        returns (bytes memory)
+    {
+        bytes memory idBytes = ZeroCopySink.WriteVarBytes(
+            bytes(service.serviceId)
+        );
+        bytes memory typeBytes = ZeroCopySink.WriteVarBytes(
+            bytes(service.serviceType)
+        );
+        bytes memory endpointBytes = ZeroCopySink.WriteVarBytes(
+            bytes(service.serviceEndpoint)
+        );
+        bytes memory serviceBytes = abi.encodePacked(
+            idBytes,
+            typeBytes,
+            endpointBytes
+        );
         return serviceBytes;
     }
 
-    function deserializeService(bytes memory serviceBytes) public pure returns (Service memory){
-        (bytes memory id, uint offset) = ZeroCopySource.NextVarBytes(serviceBytes, 0);
+    function deserializeService(bytes memory serviceBytes)
+        public
+        pure
+        returns (Service memory)
+    {
+        (bytes memory id, uint256 offset) = ZeroCopySource.NextVarBytes(
+            serviceBytes,
+            0
+        );
         bytes memory serviceType = new bytes(0);
-        (serviceType, offset) = ZeroCopySource.NextVarBytes(serviceBytes, offset);
+        (serviceType, offset) = ZeroCopySource.NextVarBytes(
+            serviceBytes,
+            offset
+        );
         bytes memory endpoint = new bytes(0);
         (endpoint, offset) = ZeroCopySource.NextVarBytes(serviceBytes, offset);
         return Service(string(id), string(serviceType), string(endpoint));
@@ -295,6 +402,6 @@ library StorageUtils {
         PublicKey[] authentication;
         string[] controller;
         Service[] service;
-        uint updated;
+        uint256 updated;
     }
 }

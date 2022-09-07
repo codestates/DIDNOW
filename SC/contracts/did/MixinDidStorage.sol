@@ -13,7 +13,7 @@ contract MixinDidStorage {
 
     struct DIDStatus {
         bool deactivated;
-        uint authListLen;
+        uint256 authListLen;
     }
 
     mapping(string => DIDStatus) public didStatus;
