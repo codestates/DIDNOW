@@ -6,73 +6,53 @@ pragma experimental ABIEncoderV2;
 interface IDid {
     event Deactivate(string did);
 
-    function deactivateID(string calldata did, bytes calldata singer) external;
+    function deactivateID(string calldata did) external;
 
     event AddKey(string did, bytes pubKey, string[] controller);
 
     function addKey(
         string calldata did,
         bytes calldata newPubKey,
-        string[] calldata pubKeyController,
-        bytes calldata singer
+        string[] calldata pubKeyController
     ) external;
 
     event DeactivateKey(string did, bytes pubKey);
 
-    function deactivateKey(
-        string calldata did,
-        bytes calldata pubKey,
-        bytes calldata singer
-    ) external;
+    function deactivateKey(string calldata did, bytes calldata pubKey) external;
 
     event AddNewAuthKey(string did, bytes pubKey, string[] controller);
 
     function addNewAuthKey(
         string calldata did,
         bytes calldata pubKey,
-        string[] calldata controller,
-        bytes calldata singer
+        string[] calldata controller
     ) external;
 
     event SetAuthKey(string did, bytes pubKey);
 
-    function setAuthKey(
-        string calldata did,
-        bytes calldata pubKey,
-        bytes calldata singer
-    ) external;
+    function setAuthKey(string calldata did, bytes calldata pubKey) external;
 
     event DeactivateAuthKey(string did, bytes pubKey);
 
-    function deactivateAuthKey(
-        string calldata did,
-        bytes calldata pubKey,
-        bytes calldata singer
-    ) external;
+    function deactivateAuthKey(string calldata did, bytes calldata pubKey)
+        external;
 
     event AddContext(string did, string context);
 
-    function addContext(
-        string calldata did,
-        string[] calldata context,
-        bytes calldata singer
-    ) external;
+    function addContext(string calldata did, string[] calldata context)
+        external;
 
     event RemoveContext(string did, string context);
 
-    function removeContext(
-        string calldata did,
-        string[] calldata context,
-        bytes calldata singer
-    ) external;
+    function removeContext(string calldata did, string[] calldata context)
+        external;
 
     event AddService(string did, string serviceId, string AddService);
 
     function addService(
         string calldata did,
         string calldata serviceId,
-        string calldata publicKey,
-        bytes calldata singer
+        string calldata publicKey
     ) external;
 
     event UpdateService(string did, string serviceId, string publicKey);
@@ -80,15 +60,11 @@ interface IDid {
     function updateService(
         string calldata did,
         string calldata serviceId,
-        string calldata publicKey,
-        bytes calldata singer
+        string calldata publicKey
     ) external;
 
     event RemoveService(string did, string serviceId);
 
-    function removeService(
-        string calldata did,
-        string calldata serviceId,
-        bytes calldata singer
-    ) external;
+    function removeService(string calldata did, string calldata serviceId)
+        external;
 }

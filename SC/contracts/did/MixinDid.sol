@@ -22,9 +22,9 @@ contract DIDContract is MixinDidStorage, IDid {
      * @dev deactivate did, delete all document data of this did, but record did has been registered,
      *    it means this did cannot been registered in the future
      * @param did did
-     * @param singer tx signer, could be public key or address
      */
-    function deactivateID(string memory did, bytes memory singer) public {
+    function deactivateID(string memory did) public {
+        bytes memory singer = BytesUtils.getSinger(did);
         did = checkWhenOperate(did, singer);
         // delete context
         delete data[KeyUtils.genContextKey(did)];
@@ -47,14 +47,13 @@ contract DIDContract is MixinDidStorage, IDid {
      * @param did did
      * @param newPubKey new public key
      * @param controller controller of newPubKey, they are some did
-     * @param singer tx signer, could be public key or address
      */
     function addKey(
         string memory did,
         bytes memory newPubKey,
-        string[] memory controller,
-        bytes memory singer
+        string[] memory controller
     ) public {
+        bytes memory singer = BytesUtils.getSinger(did);
         did = checkWhenAddKey(did, singer, controller);
         addNewPubKey(
             did,
@@ -73,14 +72,13 @@ contract DIDContract is MixinDidStorage, IDid {
      * @param did did
      * @param pubKey the new public key
      * @param controller controller of newPubKey, they are some did
-     * @param singer tx signer, could be public key or address
      */
     function addNewAuthKey(
         string memory did,
         bytes memory pubKey,
-        string[] memory controller,
-        bytes memory singer
+        string[] memory controller
     ) public {
+        bytes memory singer = BytesUtils.getSinger(did);
         did = checkWhenAddKey(did, singer, controller);
         addNewPubKey(
             did,
@@ -129,13 +127,9 @@ contract DIDContract is MixinDidStorage, IDid {
      * @dev add one key existed in publicKey list to authentication list
      * @param did did
      * @param pubKey public key
-     * @param singer tx signer, could be public key or address
      */
-    function setAuthKey(
-        string memory did,
-        bytes memory pubKey,
-        bytes memory singer
-    ) public {
+    function setAuthKey(string memory did, bytes memory pubKey) public {
+        bytes memory singer = BytesUtils.getSinger(did);
         did = checkWhenOperate(did, singer);
         authPubKey(did, pubKey, address(0));
         emit SetAuthKey(did, pubKey);
@@ -166,13 +160,9 @@ contract DIDContract is MixinDidStorage, IDid {
      * @dev deactivate one key that existed in public key list
      * @param did did
      * @param pubKey public key
-     * @param singer tx signer, could be public key or address
      */
-    function deactivateKey(
-        string memory did,
-        bytes memory pubKey,
-        bytes memory singer
-    ) public {
+    function deactivateKey(string memory did, bytes memory pubKey) public {
+        bytes memory singer = BytesUtils.getSinger(did);
         did = checkWhenOperate(did, singer);
         deactivatePubKey(did, pubKey, address(0));
         emit DeactivateKey(did, pubKey);
@@ -195,13 +185,9 @@ contract DIDContract is MixinDidStorage, IDid {
      * @dev remove one key from authentication list
      * @param did did
      * @param pubKey public key
-     * @param singer tx signer, could be public key or address
      */
-    function deactivateAuthKey(
-        string memory did,
-        bytes memory pubKey,
-        bytes memory singer
-    ) public {
+    function deactivateAuthKey(string memory did, bytes memory pubKey) public {
+        bytes memory singer = BytesUtils.getSinger(did);
         did = checkWhenOperate(did, singer);
         deAuthPubKey(did, pubKey, address(0));
         emit DeactivateAuthKey(did, pubKey);
@@ -237,13 +223,9 @@ contract DIDContract is MixinDidStorage, IDid {
      * @dev add context to did document
      * @param did did
      * @param contexts contexts
-     * @param singer tx signer, could be public key or address
      */
-    function addContext(
-        string memory did,
-        string[] memory contexts,
-        bytes memory singer
-    ) public {
+    function addContext(string memory did, string[] memory contexts) public {
+        bytes memory singer = BytesUtils.getSinger(did);
         did = checkWhenOperate(did, singer);
         string memory ctxKey = KeyUtils.genContextKey(did);
         for (uint256 i = 0; i < contexts.length; i++) {
@@ -261,13 +243,9 @@ contract DIDContract is MixinDidStorage, IDid {
      * @dev remove context from did document
      * @param did did
      * @param contexts contexts
-     * @param singer tx signer, could be public key or address
      */
-    function removeContext(
-        string memory did,
-        string[] memory contexts,
-        bytes memory singer
-    ) public {
+    function removeContext(string memory did, string[] memory contexts) public {
+        bytes memory singer = BytesUtils.getSinger(did);
         did = checkWhenOperate(did, singer);
         string memory ctxKey = KeyUtils.genContextKey(did);
         for (uint256 i = 0; i < contexts.length; i++) {
@@ -286,14 +264,13 @@ contract DIDContract is MixinDidStorage, IDid {
      * @param did did
      * @param serviceId service id
      * @param publicKey public Key For Decode(Not Wallet Key)
-     * @param singer tx signer, could be public key or address
      */
     function addService(
         string memory did,
         string memory serviceId,
-        string memory publicKey,
-        bytes memory singer
+        string memory publicKey
     ) public {
+        bytes memory singer = BytesUtils.getSinger(did);
         did = checkWhenOperate(did, singer);
         string memory serviceKey = KeyUtils.genServiceKey(did);
         bytes32 key = KeyUtils.genServiceSecondKey(serviceId);
@@ -325,14 +302,13 @@ contract DIDContract is MixinDidStorage, IDid {
      * @param did did
      * @param serviceId service id
      * @param publicKey publicKey For Decode(Not Wallet Key)
-     * @param singer tx signer, could be public key or address
      */
     function updateService(
         string memory did,
         string memory serviceId,
-        string memory publicKey,
-        bytes memory singer
+        string memory publicKey
     ) public {
+        bytes memory singer = BytesUtils.getSinger(did);
         did = checkWhenOperate(did, singer);
         string memory serviceKey = KeyUtils.genServiceKey(did);
         bytes32 key = KeyUtils.genServiceSecondKey(serviceId);
@@ -351,13 +327,9 @@ contract DIDContract is MixinDidStorage, IDid {
      * @dev remove service
      * @param did did
      * @param serviceId service id
-     * @param singer tx signer, could be public key or address
      */
-    function removeService(
-        string memory did,
-        string memory serviceId,
-        bytes memory singer
-    ) public {
+    function removeService(string memory did, string memory serviceId) public {
+        bytes memory singer = BytesUtils.getSinger(did);
         did = checkWhenOperate(did, singer);
         string memory serviceKey = KeyUtils.genServiceKey(did);
         bytes32 key = KeyUtils.genServiceSecondKey(serviceId);
@@ -540,6 +512,7 @@ contract DIDContract is MixinDidStorage, IDid {
         view
         returns (StorageUtils.Service[] memory)
     {
+        did = BytesUtils.toLower(did);
         string memory serviceKey = KeyUtils.genServiceKey(did);
         IterableMapping.itmap storage serviceList = data[serviceKey];
         return StorageUtils.getAllService(serviceList);
@@ -550,6 +523,7 @@ contract DIDContract is MixinDidStorage, IDid {
      * @param did did
      */
     function getUpdatedTime(string memory did) public view returns (uint256) {
+        did = BytesUtils.toLower(did);
         string memory updateTimeKey = KeyUtils.genUpdateTimeKey(did);
         bytes32 key = KeyUtils.genUpdateTimeSecondKey();
         bytes memory time = data[updateTimeKey].data[key].value;
@@ -569,6 +543,7 @@ contract DIDContract is MixinDidStorage, IDid {
         view
         returns (StorageUtils.DIDDocument memory)
     {
+        did = BytesUtils.toLower(did);
         string[] memory context = getContext(did);
         StorageUtils.PublicKey[] memory publicKey = getAllPubKey(did);
         StorageUtils.PublicKey[] memory authentication = getAllAuthKey(did);

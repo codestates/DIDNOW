@@ -2,6 +2,47 @@
 pragma solidity 0.5.6;
 
 library BytesUtils {
+    function hexStringToAddress(string memory str)
+        public
+        pure
+        returns (bytes memory)
+    {
+        bytes memory res = bytes(str);
+        require(res.length % 2 == 0); // length must be even
+        bytes memory r = new bytes(res.length / 2);
+        for (uint256 i = 0; i < res.length / 2; ++i) {
+            r[i] = bytes1(
+                fromHexChar(uint8(res[2 * i])) *
+                    16 +
+                    fromHexChar(uint8(res[2 * i + 1]))
+            );
+        }
+
+        return r;
+    }
+
+    function getSinger(string memory did)
+        public
+        pure
+        returns (bytes memory bs)
+    {
+        string memory cid = substring(did, 9, 49);
+        return hexStringToAddress(cid);
+    }
+
+    function substring(
+        string memory str,
+        uint256 startIndex,
+        uint256 endIndex
+    ) public pure returns (string memory) {
+        bytes memory strBytes = bytes(str);
+        bytes memory result = new bytes(endIndex - startIndex);
+        for (uint256 i = startIndex; i < endIndex; i++) {
+            result[i - startIndex] = strBytes[i];
+        }
+        return string(result);
+    }
+
     function stringToBytes(string memory str)
         public
         pure

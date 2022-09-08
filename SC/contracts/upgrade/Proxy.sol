@@ -3,16 +3,16 @@ pragma solidity 0.5.6;
 
 contract Proxy {
     /**
-   * @dev Tells the address of the implementation where every call will be delegated.
-   * @return address of the implementation to which it will be delegated
-   */
+     * @dev Tells the address of the implementation where every call will be delegated.
+     * @return address of the implementation to which it will be delegated
+     */
     function implementation() public view returns (address);
 
     /**
-    * @dev Fallback function allowing to perform a delegatecall to the given implementation.
-    * This function will return whatever the implementation call returns
-    */
-    function() payable external {
+     * @dev Fallback function allowing to perform a delegatecall to the given implementation.
+     * This function will return whatever the implementation call returns
+     */
+    function() external payable {
         address _impl = implementation();
         require(_impl != address(0));
 
@@ -24,8 +24,12 @@ contract Proxy {
             returndatacopy(ptr, 0, size)
 
             switch result
-            case 0 {revert(ptr, size)}
-            default {return (ptr, size)}
+            case 0 {
+                revert(ptr, size)
+            }
+            default {
+                return(ptr, size)
+            }
         }
     }
 }
