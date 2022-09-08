@@ -6,6 +6,10 @@ const HolderVC_ListSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    title : {
+      type : String,
+      required : true,
+    },
     IPFS_Address: {
       type: String,
       required: true,

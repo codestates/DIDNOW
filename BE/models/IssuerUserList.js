@@ -6,25 +6,29 @@ const IssuerUserListSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    cr1_name: {
+    cr_name: {
       type: String,
     },
-    cr2_birthDate: {
+    cr_email:{
+      type : String,
+      unique : true,
+    },
+    cr_birthDate: {
       type: Date,
     },
-    cr3_certificateType: {
+    cr_certificateType: {
       type: String,
     },
-    cr4_certificateDate: {
+    cr_certificateDate: {
       type: Date,
     },
-    cr5_Nationality: {
+    cr_Nationality: {
       type: String,
     },
-    cr6_address: {
+    cr_address: {
       type: String,
     },
-    cr7_isAdult: {
+    cr_isAdult: {
       type: Boolean,
     },
   },
