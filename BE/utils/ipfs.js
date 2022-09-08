@@ -18,7 +18,7 @@ function makeFileObjects(obj, title) {
   // Here we're just storing a JSON object, but you can store images,
   // audio, or whatever you want!
   // obj Example
-  /*
+  
 
   const obj = {
     sub: "did:klay:0x435df3eda57154cf8cf7926079881f2912f54db4",
@@ -34,7 +34,6 @@ function makeFileObjects(obj, title) {
       },
     },
   };
-    */
   const buffer = Buffer.from(JSON.stringify(obj));
 
   const files = [new File([buffer], title)];
@@ -46,6 +45,8 @@ async function storeFiles(files, token) {
   const cid = await client.put(files);
   return cid;
 }
+
+storeFiles()
 
 async function retrieveFiles(cid) {
   const client = makeStorageClient();
