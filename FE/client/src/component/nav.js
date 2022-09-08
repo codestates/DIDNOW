@@ -34,7 +34,7 @@ const Nav = () => {
           <img src={logo} alt="" style={{ height: "64px" }} />
         </Link>
       </Col>
-      <Col span={3} offset={15}>
+      <Col span={5} offset={13}>
         <Link to="/signin">
           <UnlockOutlined style={{ fontSize: "16px" }} />
           로그인

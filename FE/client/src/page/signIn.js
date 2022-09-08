@@ -17,7 +17,7 @@ const SignIn = () => {
         <Col span={12}>
           <div className="signin--right">
             <div className="signin--canvas">
-              <span className="signin--title">🔐 SIGN-IN</span>
+              <span className="signin--title">🔐 로그인</span>
               <input type="text" className="signin--id" placeholder="ID" />
               <input
                 type="password"
@@ -25,7 +25,7 @@ const SignIn = () => {
                 placeholder="PASSWORD"
               />
               <button className="signin--signinbtn" onClick={signin}>
-                SIGNIN
+                로그인
               </button>
             </div>
           </div>
