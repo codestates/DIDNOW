@@ -60,6 +60,7 @@ const SignIn = ({ setUser }) => {
                   onClick={(e) => {
                     setType(e.target.id);
                   }}
+                  style={{cursor : "pointer"}}
                   id="holder"
                 >
                   holder

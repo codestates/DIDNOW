@@ -11,7 +11,7 @@ async function testFunction() {
   caver.wallet.add(keyring);
   console.log(keyring);
 }
-// testFunction();
+testFunction();
 
 async function kaikasFunction() {
   const keyringFromPrivateKey = caver.wallet.keyring.createFromPrivateKey(
@@ -20,7 +20,7 @@ async function kaikasFunction() {
   caver.wallet.add(keyringFromPrivateKey);
   keyring = keyringFromPrivateKey;
 }
-kaikasFunction();
+// kaikasFunction();
 
 async function contractFunction() {
   const contractInstance = new caver.contract(
@@ -54,6 +54,6 @@ async function test(){
     console.log(temp);
 };
 
-contractFunction();
+// contractFunction();
 
 // test();

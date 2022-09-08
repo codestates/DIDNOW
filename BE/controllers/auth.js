@@ -35,11 +35,20 @@ const registerIssuer = async (req, res, next) => {
       pubKey: publicKey,
       privateKey: privateKey,
     });
+   
+    // 블록체인 접근
+    // 테스트넷의 지갑주소 생성
+    // wallet keypair DB 저장
+    // faucet
+
+    // methods.function.send({from : 배포 월렛 주소})
 
     // 새로운 Issuer 저장
     await newIssuer.save();
     // KeyPair 저장
     await newKeyPairs.save();
+
+    
 
     res.status(200).json("Issuer가 등록되었습니다.");
   } catch (error) {

@@ -35,6 +35,7 @@ const Nav = () => {
         </Link>
       </Col>
       <Col span={5} offset={13}>
+        <Link to="/holder/request-vc">인증 요청</Link>
         <Link to="issuerissue">인증서</Link>
         <Link to="/signin">
           <UnlockOutlined style={{ fontSize: "16px" }} />

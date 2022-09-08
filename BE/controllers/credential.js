@@ -58,6 +58,12 @@ const requestVC = async (req, res, next) => {
 
       // 컨트랙트에 pubKey // updateDIDDocument(pubKey).send({form:Issuerwallet});
 
+      // 
+
+      // 
+
+      //
+
       // IPFS에 VC 저장
       const signedVC = jwt.sign(VC, req.body.password);
       const cid = await storeFiles(makeFileObjects(signedVC, req.body.VC_title), process.env.WEB3STORAGE_TOKEN);
@@ -75,6 +81,7 @@ const requestVC = async (req, res, next) => {
 
       res.status(200).json(VC);
     } catch (error) {
+      console.log(error);
       next(error);
     }
   } else {

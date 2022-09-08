@@ -15,6 +15,8 @@ import HolderIssue from "./page/holderIssue";
 import HolderSubmit from "./page/holderSubmit";
 import IssuerManage from "./page/issuerManage";
 import IssuerIssue from "./page/issuerIssue";
+import Issuers from './page/Issuers';
+import IssuerListModal from "./component/IssuerListModal";
 
 const { Header, Content, Footer } = Layout;
 function App() {
@@ -36,6 +38,10 @@ function App() {
               <Route path="/holderissue" element={<HolderIssue />} />
               <Route path="/holdersubmit" element={<HolderSubmit />} />
               <Route path="/issuermanage" element={<IssuerManage />} />
+              <Route path="/holder" >
+                <Route path="request-vc" element={<Issuers />} />
+                <Route path="modal" element={<IssuerListModal />} />
+              </Route>
               <Route
                 path="/issuerissue"
                 element={<IssuerIssue user={user.data} />}

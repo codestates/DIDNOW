@@ -1,0 +1,28 @@
+.content{
+    display : flex;
+    font-size: 20px;
+    font-weight: 300;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+}
+
+
+.issuerContentButton {
+    border-radius: 30px;
+    /* width: 00px;
+    height: 50px; */
+    border: 1px solid #777777;
+    background-color: white;
+    box-shadow: 2px 2px 5px #777777;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor : pointer;
+  }
+.issuerContentButton:hover {
+    background: linear-gradient(
+      90deg,
+      rgba(13, 108, 201, 1) 0%,
+      rgba(22, 178, 166, 1) 100%
+    );
+}
