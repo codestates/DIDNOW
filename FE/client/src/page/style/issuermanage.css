@@ -1,0 +1,36 @@
+.issuermanage {
+  padding: 0;
+}
+
+.issuermanage--breadcrumb {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 5% 0 0 5%;
+}
+
+.issuermanage--description {
+  font-size: 1.4rem;
+  color: #777777;
+  margin: 0 0 0 5%;
+}
+
+.issuermanage--total--label {
+  width: 80%;
+  height: 3rem;
+  border-radius: 15px;
+  font-size: 1.3rem;
+  color: white;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    90deg,
+    rgba(13, 108, 201, 1) 0%,
+    rgba(22, 178, 166, 1) 100%
+  );
+}
+
+.issuermanage--list--column {
+  padding: 0 5%;
+}

@@ -1,0 +1,68 @@
+const dummyData = [
+  {
+    id: 1,
+    issuer: "코드스테이츠",
+    description: "BEB 05기 수료증",
+    createdAt: new Date().toLocaleString(),
+    expiredAt: new Date().toLocaleString(),
+    status: 1,
+  },
+  {
+    id: 2,
+    issuer: "SSAFY",
+    description: "SSAFY 05기 수료증",
+    createdAt: new Date().toLocaleString(),
+    expiredAt: new Date().toLocaleString(),
+    status: 1,
+  },
+  {
+    id: 3,
+    issuer: "우아한 테크 코스",
+    description: "우테코 02기 수료증",
+    createdAt: new Date().toLocaleString(),
+    expiredAt: new Date().toLocaleString(),
+    status: 0,
+  },
+  {
+    id: 4,
+    issuer: "부스트캠프",
+    description: "부스트캠프 05기 수료증",
+    createdAt: new Date().toLocaleString(),
+    expiredAt: new Date().toLocaleString(),
+    status: 0,
+  },
+  {
+    id: 5,
+    issuer: "스파르타 코딩",
+    description: "스파르타코딩 05기 수료증",
+    createdAt: new Date().toLocaleString(),
+    expiredAt: new Date().toLocaleString(),
+    status: 1,
+  },
+  {
+    id: 6,
+    issuer: "항해99",
+    description: "항해99 05기 수료증",
+    createdAt: new Date().toLocaleString(),
+    expiredAt: new Date().toLocaleString(),
+    status: 1,
+  },
+  {
+    id: 7,
+    issuer: "멋쟁이 사자처럼",
+    description: "멋사 05기 수료증",
+    createdAt: new Date().toLocaleString(),
+    expiredAt: new Date().toLocaleString(),
+    status: 0,
+  },
+  {
+    id: 8,
+    issuer: "동네학원",
+    description: "동네학원 05기 수료증",
+    createdAt: new Date().toLocaleString(),
+    expiredAt: new Date().toLocaleString(),
+    status: 0,
+  },
+];
+
+export default dummyData;

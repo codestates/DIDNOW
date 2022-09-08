@@ -1,0 +1,64 @@
+.holdermanage {
+  padding: 0;
+}
+
+.holdermanage--breadcrumb {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 5% 0 0 5%;
+}
+
+.holdermanage--description {
+  font-size: 1.5rem;
+  margin: 0 0 0 5%;
+}
+
+.holdermanage--total {
+  margin: 20px 0 40px 5%;
+}
+
+.holdermanage--total--label {
+  width: 80%;
+  height: 3rem;
+  border-radius: 15px;
+  font-size: 1.3rem;
+  color: white;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    90deg,
+    rgba(13, 108, 201, 1) 0%,
+    rgba(22, 178, 166, 1) 100%
+  );
+}
+
+.holdermanage--submit--label {
+  width: 80%;
+  height: 3rem;
+  border-radius: 15px;
+  font-size: 1.3rem;
+  color: white;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    90deg,
+    rgb(255, 63, 63) 0%,
+    rgb(255, 135, 60) 100%
+  );
+}
+
+.holdermanage--submit--label:hover {
+  cursor: pointer;
+  transform: scale(1.1); /*  default */
+  -webkit-transform: scale(1.1); /*  크롬 */
+  -moz-transform: scale(1.1); /* FireFox */
+  -o-transform: scale(1.1); /* Opera */
+}
+
+.holdermanage--vc {
+  margin: 0 5% 0 5%;
+}

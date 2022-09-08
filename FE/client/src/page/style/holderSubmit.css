@@ -1,0 +1,35 @@
+.holdersubmit {
+}
+
+.holdersubmit--form {
+}
+
+.holdersubmit--row {
+  margin: 30px 0;
+}
+
+.holdersubmit--form {
+  margin: 5%;
+  background-color: white;
+  border-radius: 20px;
+  padding: 5% 0;
+  box-shadow: 2px 2px 5px #777777;
+}
+
+.holdersubmit--title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+.holdersubmit {
+  padding: 0;
+}
+
+.holdersubmit--vclist {
+  margin: 0 10%;
+}
+
+.holdersubmit--vc {
+  font-size: 1.1rem;
+  font-weight: 700;
+  height: 2.5rem;
+}
