@@ -7,7 +7,7 @@ const CompanyIssue = () => {
     {
       id: 1,
       name: "",
-      phone: "",
+      birthdate: "",
       code: "",
       file: "",
     },
@@ -19,7 +19,7 @@ const CompanyIssue = () => {
       {
         id: userList[userList.length - 1].id + 1,
         name: "",
-        phone: "",
+        birthdate: "",
         code: "",
         file: "",
       },
@@ -131,9 +131,12 @@ const CompanyIssue = () => {
             <hr />
             <Row>
               <Col span={3}>이름</Col>
-              <Col span={4}>전화번호</Col>
-              <Col span={6}>자격일련번호</Col>
-              <Col span={8}>첨부파일</Col>
+              <Col span={3}>생년월일</Col>
+              <Col span={3}>인증서 종류</Col>
+              <Col span={3}>인증일자</Col>
+              <Col span={3}>기관?</Col>
+              <Col span={3}>주소</Col>
+              <Col span={3}>성인여부</Col>
               <Col span={3}>
                 <button onClick={addUser}>+</button>
               </Col>

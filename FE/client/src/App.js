@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { Layout } from "antd";
 import "./App.css";
 import "antd/dist/antd.min.css";
@@ -17,6 +18,7 @@ import IssuerIssue from "./page/issuerIssue";
 
 const { Header, Content, Footer } = Layout;
 function App() {
+  const [user, setUser] = useState();
   return (
     <BrowserRouter>
       <div className="App">
