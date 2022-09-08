@@ -2,6 +2,7 @@ import "./style/holderSignUp.css";
 import { Row, Col, message } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const HolderSignUp = () => {
   useEffect(() => {});
@@ -19,10 +20,25 @@ const HolderSignUp = () => {
     userInfo[e.target.id] = e.target.value;
     setUserInfo(userInfo);
   };
-  const validate = () => {
+  const validate = async () => {
     if (isCorrect === true) {
-      message.info("회원 가입 완료!");
-      navigate("/");
+      let res = await axios({
+        url: `http://localhost:9999/api/v1/auth/register-holder`,
+        method: "POST",
+        data: {
+          email: userInfo.email,
+          password: userInfo.password,
+          username: userInfo.username,
+          walletAddress: userInfo.walletAddress,
+          birthDay: userInfo.birth,
+        },
+        withCredentials: true,
+      });
+
+      if (res.status === 200) {
+        message.info("회원 가입 완료!");
+        navigate("/");
+      }
     }
   };
 

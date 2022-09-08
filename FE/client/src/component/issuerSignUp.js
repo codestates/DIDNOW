@@ -2,6 +2,7 @@ import "./style/issuerSignUp.css";
 import { Row, Col, message } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const IssuerSignUp = () => {
   useEffect(() => {});
@@ -19,10 +20,25 @@ const IssuerSignUp = () => {
     issuerInfo[e.target.id] = e.target.value;
     setIssuerInfo(issuerInfo);
   };
-  const validate = () => {
+  const validate = async () => {
     if (isCorrect === true) {
-      message.info("회원 가입 완료!");
-      navigate("/");
+      let res = await axios({
+        url: `http://localhost:9999/api/v1/auth/register-issuer`,
+        method: "POST",
+        data: {
+          email: issuerInfo.email,
+          password: issuerInfo.password,
+          title: issuerInfo.title,
+          requiredVC: [issuerInfo.requiredVC],
+          desc: issuerInfo.desc,
+        },
+        withCredentials: true,
+      });
+
+      if (res.status === 200) {
+        message.info(res.data);
+        navigate("/");
+      }
     }
   };
   return (

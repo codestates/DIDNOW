@@ -2,6 +2,7 @@ import "./style/verifierSignUp.css";
 import { Row, Col, message } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const VerifierSignUp = () => {
   useEffect(() => {});
@@ -19,10 +20,23 @@ const VerifierSignUp = () => {
     verifierInfo[e.target.id] = e.target.value;
     setVerifierInfo(verifierInfo);
   };
-  const validate = () => {
+  const validate = async () => {
     if (isCorrect === true) {
-      message.info("회원 가입 완료!");
-      navigate("/");
+      let res = await axios({
+        url: `http://localhost:9999/api/v1/auth/register-verifier`,
+        method: "POST",
+        data: {
+          email: verifierInfo.email,
+          password: verifierInfo.password,
+          title: verifierInfo.title,
+        },
+        withCredentials: true,
+      });
+
+      if (res.status === 200) {
+        message.info(res.data);
+        navigate("/");
+      }
     }
   };
   return (
