@@ -1,17 +1,24 @@
 import { Breadcrumb, Row, Col, Radio } from "antd";
 import { useState, useEffect } from "react";
+import axios from "axios";
 import "./style/issuerissue.css";
 
-const CompanyIssue = () => {
+const CompanyIssue = ({ user }) => {
+  console.log(user);
   const [userList, setUserList] = useState([
     {
       id: 1,
       name: "",
+      email: "",
       birthdate: "",
-      code: "",
-      file: "",
+      certificateType: "",
+      certificateDate: "",
+      nationality: "",
+      address: "",
+      isAdult: "",
     },
   ]);
+  const [title, setTitle] = useState("");
 
   const addUser = () => {
     setUserList([
@@ -19,24 +26,57 @@ const CompanyIssue = () => {
       {
         id: userList[userList.length - 1].id + 1,
         name: "",
+        email: "",
         birthdate: "",
-        code: "",
-        file: "",
+        certificateType: "",
+        certificateDate: "",
+        nationality: "",
+        address: "",
+        isAdult: "",
       },
     ]);
   };
 
-  const removeUser = (e) => {
-    const id = e.target.id;
-    const arr = userList.filter((el) => {
-      console.log(el.id);
-      console.log(id);
-      return el.id !== id;
-    });
-    console.log(arr);
-    setUserList([...arr]);
+  const onchange = (e) => {
+    userList[e.target.name][e.target.id] = e.target.value;
+    
+    setUserList(userList);
   };
 
+  const registerVC = async () => {
+    console.log(userList[0]);
+    const res = await axios({
+      url: `http://localhost:9999/api/v1/user/issuer-user/${user._id}`,
+      method: "POST",
+      data: {
+        cr_name: userList[0].name,
+        cr_email: userList[0].email,
+        cr_birthDate: userList[0].birthdate,
+        cr_certificateType: userList[0].certificateType,
+        cr_certificateDate: userList[0].certificateDate,
+        cr_Nationality: userList[0].nationality,
+        cr_address: userList[0].address,
+        cr_isAdult: true,
+      },
+      withCredentials: true,
+    });
+    if (res.status === 200) {
+      console.log("good");
+    }
+  };
+  // const removeUser = (e) => {
+  //   const id = e.target.id;
+  //   const arr = userList.filter((el) => {
+  //     console.log(el.id);
+  //     console.log(id);
+  //     return el.id !== id;
+  //   });
+  //   console.log(arr);
+  //   setUserList([...arr]);
+  // };
+  const titleChange = (e) => {
+    setTitle(e.target.value);
+  };
   useEffect(() => {});
   return (
     <div className="issuerissue">
@@ -61,6 +101,8 @@ const CompanyIssue = () => {
                   className="issuerissue--input"
                   type="text"
                   placeholder="e.g) BEB-05기-수료내역서"
+                  id="vcTitle"
+                  onChange={titleChange}
                 />
               </Col>
               <Col span={2}></Col>
@@ -131,12 +173,12 @@ const CompanyIssue = () => {
             <hr />
             <Row>
               <Col span={3}>이름</Col>
+              <Col span={3}>이메일</Col>
               <Col span={3}>생년월일</Col>
               <Col span={3}>인증서 종류</Col>
               <Col span={3}>인증일자</Col>
               <Col span={3}>기관?</Col>
               <Col span={3}>주소</Col>
-              <Col span={3}>성인여부</Col>
               <Col span={3}>
                 <button onClick={addUser}>+</button>
               </Col>
@@ -145,22 +187,68 @@ const CompanyIssue = () => {
               return (
                 <Row key={idx}>
                   <Col span={3}>
-                    <input type="text" />
-                  </Col>
-                  <Col span={4}>
-                    <input type="text" />
-                  </Col>
-                  <Col span={6}>
-                    <input type="text" />
-                  </Col>
-                  <Col span={8}>
-                    {e.file}
-                    <button>파일추가</button>
+                    <input
+                      type="text"
+                      onChange={onchange}
+                      id="name"
+                      name={idx}
+                    />
                   </Col>
                   <Col span={3}>
-                    <button id={e.id} onClick={removeUser}>
-                      -
-                    </button>
+                    <input
+                      type="text"
+                      onChange={onchange}
+                      id="email"
+                      name={idx}
+                    />
+                  </Col>
+                  <Col span={3}>
+                    <input
+                      type="text"
+                      onChange={onchange}
+                      id="birthDate"
+                      name={idx}
+                    />
+                  </Col>
+                  <Col span={3}>
+                    <input
+                      type="text"
+                      onChange={onchange}
+                      id="certificateType"
+                      name={idx}
+                    />
+                  </Col>
+                  <Col span={3}>
+                    <input
+                      type="text"
+                      onChange={onchange}
+                      id="certificateDate"
+                      name={idx}
+                    />
+                  </Col>
+                  <Col span={3}>
+                    <input
+                      type="text"
+                      onChange={onchange}
+                      id="nationality"
+                      name={idx}
+                    />
+                  </Col>
+                  <Col span={3}>
+                    <input
+                      type="text"
+                      onChange={onchange}
+                      id="address"
+                      name={idx}
+                    />
+                  </Col>
+                  <Col span={3}>
+                    <input
+                      type="text"
+                      onChange={onchange}
+                      id="isAdult"
+                      name={idx}
+                    />
                   </Col>
                 </Row>
               );
@@ -168,7 +256,9 @@ const CompanyIssue = () => {
             <hr />
             <Row className="issuerissue--regist--container">
               <Col span={2} offset={11}>
-                <button className="issuerissue--regist">등록 완료</button>
+                <button className="issuerissue--regist" onClick={registerVC}>
+                  등록 완료
+                </button>
               </Col>
             </Row>
           </Col>

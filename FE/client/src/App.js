@@ -18,7 +18,8 @@ import IssuerIssue from "./page/issuerIssue";
 
 const { Header, Content, Footer } = Layout;
 function App() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
+  useEffect(() => {});
   return (
     <BrowserRouter>
       <div className="App">
@@ -29,13 +30,16 @@ function App() {
           <Content>
             <Routes>
               <Route exact path="/" element={<Home />} />
-              <Route path="/signin" element={<SignIn />} />
+              <Route path="/signin" element={<SignIn setUser={setUser} />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/holdermanage" element={<HolderManage />} />
               <Route path="/holderissue" element={<HolderIssue />} />
               <Route path="/holdersubmit" element={<HolderSubmit />} />
               <Route path="/issuermanage" element={<IssuerManage />} />
-              <Route path="/issuerissue" element={<IssuerIssue />} />
+              <Route
+                path="/issuerissue"
+                element={<IssuerIssue user={user.data} />}
+              />
             </Routes>
             <div style={{ height: "50px", background: "white" }}></div>
           </Content>

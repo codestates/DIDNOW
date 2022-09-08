@@ -5,7 +5,7 @@ import signInImage from "../img/signin.jpg";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const SignIn = () => {
+const SignIn = ({ setUser }) => {
   useEffect(() => {});
   const navigate = useNavigate();
   const [type, setType] = useState("holder");
@@ -29,7 +29,13 @@ const SignIn = () => {
       },
       withCredentials: true,
     });
-    let acc = await axios({});
+
+    let userObj = await axios({
+      url: `http://localhost:9999/api/v1/auth/accesstoken`,
+      method: "GET",
+      withCredentials: true,
+    });
+    setUser(userObj);
 
     if (res.status === 200) {
       message.info(res.data);
