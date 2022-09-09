@@ -50,17 +50,17 @@ const Nav = ({ type, setType, user }) => {
       <Menu>
         <Menu.Item key={1}>정보 수정</Menu.Item>
         <SubMenu key={2} title="내 지갑">
-          <Menu.Item key={1}>
+          <Menu.Item key={3}>
             <Link to="/holdermanage">인증서 관리</Link>
           </Menu.Item>
-          <Menu.Item key={2}>
+          <Menu.Item key={4}>
             <Link to="/holderissue">인증서 등록</Link>
           </Menu.Item>
-          <Menu.Item key={3}>
+          <Menu.Item key={5}>
             <Link to="/holdersubmit">인증서 제출</Link>
           </Menu.Item>
         </SubMenu>
-        <Menu.Item onClick={logout} className="font--red" key={3}>
+        <Menu.Item onClick={logout} className="font--red" key={6}>
           로그아웃
         </Menu.Item>
       </Menu>
@@ -70,17 +70,17 @@ const Nav = ({ type, setType, user }) => {
       <Menu>
         <Menu.Item key={1}>내 정보 수정</Menu.Item>
         <SubMenu key={2} title="인증서">
-          <Menu.Item key={1}>
+          <Menu.Item key={3}>
             <Link to="/issuerissue">인증서 관리</Link>
           </Menu.Item>
-          <Menu.Item key={2}>
+          <Menu.Item key={4}>
             <Link to="/issuersubmit">제출된 인증서 목록</Link>
           </Menu.Item>
-          <Menu.Item key={3}>
+          <Menu.Item key={5}>
             <Link to="/issuermanage">인증서 발급통계</Link>
           </Menu.Item>
         </SubMenu>
-        <Menu.Item onClick={logout} key={3} className="font--red">
+        <Menu.Item onClick={logout} key={6} className="font--red">
           로그아웃
         </Menu.Item>
       </Menu>
@@ -90,17 +90,17 @@ const Nav = ({ type, setType, user }) => {
       <Menu>
         <Menu.Item key={1}>내 정보 수정</Menu.Item>
         <SubMenu title="내 지갑" key={2}>
-          <Menu.Item key={1}>
+          <Menu.Item key={2}>
             <Link to="/issuerissue">인증서 관리</Link>
           </Menu.Item>
-          <Menu.Item key={2}>
+          <Menu.Item key={3}>
             <Link to="/issuersubmit">제출된 인증서 목록</Link>
           </Menu.Item>
-          <Menu.Item key={3}>
+          <Menu.Item key={4}>
             <Link to="/issuermanage">인증서 발급통계</Link>
           </Menu.Item>
         </SubMenu>
-        <Menu.Item onClick={logout} key={3}>
+        <Menu.Item onClick={logout} key={5}>
           로그아웃
         </Menu.Item>
       </Menu>
