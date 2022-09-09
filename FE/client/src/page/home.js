@@ -30,7 +30,7 @@ const Home = () => {
                 style={{ color: "black", textDecoration: "underline" }}
                 to="/signin"
               >
-                {"📝 내 인증서 관리하기"}
+                {"📝 Get Start DID NOW!"}
               </Link>
             </li>
           </ul>

@@ -9,18 +9,18 @@
 }
 
 .main--title {
-  font-size: 50px;
+  font-size: 3rem;
   font-weight: 900;
   margin: 0 0 10px 0;
 }
 
 .main--sub--title {
-  font-size: 30px;
+  font-size: 1.6rem;
   font-weight: 500;
 }
 
 .main--picture {
-  width: 700px;
+  width: 100%;
   border-radius: 10px;
   box-shadow: 2px 2px 5px #777777;
 }
