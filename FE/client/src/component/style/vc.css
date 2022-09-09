@@ -18,6 +18,13 @@
   -o-transform: scale(1.1); /* Opera */
 }
 
+.vc--selected {
+  border: 4px solid transparent;
+  background: linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(90deg, rgba(13, 108, 201, 1) 0%, rgba(22, 178, 166, 1) 100%)
+      border-box;
+}
+
 .vc--title {
   font-size: 1.2rem;
   font-weight: 700;
@@ -41,8 +48,8 @@
 }
 
 .vc--date {
-  font-size: 1rem;
-  margin: 40px 0 0 0;
+  font-size: 0.8rem;
+  margin: 50px 0 0 0;
 }
 
 .vc--action {

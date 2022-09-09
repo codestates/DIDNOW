@@ -1,11 +1,9 @@
 import "./style/vc.css";
 import logo from "../img/didnow-icon.png";
-import { Link } from "react-router-dom";
 import { Row, Col, Tooltip } from "antd";
 import {
   SafetyOutlined,
   FilePdfOutlined,
-  UploadOutlined,
   DownloadOutlined,
   StopOutlined,
 } from "@ant-design/icons";
@@ -44,25 +42,18 @@ const Vc = ({ data, selectedHandle, idx }) => {
         </div>
         <div className="vc--action">
           <Row style={{ textAlign: "center" }}>
-            <Col span={6}>
+            <Col span={8}>
               <Tooltip placement="top" title={"미리보기"}>
                 <FilePdfOutlined />
               </Tooltip>
             </Col>
-            <Col span={6}>
+            <Col span={8}>
               <Tooltip placement="top" title={"PDF 다운로드"}>
                 <DownloadOutlined />
               </Tooltip>
             </Col>
-            <Col span={6}>
-              <Tooltip placement="top" title={"제출하기"}>
-                <Link to="/usersubmit">
-                  <UploadOutlined />
-                </Link>
-              </Tooltip>
-            </Col>
             <Tooltip placement="top" title={"삭제하기"}>
-              <Col span={6}>
+              <Col span={8}>
                 <StopOutlined />
               </Col>
             </Tooltip>
