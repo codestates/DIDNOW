@@ -11,7 +11,11 @@ const SingUpChoice = ({ way, setWay }) => {
   };
   return (
     <>
-      <div className="signup--title">회원가입</div>
+      <div className="signup--title">🎉 회원가입</div>
+      <div className="signup--description">
+        <div>안녕하세요 편리한 인증서 서비스 DIDNOW 입니다.</div>
+        DIDNOW에 가입하여 편리한 인증서 관리 서비스를 이용해보세요.
+      </div>
       <Row gutter={70}>
         <Col span={12}>
           <div
