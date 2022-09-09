@@ -1,5 +1,5 @@
 import { Row, Col, message, Radio } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./style/signin.css";
 import signInImage from "../img/signin.jpg";
 import { useState, useEffect } from "react";
@@ -106,6 +106,7 @@ const SignIn = ({ setUser, type, setType }) => {
                 onChange={onchange}
                 id="password"
               />
+              <Link to="/signup">회원이 아니신가요?</Link>
               <button className="signin--signinbtn" onClick={signin}>
                 로그인
               </button>
