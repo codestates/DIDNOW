@@ -15,36 +15,54 @@ import HolderIssue from "./page/holderIssue";
 import HolderSubmit from "./page/holderSubmit";
 import IssuerManage from "./page/issuerManage";
 import IssuerIssue from "./page/issuerIssue";
-import Issuers from './page/Issuers';
+import Issuers from "./page/Issuers";
 import IssuerListModal from "./component/IssuerListModal";
 
 const { Header, Content, Footer } = Layout;
 function App() {
   const [user, setUser] = useState({});
+  const [type, setType] = useState("");
   useEffect(() => {});
   return (
     <BrowserRouter>
       <div className="App">
         <Layout>
           <Header style={{ background: "white" }}>
-            <Nav />
+            <Nav type={type} setType={setType} user={user} />
           </Header>
           <Content>
             <Routes>
               <Route exact path="/" element={<Home />} />
-              <Route path="/signin" element={<SignIn setUser={setUser} />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/holdermanage" element={<HolderManage />} />
-              <Route path="/holderissue" element={<HolderIssue />} />
-              <Route path="/holdersubmit" element={<HolderSubmit />} />
-              <Route path="/issuermanage" element={<IssuerManage />} />
-              <Route path="/holder" >
-                <Route path="request-vc" element={<Issuers />} />
-                <Route path="modal" element={<IssuerListModal />} />
+              <Route
+                path="/signin"
+                element={
+                  <SignIn setUser={setUser} setType={setType} type={type} />
+                }
+              />
+              <Route path="/signup" element={<SignUp type={type} />} />
+              <Route
+                path="/holdermanage"
+                element={<HolderManage type={type} />}
+              />
+              <Route
+                path="/holderissue"
+                element={<HolderIssue type={type} />}
+              />
+              <Route
+                path="/holdersubmit"
+                element={<HolderSubmit type={type} />}
+              />
+              <Route
+                path="/issuermanage"
+                element={<IssuerManage type={type} />}
+              />
+              <Route path="/holder">
+                <Route path="request-vc" element={<Issuers type={type} />} />
+                <Route path="modal" element={<IssuerListModal type={type} />} />
               </Route>
               <Route
                 path="/issuerissue"
-                element={<IssuerIssue user={user.data} />}
+                element={<IssuerIssue user={user} type={type} />}
               />
             </Routes>
             <div style={{ height: "50px", background: "white" }}></div>
