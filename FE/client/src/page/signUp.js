@@ -8,21 +8,21 @@ import IssuerSignUp from "../component/issuerSignUp";
 import VerifierSignUp from "../component/verifierSignUp";
 
 const SignUp = () => {
-  const [type, setType] = useState("");
+  const [way, setWay] = useState("");
   useEffect(() => {
-    setType("");
+    setWay("");
   }, []);
   useEffect(() => {});
 
-  let renderByType = "";
-  if (type === "" || type === "company") {
-    renderByType = <SingUpChoice type={type} setType={setType} />;
-  } else if (type === "holder") {
-    renderByType = <HolderSignUp />;
-  } else if (type === "issuer") {
-    renderByType = <IssuerSignUp />;
-  } else if (type === "verifier") {
-    renderByType = <VerifierSignUp />;
+  let renderByway = "";
+  if (way === "" || way === "company") {
+    renderByway = <SingUpChoice way={way} setWay={setWay} />;
+  } else if (way === "holder") {
+    renderByway = <HolderSignUp />;
+  } else if (way === "issuer") {
+    renderByway = <IssuerSignUp />;
+  } else if (way === "verifier") {
+    renderByway = <VerifierSignUp />;
   } else {
     <>오류 발생</>;
   }
@@ -39,7 +39,7 @@ const SignUp = () => {
           <div className="signup--right">
             <div className="signup--canvas">
               {/* first choice holder or company(issuer or verifier) */}
-              {renderByType}
+              {renderByway}
             </div>
           </div>
         </Col>
