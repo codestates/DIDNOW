@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./style/issuerissue.css";
 
-const CompanyIssue = ({ user }) => {
-  console.log(user);
+const IssuerIssue = ({ user }) => {
+  const [title, setTitle] = useState("");
   const [userList, setUserList] = useState([
     {
       id: 1,
@@ -18,8 +18,6 @@ const CompanyIssue = ({ user }) => {
       isAdult: "",
     },
   ]);
-  const [title, setTitle] = useState("");
-
   const addUser = () => {
     setUserList([
       ...userList,
@@ -39,7 +37,7 @@ const CompanyIssue = ({ user }) => {
 
   const onchange = (e) => {
     userList[e.target.name][e.target.id] = e.target.value;
-    
+
     setUserList(userList);
   };
 
@@ -82,7 +80,7 @@ const CompanyIssue = ({ user }) => {
     <div className="issuerissue">
       <Breadcrumb className="issuerissue--breadcrumb" separator=">">
         <Breadcrumb.Item href="/">홈</Breadcrumb.Item>
-        <Breadcrumb.Item href="/issuerissue">인증서 발급</Breadcrumb.Item>
+        <Breadcrumb.Item href="/issuerissue">인증서 관리</Breadcrumb.Item>
       </Breadcrumb>
       <div className="issuerissue--description">{`인증서 발급 대상자에게 인증서를 발급할 수 있습니다.`}</div>
       <div className="issuerissue--description">{`※ 인증서 발급 완료 시 발급 대상자에게 자동알림이 가며, 커리어 회원이 아닌 경우 발송이 원활하지 않을 수 있습니다.`}</div>
@@ -268,4 +266,4 @@ const CompanyIssue = ({ user }) => {
   );
 };
 
-export default CompanyIssue;
+export default IssuerIssue;
