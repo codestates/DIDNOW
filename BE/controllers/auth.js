@@ -2,7 +2,9 @@ const Issuer = require("../models/Issuer");
 const Holder = require("../models/Holder");
 const Verifier = require("../models/Verifier");
 const KeyPair = require("../models/KeyPairs");
+const Wallet = require("../models/Wallet");
 const { genKey } = require("../utils/keyPairGenerator");
+const { genWallet, addService }  = require("../utils/UseCaver")
 
 const bcrypt = require("bcrypt");
 const createError = require("../utils/Error");
@@ -36,10 +38,26 @@ const registerIssuer = async (req, res, next) => {
       privateKey: privateKey,
     });
 
+    //Issuer의 지갑 생성
+    const {WalletPublicKey,WalletPrivateKey} = genWallet();
+
+    //Issuer의 지갑 저장
+    const newWallet = new Wallet({
+      ownerOf: newIssuer._id,
+      publicKey: WalletPublicKey,
+      privateKey: WalletPrivateKey,
+    });
+
+    //DID Docuement에 publicKey 등록
+    const did = "did:klay:"+WalletPublicKey.slice(2);
+    addService(did,"registeredId",publicKey,WalletPrivateKey);
+
     // 새로운 Issuer 저장
     await newIssuer.save();
     // KeyPair 저장
     await newKeyPairs.save();
+    // Wallet 저장
+    await newWallet.save();
 
     res.status(200).json("Issuer가 등록되었습니다.");
   } catch (error) {
@@ -70,10 +88,26 @@ const registerHolder = async (req, res, next) => {
       privateKey: privateKey,
     });
 
+    //Holder의 지갑 생성
+    const {WalletPublicKey,WalletPrivateKey} = genWallet();
+
+    //Holder의 지갑 저장
+    const newWallet = new Wallet({
+      ownerOf: newHolder._id,
+      publicKey: WalletPublicKey,
+      privateKey: WalletPrivateKey,
+    });
+
+    //DID Docuement에 publicKey 등록
+    const did = "did:klay:"+WalletPublicKey.slice(2);
+    addService(did,"registeredId",publicKey,WalletPrivateKey);
+
     // 새로운 Holder 저장
     await newHolder.save();
     // KeyPair 저장
     await newKeyPairs.save();
+    // wallet 저장
+    await newWallet.save();
 
     res.status(200).json("Holder가 등록되었습니다.");
   } catch (error) {

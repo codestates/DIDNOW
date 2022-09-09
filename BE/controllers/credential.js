@@ -6,6 +6,7 @@ const VerifyList = require("../models/VerifyList");
 const HolderVC_List = require('../models/HolderVC_List')
 const createError = require("../utils/Error");
 const jwt = require('jsonwebtoken')
+const { getPemPubKey } = require("../utils/UseCaver");
 
 /*
     @ dev : Request VC Publish FROM Holder to Issuer
@@ -57,6 +58,7 @@ const requestVC = async (req, res, next) => {
       // 비밀키로 암호화 과정
 
       // 컨트랙트에 pubKey // updateDIDDocument(pubKey).send({form:Issuerwallet});
+      // 이 부분 이제 없어도 되는 걸로 인지.
 
       // IPFS에 VC 저장
       const signedVC = jwt.sign(VC, req.body.password);
@@ -214,13 +216,48 @@ const closeVerifyReqest = async (req, res, next) => {
       // 본인에게 요청된 VerifyList만 인증가능
       if(verifyList.verifyOwner === req.user.id){
 
-        // 인증 로직
-
+        /************/
+        //  인증 로직 //
+        /************/
         // 1. DID Document에서 PubKey 2개 가져옴
         // 2. jwt.verify(vcJWT) 2번 실행
         // 3. 사용자 정보와 VC내의 정보 비교 검증
         // - body 이름 / birthDate / 
         // 4. 결과에 따라 응답
+        /*********************************/
+
+        // DB Wallet테이블에서 홀더와 이슈어의 지갑주소 불러옴
+        const holderAddr = "";
+        const issuerAddr = "";
+
+        // 지갑주소를 did Id로 치환
+        const holderDid = "did:klay:"+holderAddr.slice(2);
+        const issuerDid = "did:klay:"+issuerAddr.slice(2);
+
+        // didDocument에서 복호화를 위한 퍼블릭 키 호출
+        const holderPubKey = getPemPubKey(holderDid);
+        const issuerPubKey = getPemPubKey(issuerDid);
+        
+        // holder pubKey로 jwt.verify 실행
+        let result;
+        jwt.verify(verifyList, holderPubKey, (err, data)=>{
+            if(err) return next(createError(403, "Invalid Token!"));
+
+            result = data;
+            next();
+        })
+
+        //issuer pubKey로 jwt.verify 실행
+        jwt.verify(result, issuerPubKey, (err, data)=>{
+            if(err) return next(createError(403, "Invalid Token!"));
+
+            result = data;
+            next();
+        })
+
+        // 사용자 정보와 VC내의 정보 비교 검증
+        
+        // 결과에 따라 응답
 
         res.status(200).json(JSON.parse(verifyList.vp));
       }else{

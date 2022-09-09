@@ -9,36 +9,38 @@ let keyring;
 async function testFunction() {
   keyring = caver.wallet.keyring.generate();
   caver.wallet.add(keyring);
-  console.log(keyring);
+  const res = {
+    publicKey: keyring._address,
+    privateKey: keyring._key._privateKey
+  }
+  console.log(res);
 }
-// testFunction();
+//testFunction();
 
-async function kaikasFunction() {
-  const keyringFromPrivateKey = caver.wallet.keyring.createFromPrivateKey(
-    process.env.PRIVATE_KEY
-  );
-  caver.wallet.add(keyringFromPrivateKey);
-  keyring = keyringFromPrivateKey;
-}
-kaikasFunction();
+
+// const keyringFromPrivateKey = caver.wallet.keyring.createFromPrivateKey(
+//   process.env.PRIVATE_KEY
+// );
+// caver.wallet.add(keyringFromPrivateKey);
+// keyring = keyringFromPrivateKey;
+
 
 async function contractFunction() {
   const contractInstance = new caver.contract(
     abi,
-    "0xBA840C124072381fDdE8211ac0ed771CAc3dCc2b"
+    "0xf95BA0302Bc3a97A89F8d2532C08888d08e2dc80"
   );
   // console.log(contractInstance);
   // console.log(contractInstance.options.address);
   await contractInstance.methods
     .addService(
-      "did:klay:7423de10c75b1d4d1f30a4d81386e3aaf22584f3",
-      "serviceId3",
-      "pemPubKey3",
-      "0x7423de10c75b1d4d1f30a4d81386e3aaf22584f3"
+      "did:klay:7423de10c75b1d4d1f30a4d81386e3aaf22584f8",
+      "serviceId2212",
+      "pemPubKey2122"
     )
     .send({
       from: keyring._address,
-      gas: "7500000",
+      gas: "75000000",
     });
   //   const temp = await contractInstance.methods.retrieve().call();
   //   console.log(temp);
@@ -47,13 +49,18 @@ async function contractFunction() {
 async function test(){
     const contractInstance = new caver.contract(
         abi,
-        "0xBA840C124072381fDdE8211ac0ed771CAc3dCc2b"
+        "0xf95BA0302Bc3a97A89F8d2532C08888d08e2dc80"
       );
     const temp = await contractInstance.methods
-    .getDocument("did:klay:7423de10c75b1d4d1f30a4d81386e3aaf22584f8").call();
-    console.log(temp);
+    .getAllService("did:klay:7423de10c75b1d4d1f30a4d81386e3aaf22584f8").call();
+
+    const res = temp.reduce((res,cur,idx)=>{
+      if(cur[0]=='registeredId'){
+        return cur[1];
+      }
+    },'')
+
+    console.log(res)
 };
-
-contractFunction();
-
-// test();
+//contractFunction();
+test();
