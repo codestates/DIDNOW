@@ -5,9 +5,9 @@ import {
   SafetyOutlined,
   ShopOutlined,
 } from "@ant-design/icons";
-const SingUpChoice = ({ type, setType }) => {
+const SingUpChoice = ({ way, setWay }) => {
   const choice = (e) => {
-    setType(e.currentTarget.id);
+    setWay(e.currentTarget.id);
   };
   return (
     <>
@@ -17,11 +17,11 @@ const SingUpChoice = ({ type, setType }) => {
           <div
             className="signup--choicetype--first"
             onClick={choice}
-            id={type === "" ? "holder" : "issuer"}
+            id={way === "" ? "holder" : "issuer"}
           >
-            {type === "" ? <UserOutlined /> : <SafetyOutlined />}
+            {way === "" ? <UserOutlined /> : <SafetyOutlined />}
             <div className="signup--choicetype--title">
-              {type === "" ? "개인회원" : "발행자"} 가입하기
+              {way === "" ? "개인회원" : "발행자"} 가입하기
             </div>
           </div>
         </Col>
@@ -29,11 +29,11 @@ const SingUpChoice = ({ type, setType }) => {
           <div
             className="signup--choicetype--first"
             onClick={choice}
-            id={type === "" ? "company" : "verifier"}
+            id={way === "" ? "company" : "verifier"}
           >
-            {type === "" ? <BankOutlined /> : <ShopOutlined />}
+            {way === "" ? <BankOutlined /> : <ShopOutlined />}
             <div className="signup--choicetype--title">
-              {type === "" ? "기업회원" : "검증자"} 가입하기
+              {way === "" ? "기업회원" : "검증자"} 가입하기
             </div>
           </div>
         </Col>
