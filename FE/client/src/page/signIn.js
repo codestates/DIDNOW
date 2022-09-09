@@ -1,45 +1,66 @@
-import { Row, Col, message } from "antd";
+import { Row, Col, message, Radio } from "antd";
 import { useNavigate } from "react-router-dom";
 import "./style/signin.css";
 import signInImage from "../img/signin.jpg";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const SignIn = ({ setUser }) => {
-  useEffect(() => {});
+const SignIn = ({ setUser, type, setType }) => {
   const navigate = useNavigate();
-  const [type, setType] = useState("holder");
+  const [way, setWay] = useState("holder");
   const [signinObj, setSigninObj] = useState({
     email: "",
     password: "",
   });
-  // signin axios
-  // plz api endpoint
+  useEffect(() => {
+    if (type !== "") {
+      navigate("/");
+    }
+  });
   const onchange = (e) => {
     signinObj[e.target.id] = e.target.value;
     setSigninObj(signinObj);
   };
+
+  const changeWay = (e) => {
+    setWay(e.target.value);
+  };
+
+  const messageInfo = (msg) => {
+    message.info(msg);
+  };
+
+  const messageError = (msg) => {
+    message.error(msg);
+  };
+
   const signin = async () => {
-    let res = await axios({
-      url: `http://localhost:9999/api/v1/auth/login-${type}`,
-      method: "POST",
-      data: {
-        email: signinObj.email,
-        password: signinObj.password,
-      },
-      withCredentials: true,
-    });
+    try {
+      let res = await axios({
+        url: `http://localhost:9999/api/v1/auth/login-${way}`,
+        method: "POST",
+        data: {
+          email: signinObj.email,
+          password: signinObj.password,
+        },
+        withCredentials: true,
+      });
 
-    let userObj = await axios({
-      url: `http://localhost:9999/api/v1/auth/accesstoken`,
-      method: "GET",
-      withCredentials: true,
-    });
-    setUser(userObj);
+      let userObj = await axios({
+        url: `http://localhost:9999/api/v1/auth/accesstoken`,
+        method: "GET",
+        withCredentials: true,
+      });
 
-    if (res.status === 200) {
-      message.info(res.data);
-      navigate("/");
+      if (res.status === 200) {
+        messageInfo(res.data);
+        console.log(userObj.data);
+        setUser(userObj.data);
+        setType(way);
+        navigate("/");
+      }
+    } catch (error) {
+      messageError("로그인 실패!!");
     }
   };
   return (
@@ -54,37 +75,23 @@ const SignIn = ({ setUser }) => {
           <div className="signin--right">
             <div className="signin--canvas">
               <span className="signin--title">🔐 로그인</span>
-              <Row>
-                <Col
-                  span={8}
-                  onClick={(e) => {
-                    setType(e.target.id);
-                  }}
-                  style={{cursor : "pointer"}}
-                  id="holder"
-                >
-                  holder
-                </Col>
-                <Col
-                  span={8}
-                  onClick={(e) => {
-                    setType(e.target.id);
-                  }}
-                  id="issuer"
-                >
-                  {" "}
-                  issuer
-                </Col>
-                <Col
-                  span={8}
-                  onClick={(e) => {
-                    setType(e.target.id);
-                  }}
-                  id="verifier"
-                >
-                  verifier
-                </Col>
-              </Row>
+              <Radio.Group
+                defaultValue="holder"
+                buttonStyle="solid"
+                size="large"
+              >
+                <Row>
+                  <Radio.Button value="holder" onClick={changeWay}>
+                    Holder
+                  </Radio.Button>
+                  <Radio.Button value="issuer" onClick={changeWay}>
+                    Issuer
+                  </Radio.Button>
+                  <Radio.Button value="verifier" onClick={changeWay}>
+                    Verifier
+                  </Radio.Button>
+                </Row>
+              </Radio.Group>
               <input
                 type="text"
                 className="signin--id"

@@ -1,6 +1,6 @@
 .signin {
   padding: 0;
-  height: 85vh;
+  height: 100vh;
 }
 
 .signin--left {
@@ -18,7 +18,7 @@
 
 .signin--image {
   width: 100%;
-  height: 600px;
+  height: 500px;
   border-top-left-radius: 50px;
   border-bottom-left-radius: 50px;
   box-shadow: 2px 2px 5px #777777;
@@ -34,7 +34,7 @@
   border-top-right-radius: 50px;
   border-bottom-right-radius: 50px;
   box-shadow: 2px 2px 5px #777777;
-  padding: 10%;
+  padding: 5%;
 }
 
 .signin--title {
@@ -57,10 +57,25 @@
   border-right: 0px;
   height: 3rem;
   text-indent: 10px;
-  color: #555555;
   font-size: 1.2rem;
   font-weight: 700;
-  margin: 0 0 40px 0;
+  margin: 20px 0 20px 0;
+}
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #555555;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #555555;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #555555;
 }
 
 .signin--signinbtn {
@@ -84,8 +99,50 @@
   );
   color: white;
   cursor: pointer;
-  transform: scale(1.2); /*  default */
-  -webkit-transform: scale(1.2); /*  크롬 */
-  -moz-transform: scale(1.2); /* FireFox */
-  -o-transform: scale(1.2); /* Opera */
+}
+
+.signin--way {
+  background-color: #555555;
+}
+
+.signin--selected {
+  border: 2px solid transparent;
+  background: linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(90deg, rgba(13, 108, 201, 1) 0%, rgba(22, 178, 166, 1) 100%)
+      border-box;
+}
+.signin .ant-radio-button-wrapper {
+  width: 33%;
+  display: flex;
+  justify-content: center;
+}
+
+.signin .ant-radio-button-wrapper span {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.signin .ant-radio-button-checked {
+  background: linear-gradient(
+    90deg,
+    rgba(13, 108, 201, 1) 0%,
+    rgba(22, 178, 166, 1) 100%
+  );
+  border-color: linear-gradient(
+    90deg,
+    rgba(13, 108, 201, 1) 0%,
+    rgba(22, 178, 166, 1) 100%
+  );
+}
+
+.signin .ant-radio-button-wrapper-checked {
+  background: linear-gradient(
+    90deg,
+    rgba(13, 108, 201, 1) 0%,
+    rgba(22, 178, 166, 1) 100%
+  );
+  border-color: linear-gradient(
+    90deg,
+    rgba(13, 108, 201, 1) 0%,
+    rgba(22, 178, 166, 1) 100%
+  );
 }
