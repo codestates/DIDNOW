@@ -1,12 +1,18 @@
 import { Row, Col, Breadcrumb, Radio } from "antd";
 import { useLocation } from "react-router-dom";
 import { SafetyOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 import "./style/holderSubmit.css";
 
 const HolderSubmit = () => {
   const location = useLocation();
-  const selected = location.state.selected;
-
+  console.log(location.state);
+  let selected = [];
+  if (location.state) {
+    if (location.state.selected) {
+      selected = [...location.state.selected];
+    }
+  }
   return (
     <div className="holdersubmit">
       <Breadcrumb className="holdermanage--breadcrumb" separator=">">
@@ -28,19 +34,34 @@ const HolderSubmit = () => {
             </Col>
           </Row>
           <div className="holdersubmit--vclist">
-            {selected.map((e, idx) => {
-              return (
-                <Row className="holdersubmit--vc">
-                  <Col span={1}>{idx + 1}</Col>
-                  <Col span={6}>{new Date().toLocaleString()}</Col>
-                  <Col span={2}>
-                    <SafetyOutlined />
-                  </Col>
-                  <Col span={9}>[활동증명서] 코드스테이츠 BEB 05기 수료증</Col>
-                  <Col span={6}>코드스테이츠</Col>
-                </Row>
-              );
-            })}
+            {selected.length >= 1 ? (
+              selected.map((e, idx) => {
+                return (
+                  <Row className="holdersubmit--vc">
+                    <Col span={1}>{idx + 1}</Col>
+                    <Col span={6}>{new Date().toLocaleString()}</Col>
+                    <Col span={2}>
+                      <SafetyOutlined />
+                    </Col>
+                    <Col span={9}>
+                      [활동증명서] 코드스테이츠 BEB 05기 수료증
+                    </Col>
+                    <Col span={6}>코드스테이츠</Col>
+                  </Row>
+                );
+              })
+            ) : (
+              <>
+                <div style={{ fontSize: "1.5rem" }}>
+                  선택된 인증서가 없습니다.
+                </div>
+                <Link to="/holdermanage">
+                  <div style={{ fontSize: "1.5rem" }}>
+                    📝 인증서 고르러 가기
+                  </div>
+                </Link>
+              </>
+            )}
             <hr />
             <Row>
               <Col span={3}>제출 타입</Col>
