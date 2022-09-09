@@ -29,21 +29,23 @@ const SignUp = () => {
 
   return (
     <div className="signup">
-      <Row>
-        <Col span={12}>
-          <div className="signup--left">
-            <img src={signUpImage} className="signup--image" alt="" />
-          </div>
-        </Col>
-        <Col span={12}>
-          <div className="signup--right">
-            <div className="signup--canvas">
-              {/* first choice holder or company(issuer or verifier) */}
-              {renderByway}
+      <div className="signup--form">
+        <Row style={{ height: "inherit" }}>
+          <Col span={12} style={{ height: "inherit" }}>
+            <div className="signup--left">
+              <img src={signUpImage} className="signup--image" alt="" />
             </div>
-          </div>
-        </Col>
-      </Row>
+          </Col>
+          <Col span={12}>
+            <div className="signup--right">
+              <div className="signup--canvas">
+                {/* first choice holder or company(issuer or verifier) */}
+                {renderByway}
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </div>
     </div>
   );
 };
