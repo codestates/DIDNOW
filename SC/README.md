@@ -3,8 +3,8 @@
 ## DIDContract
 
 - **contract abi** : [DID_Contract abi](./contracts/abi/DIDContractABI.json)
-- **contract address** : 0x67f136D4F35C981C62c3EEA9c127f0a9d8De8E95
-- **contract scope** : https://baobab.scope.klaytn.com/account/0x67f136D4F35C981C62c3EEA9c127f0a9d8De8E95?tabId=internalTx
+- **contract address** : 0x9BdC1344b8B3773D6d79ed9e254825FE30B217f4
+- **contract scope** : https://baobab.scope.klaytn.com/account/0x9BdC1344b8B3773D6d79ed9e254825FE30B217f4?tabId=internalTx
 - **method**
   |Function Name|Parameter|Description|
   |:--:|:--|:--|
@@ -34,3 +34,9 @@
 ### Eternal Storage Model
 
 ![](./doc/Eternal-Storage.png)
+
+### References
+
+- https://klaytn-tech.medium.com/caver-contract%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EC%97%AC-%EC%88%98%EC%88%98%EB%A3%8C%EB%A5%BC-%EB%8C%80%EB%82%A9%ED%95%B4%EB%B3%B4%EC%9E%90-4c046900c4ed
+- https://github.com/ontology-tech/DID-solidity
+- https://blog.openzeppelin.com/proxy-patterns/
