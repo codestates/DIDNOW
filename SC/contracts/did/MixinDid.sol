@@ -43,31 +43,6 @@ contract DIDContract is MixinDidStorage, IDid {
     }
 
     /**
-     * @dev add a new public key to did public key list only, the key doesn't enter authentication list
-     * @param did did
-     * @param newPubKey new public key
-     * @param controller controller of newPubKey, they are some did
-     */
-    function addKey(
-        string memory did,
-        bytes memory newPubKey,
-        string[] memory controller
-    ) public {
-        bytes memory singer = BytesUtils.getSinger(did);
-        did = checkWhenAddKey(did, singer, controller);
-        addNewPubKey(
-            did,
-            newPubKey,
-            address(0),
-            "EcdsaSecp256k1VerificationKey2019",
-            controller,
-            true,
-            false
-        );
-        emit AddKey(did, newPubKey, controller);
-    }
-
-    /**
      * @dev add a new public key to authentication list only, doesn't enter public key list
      * @param did did
      * @param pubKey the new public key
@@ -123,87 +98,11 @@ contract DIDContract is MixinDidStorage, IDid {
         updateTime(did);
     }
 
-    /**
-     * @dev add one key existed in publicKey list to authentication list
-     * @param did did
-     * @param pubKey public key
-     */
-    function setAuthKey(string memory did, bytes memory pubKey) public {
-        bytes memory singer = BytesUtils.getSinger(did);
-        did = checkWhenOperate(did, singer);
-        authPubKey(did, pubKey, address(0));
-        emit SetAuthKey(did, pubKey);
-    }
-
-    function authPubKey(
-        string memory did,
-        bytes memory pubKey,
-        address addr
-    ) internal {
-        string memory pubKeyListKey = KeyUtils.genPubKeyListKey(did);
-        StorageUtils.authPubKey(
-            data[pubKeyListKey],
-            encodePubKeyAndAddr(pubKey, addr),
-            fetchAuthIndex(did)
-        );
-        updateTime(did);
-    }
-
     function fetchAuthIndex(string memory did) internal returns (uint256) {
         uint256 authIndex = didStatus[did].authListLen + 2;
         // this means each auth key index increased 2 every time
         didStatus[did].authListLen = authIndex;
         return authIndex;
-    }
-
-    /**
-     * @dev deactivate one key that existed in public key list
-     * @param did did
-     * @param pubKey public key
-     */
-    function deactivateKey(string memory did, bytes memory pubKey) public {
-        bytes memory singer = BytesUtils.getSinger(did);
-        did = checkWhenOperate(did, singer);
-        deactivatePubKey(did, pubKey, address(0));
-        emit DeactivateKey(did, pubKey);
-    }
-
-    function deactivatePubKey(
-        string memory did,
-        bytes memory pubKey,
-        address addr
-    ) internal {
-        string memory pubKeyListKey = KeyUtils.genPubKeyListKey(did);
-        StorageUtils.deactivatePubKey(
-            data[pubKeyListKey],
-            encodePubKeyAndAddr(pubKey, addr)
-        );
-        updateTime(did);
-    }
-
-    /**
-     * @dev remove one key from authentication list
-     * @param did did
-     * @param pubKey public key
-     */
-    function deactivateAuthKey(string memory did, bytes memory pubKey) public {
-        bytes memory singer = BytesUtils.getSinger(did);
-        did = checkWhenOperate(did, singer);
-        deAuthPubKey(did, pubKey, address(0));
-        emit DeactivateAuthKey(did, pubKey);
-    }
-
-    function deAuthPubKey(
-        string memory did,
-        bytes memory pubKey,
-        address addr
-    ) internal {
-        string memory pubKeyListKey = KeyUtils.genPubKeyListKey(did);
-        StorageUtils.deAuthPubKey(
-            data[pubKeyListKey],
-            encodePubKeyAndAddr(pubKey, addr)
-        );
-        updateTime(did);
     }
 
     function encodePubKeyAndAddr(bytes memory pubKey, address addr)
@@ -285,18 +184,6 @@ contract DIDContract is MixinDidStorage, IDid {
         emit AddService(did, serviceId, publicKey);
     }
 
-    function dataSize(string memory dataId) public view returns (uint256) {
-        return data[dataId].getSize();
-    }
-
-    function dataValue(string memory dataId, bytes32 key)
-        public
-        view
-        returns (bytes memory)
-    {
-        return data[dataId].getValue(key);
-    }
-
     /**
      * @dev update service
      * @param did did
@@ -360,7 +247,7 @@ contract DIDContract is MixinDidStorage, IDid {
     }
 
     function checkWhenOperate(string memory did, bytes memory singer)
-        public
+        internal
         view
         returns (string memory)
     {
@@ -445,27 +332,6 @@ contract DIDContract is MixinDidStorage, IDid {
     }
 
     /**
-     * @dev query public key list
-     * @param did did
-     */
-    function getAllPubKey(string memory did)
-        public
-        view
-        returns (StorageUtils.PublicKey[] memory)
-    {
-        did = BytesUtils.toLower(did);
-        require(!didStatus[did].deactivated, "did deactivated");
-        string memory pubKeyListKey = KeyUtils.genPubKeyListKey(did);
-        IterableMapping.itmap storage pubKeyList = data[pubKeyListKey];
-        return
-            StorageUtils.getAllPubKey(
-                did,
-                "EcdsaSecp256k1RecoveryMethod2020",
-                pubKeyList
-            );
-    }
-
-    /**
      * @dev query authentication list
      * @param did did
      */
@@ -545,7 +411,6 @@ contract DIDContract is MixinDidStorage, IDid {
     {
         did = BytesUtils.toLower(did);
         string[] memory context = getContext(did);
-        StorageUtils.PublicKey[] memory publicKey = getAllPubKey(did);
         StorageUtils.PublicKey[] memory authentication = getAllAuthKey(did);
         StorageUtils.Service[] memory service = getAllService(did);
         uint256 updated = getUpdatedTime(did);
@@ -554,7 +419,6 @@ contract DIDContract is MixinDidStorage, IDid {
             StorageUtils.DIDDocument(
                 context,
                 did,
-                publicKey,
                 authentication,
                 service,
                 updated

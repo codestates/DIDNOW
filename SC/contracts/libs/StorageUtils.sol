@@ -362,7 +362,6 @@ library StorageUtils {
     struct DIDDocument {
         string[] context;
         string id;
-        PublicKey[] publicKey;
         PublicKey[] authentication;
         Service[] service;
         uint256 updated;

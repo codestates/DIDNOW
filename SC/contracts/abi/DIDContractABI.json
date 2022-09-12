@@ -38,55 +38,6 @@
 			{
 				"name": "did",
 				"type": "string"
-			}
-		],
-		"name": "getAllPubKey",
-		"outputs": [
-			{
-				"components": [
-					{
-						"name": "id",
-						"type": "string"
-					},
-					{
-						"name": "keyType",
-						"type": "string"
-					},
-					{
-						"name": "controller",
-						"type": "string[]"
-					},
-					{
-						"name": "pubKeyData",
-						"type": "bytes"
-					},
-					{
-						"name": "deactivated",
-						"type": "bool"
-					},
-					{
-						"name": "isPubKey",
-						"type": "bool"
-					},
-					{
-						"name": "authIndex",
-						"type": "uint256"
-					}
-				],
-				"name": "",
-				"type": "tuple[]"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
 			},
 			{
 				"name": "singer",
@@ -98,25 +49,6 @@
 			{
 				"name": "",
 				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "dataId",
-				"type": "string"
-			}
-		],
-		"name": "dataSize",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
 			}
 		],
 		"payable": false,
@@ -260,40 +192,6 @@
 								"type": "uint256"
 							}
 						],
-						"name": "publicKey",
-						"type": "tuple[]"
-					},
-					{
-						"components": [
-							{
-								"name": "id",
-								"type": "string"
-							},
-							{
-								"name": "keyType",
-								"type": "string"
-							},
-							{
-								"name": "controller",
-								"type": "string[]"
-							},
-							{
-								"name": "pubKeyData",
-								"type": "bytes"
-							},
-							{
-								"name": "deactivated",
-								"type": "bool"
-							},
-							{
-								"name": "isPubKey",
-								"type": "bool"
-							},
-							{
-								"name": "authIndex",
-								"type": "uint256"
-							}
-						],
 						"name": "authentication",
 						"type": "tuple[]"
 					},
@@ -344,47 +242,6 @@
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"name": "pubKey",
-				"type": "bytes"
-			}
-		],
-		"name": "setAuthKey",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "dataId",
-				"type": "string"
-			},
-			{
-				"name": "key",
-				"type": "bytes32"
-			}
-		],
-		"name": "dataValue",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bytes"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -526,42 +383,6 @@
 				"type": "string"
 			},
 			{
-				"name": "pubKey",
-				"type": "bytes"
-			}
-		],
-		"name": "deactivateKey",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"name": "pubKey",
-				"type": "bytes"
-			}
-		],
-		"name": "deactivateAuthKey",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			},
-			{
 				"name": "serviceId",
 				"type": "string"
 			}
@@ -602,51 +423,6 @@
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"name": "singer",
-				"type": "bytes"
-			}
-		],
-		"name": "checkWhenOperate",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"name": "newPubKey",
-				"type": "bytes"
-			},
-			{
-				"name": "controller",
-				"type": "string[]"
-			}
-		],
-		"name": "addKey",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -683,80 +459,7 @@
 				"type": "string[]"
 			}
 		],
-		"name": "AddKey",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "pubKey",
-				"type": "bytes"
-			}
-		],
-		"name": "DeactivateKey",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "pubKey",
-				"type": "bytes"
-			},
-			{
-				"indexed": false,
-				"name": "controller",
-				"type": "string[]"
-			}
-		],
 		"name": "AddNewAuthKey",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "pubKey",
-				"type": "bytes"
-			}
-		],
-		"name": "SetAuthKey",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "pubKey",
-				"type": "bytes"
-			}
-		],
-		"name": "DeactivateAuthKey",
 		"type": "event"
 	},
 	{

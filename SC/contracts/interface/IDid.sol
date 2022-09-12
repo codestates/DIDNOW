@@ -8,18 +8,6 @@ interface IDid {
 
     function deactivateID(string calldata did) external;
 
-    event AddKey(string did, bytes pubKey, string[] controller);
-
-    function addKey(
-        string calldata did,
-        bytes calldata newPubKey,
-        string[] calldata pubKeyController
-    ) external;
-
-    event DeactivateKey(string did, bytes pubKey);
-
-    function deactivateKey(string calldata did, bytes calldata pubKey) external;
-
     event AddNewAuthKey(string did, bytes pubKey, string[] controller);
 
     function addNewAuthKey(
@@ -27,15 +15,6 @@ interface IDid {
         bytes calldata pubKey,
         string[] calldata controller
     ) external;
-
-    event SetAuthKey(string did, bytes pubKey);
-
-    function setAuthKey(string calldata did, bytes calldata pubKey) external;
-
-    event DeactivateAuthKey(string did, bytes pubKey);
-
-    function deactivateAuthKey(string calldata did, bytes calldata pubKey)
-        external;
 
     event AddContext(string did, string context);
 
