@@ -29,6 +29,10 @@
 
 `getAllService('did:klay:7423de10c75b1d4d1f30a4d81386e3aaf22584f9')`로 해당 did가 소유하고 있는 서비스 목록 전체 출력 가능
 
+## SmartContract Archetecture
+
+![](./doc/SC_Archetecture.png)
+
 ## Proxy Model
 
 ### Eternal Storage Model
