@@ -22,7 +22,7 @@ const caver =  new Caver(new Caver.providers.HttpProvider("https://node-api.klay
 const DIDContract = new caver.contract(DIDContractABI, DIDContractAddress);
 
 async function test (){
-  const res = await DIDContract.methods.getDocument('did:klay:7423de10c75b1d4d1f30a4d81386e3aaf22584f9').call();
+  const res = await DIDContract.methods.getDocument('did:klay:bC14CB49b93Ee36AfdF4b49eCB7C9512f9353c93').call();
   console.log(res)
 }
 
