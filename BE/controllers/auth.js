@@ -126,9 +126,19 @@ const registerVerifier = async (req, res, next) => {
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
     const newVerifier = new Verifier({ ...req.body, password: hashedPassword });
-
+    
     // 새로운 Verifier 저장
-    await newVerifier.save();
+    const savedVerifier = await newVerifier.save();
+
+    // Issuer의 key pair 저장
+    const newKeyPairs = new KeyPair({
+      ownerOf: savedVerifier._id,
+      pubKey: publicKey,
+      privateKey: privateKey,
+    });
+
+    await newKeyPairs.save();
+
 
     res.status(200).json("Verifier가 등록되었습니다.");
   } catch (error) {
