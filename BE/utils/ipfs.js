@@ -20,20 +20,20 @@ function makeFileObjects(obj, title) {
   // obj Example
   
 
-  const obj = {
-    sub: "did:klay:0x435df3eda57154cf8cf7926079881f2912f54db4",
-    nbf: 1562950282,
-    vc: {
-      "@context": ["https://www.w3.org/2018/credentials/v1"],
-      type: ["VerifiableCredential"],
-      credentialSubject: {
-        degree: {
-          type: "BachelorDegree",
-          name: "Baccalauréat en musiques numériques",
-        },
-      },
-    },
-  };
+  // const obj = {
+  //   sub: "did:klay:0x435df3eda57154cf8cf7926079881f2912f54db4",
+  //   nbf: 1562950282,
+  //   vc: {
+  //     "@context": ["https://www.w3.org/2018/credentials/v1"],
+  //     type: ["VerifiableCredential"],
+  //     credentialSubject: {
+  //       degree: {
+  //         type: "BachelorDegree",
+  //         name: "Baccalauréat en musiques numériques",
+  //       },
+  //     },
+  //   },
+  // };
   const buffer = Buffer.from(JSON.stringify(obj));
 
   const files = [new File([buffer], title)];
@@ -46,7 +46,7 @@ async function storeFiles(files, token) {
   return cid;
 }
 
-storeFiles()
+// storeFiles()
 
 async function retrieveFiles(cid) {
   const client = makeStorageClient();

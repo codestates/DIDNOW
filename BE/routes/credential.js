@@ -16,7 +16,12 @@ const {
   getHolderVCList,
   deleteHolderVCList,
   closeVerifyReqest,
+  createVerifiableCredential,
+  updateVerifiableCredential,
+  deleteVerifiableCredential,
+  getVerifiableCredential,
 } = require("../controllers/credential");
+const VerifiableCredential = require("../models/VerifiableCredential");
 /*
     @ dev : IPFS VC 저장
     @ desc : Holder가 발급받은 VC를 IPFS에 저장합니다.
@@ -101,5 +106,34 @@ router.get("/find/request-auths", verifyToken, getAllVerifyRequest);
     @ required : Smart Contract
 */
 router.post("/auth-vp/:verifiyListId", verifyToken, closeVerifyReqest);
+
+/*
+    @ dev : Create Verifiable Credentil Of Issuer
+    @ desc : Issuer는 발급할 VC를 생성할 수 있습니다.
+    @ subject : Issuer
+*/
+router.post('/verifiable-credential/', verifyToken , createVerifiableCredential);
+
+/*
+    @ dev : Update Verifiable Credentil Of Issuer
+    @ desc : Issuer는 발급할 VC를 업데이트 할 수 있습니다.
+    @ subject : Issuer
+*/
+router.put('/verifiable-credential/:vcId', verifyToken, updateVerifiableCredential)
+
+/*
+    @ dev : Delete Verifiable Credentil Of Issuer
+    @ desc : Issuer는 발급할 VC를 삭제 할 수 있습니다.
+    @ subject : Issuer
+*/
+router.delete('/verifiable-credential/:vcId', verifyToken, deleteVerifiableCredential)
+
+/*
+    @ dev : Get Verifiable Credentil Of Issuer
+    @ desc : Issuer는 발급할 VC를 출력 할 수 있습니다.
+    @ subject : Issuer
+*/
+router.get('/verifiable-credential/:vcId', verifyToken, getVerifiableCredential)
+
 
 module.exports = router;

@@ -30,3 +30,5 @@ const VerifiableCredentialSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model("VerifiableCredential", VerifiableCredentialSchema);
+
+
