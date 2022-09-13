@@ -2,16 +2,22 @@ import { Row, Col } from "antd";
 import "./style/signUp.css";
 import signUpImage from "../img/signup.jpg";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import SingUpChoice from "../component/signupChoice";
 import HolderSignUp from "../component/holderSignUp";
 import IssuerSignUp from "../component/issuerSignUp";
 import VerifierSignUp from "../component/verifierSignUp";
 
-const SignUp = () => {
+const SignUp = ({ user }) => {
   const [way, setWay] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
-    setWay("");
-  }, []);
+    if (user.type === undefined) {
+      setWay("");
+    } else {
+      navigate("/");
+    }
+  }, [user.type, navigate]);
   useEffect(() => {});
 
   let renderByway = "";

@@ -28,16 +28,12 @@ const Vc = ({ data, selectedHandle, idx }) => {
         )}
 
         <img className="vc--logo" src={logo} alt="" />
-        <span className="vc--organization">{vc.issuer}</span>
-        <div className="vc--title">{vc.description}</div>
+        <span className="vc--organization">{vc.issuedBy}</span>
+        <div className="vc--title">{vc.credentialTitle}</div>
         <div className="vc--date">
           <div>
             <span>등록 일자 : </span>
             {vc.createdAt}
-          </div>
-          <div>
-            <span>만료 일자 : </span>
-            {vc.expiredAt}
           </div>
         </div>
         <div className="vc--action">

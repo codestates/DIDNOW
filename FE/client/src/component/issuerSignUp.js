@@ -43,31 +43,48 @@ const IssuerSignUp = () => {
   };
   return (
     <div>
-      <div>발행자 회원 가입</div>
-      <div>발행자 회원으로 가입하는 기관 고객분들은</div>
-      <div>
-        회원들이 등록받을 인증서를 직접 관리할 수 있고, 인증서를 블록체인에
-        등록할 수 있습니다.
+      <div className="issuersignup--title">📝 발행자 회원 가입</div>
+      <div className="issuersignup--description">
+        <div>발행자 회원으로 가입하는 기관 고객분들은</div>
+        <div>
+          회원들이 등록받을 인증서를 직접 관리할 수 있습니다.
+          <div> 인증서를 블록체인에등록할 수 있습니다.</div>
+        </div>
       </div>
 
-      <Row>
-        <Col span={6}>이메일</Col>
-        <Col span={18}>
-          <input type="text" onChange={onchange} id="email" />
+      <Row style={{ alignItems: "center" }}>
+        <Col span={6} className="signup--col">
+          이메일
         </Col>
-      </Row>
-
-      <Row>
-        <Col span={6}>비밀번호</Col>
-        <Col span={18}>
-          <input type="password" onChange={onchange} id="password" />
-        </Col>
-      </Row>
-
-      <Row>
-        <Col span={6}>비밀번호 확인</Col>
         <Col span={18}>
           <input
+            className="issuersignup--input"
+            type="text"
+            onChange={onchange}
+            id="email"
+          />
+        </Col>
+      </Row>
+      <Row style={{ alignItems: "center" }}>
+        <Col span={6} className="signup--col">
+          비밀번호
+        </Col>
+        <Col span={18}>
+          <input
+            className="issuersignup--input"
+            type="password"
+            onChange={onchange}
+            id="password"
+          />
+        </Col>
+      </Row>
+      <Row style={{ alignItems: "center" }}>
+        <Col span={6} className="signup--col">
+          비밀번호 확인
+        </Col>
+        <Col span={18}>
+          <input
+            className="issuersignup--input"
             type="password"
             onChange={(e) => {
               return e.target.value === issuerInfo.password
@@ -77,26 +94,50 @@ const IssuerSignUp = () => {
           />
         </Col>
       </Row>
-      <Row>
-        <Col span={6}>기관명</Col>
+      <Row style={{ alignItems: "center" }}>
+        <Col span={6} className="signup--col">
+          기관명
+        </Col>
         <Col span={18}>
-          <input type="text" onChange={onchange} id="title" />
+          <input
+            className="issuersignup--input"
+            type="text"
+            onChange={onchange}
+            id="title"
+          />
+        </Col>
+      </Row>
+      <Row style={{ alignItems: "center" }}>
+        <Col span={6} className="signup--col">
+          requiredVC
+        </Col>
+        <Col span={18}>
+          <input
+            className="issuersignup--input"
+            type="text"
+            onChange={onchange}
+            id="requiredVC"
+          ></input>
+        </Col>
+      </Row>
+      <Row style={{ alignItems: "center" }}>
+        <Col span={6} className="signup--col">
+          기관소개
+        </Col>
+        <Col span={18}>
+          <input
+            className="issuersignup--input"
+            type="text"
+            onChange={onchange}
+            id="desc"
+          />
         </Col>
       </Row>
       <Row>
-        <Col span={6}>requiredVC</Col>
-        <Col span={18}>
-          <input type="text" onChange={onchange} id="requiredVC"></input>
-        </Col>
+        <button className="signup--btn" onClick={validate}>
+          가입 완료
+        </button>
       </Row>
-      <Row>
-        <Col span={6}>기관 소개</Col>
-        <Col span={18}>
-          <input type="text" onChange={onchange} id="desc" />
-        </Col>
-      </Row>
-
-      <button onClick={validate}>가입 완료</button>
     </div>
   );
 };

@@ -21,24 +21,36 @@ const HolderSignUp = () => {
     setUserInfo(userInfo);
   };
   const validate = async () => {
-    if (isCorrect === true) {
-      let res = await axios({
-        url: `http://localhost:9999/api/v1/auth/register-holder`,
-        method: "POST",
-        data: {
-          email: userInfo.email,
-          password: userInfo.password,
-          username: userInfo.username,
-          walletAddress: userInfo.walletAddress,
-          birthDay: userInfo.birth,
-        },
-        withCredentials: true,
-      });
+    try {
+      const YYYY = userInfo.birth.slice(0, 4);
+      const MM = userInfo.birth.slice(4, 6);
+      const DD = userInfo.birth.slice(6);
+      const birth = `${YYYY}-${MM}-${DD}`;
 
-      if (res.status === 200) {
-        message.info("회원 가입 완료!");
-        navigate("/");
+      if (isCorrect === true) {
+        let res = await axios({
+          url: `http://localhost:9999/api/v1/auth/register-holder`,
+          method: "POST",
+          data: {
+            email: userInfo.email,
+            password: userInfo.password,
+            username: userInfo.username,
+            walletAddress: userInfo.walletAddress,
+            birthDay: birth,
+          },
+          withCredentials: true,
+        });
+
+        if (res.status === 200) {
+          message.info("회원 가입 완료!");
+          navigate("/");
+        }
+      } else {
+        message.error("비밀번호를 동일하게 입력해주세요.");
       }
+    } catch (error) {
+      console.log("fail");
+      message.error("회원 가입 실패!!");
     }
   };
 
@@ -50,33 +62,38 @@ const HolderSignUp = () => {
         <div>원하는 인증서를 제출하는 서비스를 제공받습니다.</div>
       </div>
 
-      <Row>
-        <Col span={6}>이메일</Col>
+      <Row style={{ alignItems: "center" }}>
+        <Col span={6} style={{ display: "flex" }}>
+          이메일
+        </Col>
         <Col span={18}>
           <input
             type="text"
             onChange={onchange}
             id="email"
             className="holdersignup--input"
-            placeholder="holdername@naver.com"
+            placeholder="e.g) holdername@naver.com"
           />
         </Col>
       </Row>
-
-      <Row>
-        <Col span={6}>비밀번호</Col>
+      <Row style={{ alignItems: "center" }}>
+        <Col span={6} style={{ display: "flex" }}>
+          비밀번호
+        </Col>
         <Col span={18}>
           <input
             type="password"
             onChange={onchange}
             id="password"
             className="holdersignup--input"
+            placeholder="e.g) ●●●●●●"
           />
         </Col>
       </Row>
-
-      <Row>
-        <Col span={6}>비밀번호 확인</Col>
+      <Row style={{ alignItems: "center" }}>
+        <Col span={6} style={{ display: "flex" }}>
+          비밀번호 확인
+        </Col>
         <Col span={18}>
           <input
             type="password"
@@ -86,45 +103,58 @@ const HolderSignUp = () => {
                 : setIsCorrect(false);
             }}
             className="holdersignup--input"
+            placeholder="e.g) ●●●●●●"
           />
         </Col>
       </Row>
-      <Row>
-        <Col span={6}>이름</Col>
+
+      <Row style={{ alignItems: "center" }}>
+        <Col span={6} style={{ display: "flex" }}>
+          이름
+        </Col>
         <Col span={18}>
           <input
             type="text"
             onChange={onchange}
             id="username"
             className="holdersignup--input"
+            placeholder="e.g) 김코딩"
           />
         </Col>
       </Row>
-      <Row>
-        <Col span={6}>지갑 주소</Col>
+      <Row style={{ alignItems: "center" }}>
+        <Col span={6} style={{ display: "flex" }}>
+          지갑 주소
+        </Col>
         <Col span={18}>
           <input
             type="text"
             onChange={onchange}
             id="walletAddress"
             className="holdersignup--input"
+            placeholder="e.g) 0xwalletAddress20221010plzkaikas"
           />
         </Col>
       </Row>
-      <Row>
-        <Col span={6}>생년월일</Col>
+      <Row style={{ alignItems: "center" }}>
+        <Col span={6} style={{ display: "flex" }}>
+          생년월일
+        </Col>
         <Col span={18}>
           <input
             type="text"
             onChange={onchange}
             id="birth"
-            placeholder=""
+            placeholder="e.g) YYYYMMDD"
             className="holdersignup--input"
           />
         </Col>
       </Row>
-
-      <button onClick={validate}>회원가입 완료</button>
+      <Row>
+        <button className="signup--btn" onClick={validate}>
+          회원가입 완료
+        </button>
+      </Row>
     </div>
   );
 };

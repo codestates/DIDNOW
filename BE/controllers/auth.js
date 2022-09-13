@@ -146,7 +146,7 @@ const loginIssuer = async (req, res, next) => {
         secure: false,
       })
       .status(200)
-      .json(others);
+      .json({type:"issuer",...others});
   } catch (error) {
     next(error);
   }
@@ -173,7 +173,7 @@ const loginHolder = async (req, res, next) => {
     const token = jwt.sign(
       { id: holder._id, type: "holder" },
       process.env.JWT_SECRET,
-      { issuer: "DIDNOW", expiresIn: "30m" }
+      { issuer: "DIDNOW", expiresIn: "24h" }
     );
     const { password, ...others } = holder._doc;
 
@@ -277,15 +277,14 @@ const getAccessToken = async (req, res, next) => {
     switch (req.user.type) {
       case "issuer":
         const issuer = await Issuer.findById(req.user.id);
-
-        return res.status(200).json(issuer);
+        return res.status(200).json({type:req.user.type,user:issuer});
       case "holder":
         const holder = await Holder.findById(req.user.id);
 
-        return res.status(200).json(holder);
+        return res.status(200).json({type:req.user.type, user:holder});
       case "verifier":
         const verifier = await Verifier.findById(req.user.id);
-        return res.status(200).json(verifier);
+        return res.status(200).json({type:req.user.type, user:verifier});
 
       default:
         return next(createError(403, "User Not Found"));

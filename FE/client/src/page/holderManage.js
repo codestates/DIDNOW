@@ -6,7 +6,14 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const HolderManage = () => {
-  const [vcList, setVcList] = useState([]);
+  const [vcList, setVcList] = useState([
+    {
+      issuedBy: "codestates",
+      credentailName: "블록체인 개발자",
+      credentialTitle: "졸업증명서",
+      createdAt: "2001-01-01",
+    },
+  ]);
   const [selected, setSelected] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 

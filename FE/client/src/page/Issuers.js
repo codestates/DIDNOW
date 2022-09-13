@@ -1,6 +1,5 @@
 // 인증서 등록이 필요한지
-import { Button, Row, Col, Breadcrumb, Radio, Upload } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { Row, Col, Breadcrumb } from "antd";
 import "./style/holderIssue.css";
 import axios from "axios";
 import { useState } from "react";
@@ -9,12 +8,6 @@ import "./style/Issuers.css";
 
 import { useEffect } from "react";
 
-const fileList = [];
-const props = {
-  action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-  listType: "picture",
-  defaultFileList: [...fileList],
-};
 const Issuers = () => {
   const [issuers, setIssuers] = useState([]);
   const [isSelect, setIsSelect] = useState(false);
@@ -24,13 +17,22 @@ const Issuers = () => {
     try {
       axios({
         url: "http://localhost:9999/api/v1/user/issuers",
-        withCredentials : true,
+        method: "GET",
+        withCredentials: true,
       }).then((result) => {
-        console.log(result);
+        console.log(result.data);
         setIssuers(result.data);
       });
+
+      axios({
+        url: "http://localhost:9999/api/v1/credential/get-holder-vc-list",
+        method: "GET",
+        withCredentials: true,
+      }).then((data) => {
+        console.log(data);
+      });
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
   }, []);
 
@@ -38,8 +40,7 @@ const Issuers = () => {
     <div className="holderissue">
       <Breadcrumb className="holdermanage--breadcrumb" separator=">">
         <Breadcrumb.Item href="/">홈</Breadcrumb.Item>
-        <Breadcrumb.Item href="/">내 지갑</Breadcrumb.Item>
-        <Breadcrumb.Item href="/holdermanage">VC 요청하기</Breadcrumb.Item>
+        <Breadcrumb.Item href="/holder/issuerlist">Issuer List</Breadcrumb.Item>
       </Breadcrumb>
       <div className="holderissue--form">
         <Row className="holderissue--row">
@@ -48,27 +49,25 @@ const Issuers = () => {
             <hr />
 
             <Row className="holderissue--row">
-              <div className="title">
-                <h3 className="issuerTitle">No</h3>
-                <h3 className="issuerTitle">기관명</h3>
-                <h3 className="issuerTitle">발급요청</h3>
-              </div>
-              {issuers.map((item, id) => {
-                return (
-                  <IssuerList
-                    issuer={item}
-                    key={id}
-                    num = {id}
-                    isSelect={isSelect}
-                    setIsSelect={setIsSelect}
-                  />
-                );
-              })}
+              <Col span={6}>기관명</Col>
+              <Col span={6}>인증서 종류</Col>
+              <Col span={6}>인증서 이름</Col>
+              <Col span={6}>비고</Col>
             </Row>
+            {issuers.map((item, id) => {
+              return (
+                <IssuerList
+                  issuer={item}
+                  key={id}
+                  num={id}
+                  isSelect={isSelect}
+                  setIsSelect={setIsSelect}
+                />
+              );
+            })}
           </Col>
         </Row>
       </div>
-      
     </div>
   );
 };

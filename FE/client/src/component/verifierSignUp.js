@@ -41,21 +41,32 @@ const VerifierSignUp = () => {
   };
   return (
     <div>
-      <div>검증자 회원 가입</div>
-      <div>검증자 회원으로 가입하는 기관 고객분들은</div>
-      <div>회원들이 제출한 인증서를 검증할 수 있습니다.</div>
-
+      <div className="verifiersignup--title">🧐 검증자 회원 가입</div>
+      <div className="verifiersignup--description">
+        <div>검증자 회원으로 가입하는 기관 고객분들은</div>
+        <div>회원들이 제출한 인증서를 검증할 수 있습니다.</div>
+      </div>
       <Row>
         <Col span={6}>이메일</Col>
         <Col span={18}>
-          <input type="text" onChange={onchange} id="email" />
+          <input
+            className="verifiersignup--input"
+            type="text"
+            onChange={onchange}
+            id="email"
+          />
         </Col>
       </Row>
 
       <Row>
         <Col span={6}>비밀번호</Col>
         <Col span={18}>
-          <input type="password" onChange={onchange} id="password" />
+          <input
+            className="verifiersignup--input"
+            type="password"
+            onChange={onchange}
+            id="password"
+          />
         </Col>
       </Row>
 
@@ -63,6 +74,7 @@ const VerifierSignUp = () => {
         <Col span={6}>비밀번호 확인</Col>
         <Col span={18}>
           <input
+            className="verifiersignup--input"
             type="password"
             onChange={(e) => {
               return e.target.value === verifierInfo.password
@@ -75,11 +87,19 @@ const VerifierSignUp = () => {
       <Row>
         <Col span={6}>기관명</Col>
         <Col span={18}>
-          <input type="text" onChange={onchange} id="title" />
+          <input
+            className="verifiersignup--input"
+            type="text"
+            onChange={onchange}
+            id="title"
+          />
         </Col>
       </Row>
-
-      <button onClick={validate}>가입 완료</button>
+      <Row>
+        <button className="signup--btn" onClick={validate}>
+          가입 완료
+        </button>
+      </Row>
     </div>
   );
 };

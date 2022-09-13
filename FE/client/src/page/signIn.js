@@ -5,17 +5,18 @@ import signInImage from "../img/signin.jpg";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const SignIn = ({ setUser, type, setType }) => {
+const SignIn = ({ type, setType, setUser }) => {
   const navigate = useNavigate();
-  const [way, setWay] = useState("holder");
-  const [signinObj, setSigninObj] = useState({
-    email: "",
-    password: "",
-  });
   useEffect(() => {
     if (type !== "") {
       navigate("/");
     }
+  }, [navigate, type]);
+
+  const [way, setWay] = useState("holder");
+  const [signinObj, setSigninObj] = useState({
+    email: "",
+    password: "",
   });
   const onchange = (e) => {
     signinObj[e.target.id] = e.target.value;
@@ -36,6 +37,7 @@ const SignIn = ({ setUser, type, setType }) => {
 
   const signin = async () => {
     try {
+      // login
       let res = await axios({
         url: `http://localhost:9999/api/v1/auth/login-${way}`,
         method: "POST",
@@ -45,7 +47,6 @@ const SignIn = ({ setUser, type, setType }) => {
         },
         withCredentials: true,
       });
-
       let userObj = await axios({
         url: `http://localhost:9999/api/v1/auth/accesstoken`,
         method: "GET",
@@ -53,10 +54,18 @@ const SignIn = ({ setUser, type, setType }) => {
       });
 
       if (res.status === 200) {
-        messageInfo(res.data);
-        console.log(userObj.data);
-        setUser(userObj.data);
-        setType(way);
+        messageInfo("로그인 성공!");
+        const userData = JSON.stringify({
+          _id: userObj.data.user._id,
+          email: userObj.data.user.email,
+          username: userObj.data.user.username,
+          walletAddress: userObj.data.user.walletAddress,
+          title: userObj.data.user.title,
+          desc: userObj.data.user.desc,
+          type: userObj.data.type,
+        });
+        setUser(JSON.parse(userData));
+        setType(userObj.data.type);
         navigate("/");
       }
     } catch (error) {
@@ -80,7 +89,7 @@ const SignIn = ({ setUser, type, setType }) => {
                 buttonStyle="solid"
                 size="large"
               >
-                <Row>
+                <Row className="signin--shadow">
                   <Radio.Button value="holder" onClick={changeWay}>
                     Holder
                   </Radio.Button>
