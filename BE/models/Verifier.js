@@ -14,7 +14,10 @@ const VerifierSchema = new mongoose.Schema({
         type : String,
         required : true,
     },
-    
+    verifyList : {
+        type : Array, // [졸업증명서, 성인인증서, ]
+        required : true,
+    }
 },{
     timestamps : true,
 })

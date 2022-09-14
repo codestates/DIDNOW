@@ -5,17 +5,14 @@ const WalletSchema = new mongoose.Schema(
     ownerOf: {
       type: String,
       required: true,
-      unique: true,
     },
     publicKey: {
       type: String,
       required: true,
-      unique: true,
     },
     privateKey: {
       type: String,
       required: true,
-      unique: true,
     },
   },
   {

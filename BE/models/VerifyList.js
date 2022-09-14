@@ -11,7 +11,7 @@ const VerifyListSchema = new mongoose.Schema(
             required : true,
         },
         vp : {
-            type : String,
+            type : Array,
             required : true,
         },
         status : {
