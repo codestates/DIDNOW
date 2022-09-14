@@ -1,29 +1,4 @@
-module.exports = 	[{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"name": "pubKey",
-				"type": "bytes"
-			},
-			{
-				"name": "controller",
-				"type": "string[]"
-			},
-			{
-				"name": "singer",
-				"type": "bytes"
-			}
-		],
-		"name": "addNewAuthKey",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
+module.exports = 	[
 	{
 		"constant": true,
 		"inputs": [
@@ -41,6 +16,20 @@ module.exports = 	[{
 		],
 		"payable": false,
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "did",
+				"type": "string"
+			}
+		],
+		"name": "deactivateID",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -93,28 +82,6 @@ module.exports = 	[{
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"name": "serviceId",
-				"type": "string"
-			},
-			{
-				"name": "singer",
-				"type": "bytes"
-			}
-		],
-		"name": "removeService",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"constant": true,
 		"inputs": [
 			{
@@ -164,19 +131,15 @@ module.exports = 	[{
 				"type": "string"
 			},
 			{
-				"name": "newPubKey",
-				"type": "bytes"
+				"name": "serviceId",
+				"type": "string"
 			},
 			{
-				"name": "controller",
-				"type": "string[]"
-			},
-			{
-				"name": "singer",
-				"type": "bytes"
+				"name": "publicKey",
+				"type": "string"
 			}
 		],
-		"name": "addKey",
+		"name": "addService",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -199,28 +162,6 @@ module.exports = 	[{
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"name": "contexts",
-				"type": "string[]"
-			},
-			{
-				"name": "singer",
-				"type": "bytes"
-			}
-		],
-		"name": "addContext",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -258,41 +199,11 @@ module.exports = 	[{
 				"type": "string"
 			},
 			{
-				"name": "serviceId",
-				"type": "string"
-			},
-			{
-				"name": "publicKey",
-				"type": "string"
-			},
-			{
-				"name": "singer",
-				"type": "bytes"
+				"name": "contexts",
+				"type": "string[]"
 			}
 		],
-		"name": "updateService",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"name": "pubKey",
-				"type": "bytes"
-			},
-			{
-				"name": "singer",
-				"type": "bytes"
-			}
-		],
-		"name": "deactivateKey",
+		"name": "removeContext",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -421,15 +332,15 @@ module.exports = 	[{
 				"type": "string"
 			},
 			{
-				"name": "contexts",
-				"type": "string[]"
+				"name": "serviceId",
+				"type": "string"
 			},
 			{
-				"name": "singer",
-				"type": "bytes"
+				"name": "publicKey",
+				"type": "string"
 			}
 		],
-		"name": "removeContext",
+		"name": "updateService",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -445,13 +356,9 @@ module.exports = 	[{
 			{
 				"name": "pubKey",
 				"type": "bytes"
-			},
-			{
-				"name": "singer",
-				"type": "bytes"
 			}
 		],
-		"name": "deactivateAuthKey",
+		"name": "setAuthKey",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -530,19 +437,33 @@ module.exports = 	[{
 				"type": "string"
 			},
 			{
-				"name": "serviceId",
-				"type": "string"
-			},
-			{
-				"name": "publicKey",
-				"type": "string"
-			},
-			{
-				"name": "singer",
+				"name": "pubKey",
 				"type": "bytes"
+			},
+			{
+				"name": "controller",
+				"type": "string[]"
 			}
 		],
-		"name": "addService",
+		"name": "addNewAuthKey",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "did",
+				"type": "string"
+			},
+			{
+				"name": "contexts",
+				"type": "string[]"
+			}
+		],
+		"name": "addContext",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -605,11 +526,47 @@ module.exports = 	[{
 				"type": "string"
 			},
 			{
-				"name": "singer",
+				"name": "pubKey",
 				"type": "bytes"
 			}
 		],
-		"name": "deactivateID",
+		"name": "deactivateKey",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "did",
+				"type": "string"
+			},
+			{
+				"name": "pubKey",
+				"type": "bytes"
+			}
+		],
+		"name": "deactivateAuthKey",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "did",
+				"type": "string"
+			},
+			{
+				"name": "serviceId",
+				"type": "string"
+			}
+		],
+		"name": "removeService",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -645,28 +602,6 @@ module.exports = 	[{
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"name": "pubKey",
-				"type": "bytes"
-			},
-			{
-				"name": "singer",
-				"type": "bytes"
-			}
-		],
-		"name": "setAuthKey",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"constant": true,
 		"inputs": [
 			{
@@ -687,6 +622,28 @@ module.exports = 	[{
 		],
 		"payable": false,
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "did",
+				"type": "string"
+			},
+			{
+				"name": "newPubKey",
+				"type": "bytes"
+			},
+			{
+				"name": "controller",
+				"type": "string[]"
+			}
+		],
+		"name": "addKey",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -896,4 +853,5 @@ module.exports = 	[{
 		],
 		"name": "RemoveService",
 		"type": "event"
-	}];
+	}
+]
