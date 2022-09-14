@@ -15,6 +15,10 @@ const IssuerSchema = new mongoose.Schema({
         type : String,
         required : true,
     },
+    walletAddress: {
+      type: String,
+      unique: true,
+    },
     desc : {
         type : String,
     },

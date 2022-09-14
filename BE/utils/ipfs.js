@@ -36,7 +36,7 @@ function makeFileObjects(obj, title) {
   // };
   const buffer = Buffer.from(JSON.stringify(obj));
 
-  const files = [new File([buffer], title)];
+  const files = [new File([buffer], title+'.json')];
   return files;
 }
 

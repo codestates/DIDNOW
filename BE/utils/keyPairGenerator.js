@@ -1,5 +1,6 @@
 const { generateKeyPairSync } = require("node:crypto");
 const crypto = require("crypto");
+const jwt = require('jsonwebtoken')
 
 const genPrivateKey = (k) => {
   const key = crypto.createPrivateKey({
@@ -33,5 +34,26 @@ const genKey = () => {
 };
 
 
+// // TEST
+// const {publicKey, privateKey} = genKey();
+
+// // console.log(publicKey);
+// // console.log(privateKey);
+
+// const data = "hello world"
+
+
+// // 암호화
+// const cryt = crypto.publicEncrypt(publicKey, Buffer.from(data))
+// const cryptResult = cryt.toString("base64");
+// console.log(cryptResult)
+
+// // 복호화
+// const dcrypt = crypto.privateDecrypt(
+//   genPrivateKey(privateKey),
+//   Buffer.from(cryptResult, "base64")
+// );
+// const dcryptResult = dcrypt.toString('utf8');
+// console.log(dcryptResult)
 
 module.exports = {genKey , genPrivateKey};

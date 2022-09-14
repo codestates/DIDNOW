@@ -15,10 +15,10 @@ const abi = require("./abi");
 const genWallet = () => {
   keyring = caver.wallet.keyring.generate();
   return {
-    publicKey: keyring._address,
-    privateKey: keyring._key._privateKey
-  }
-}
+    WalletPublicKey: keyring._address,
+    WalletPrivateKey: keyring._key._privateKey,
+  };
+};
 
 /*
     @ dev : Add a Service into DID Document
@@ -31,61 +31,50 @@ const genWallet = () => {
 const addService = async (did, id, pubKey, signKey) => {
   let keyring;
 
-  const keyringFromPrivateKey = caver.wallet.keyring.createFromPrivateKey(
-  signKey
-  );
+  const keyringFromPrivateKey =
+    caver.wallet.keyring.createFromPrivateKey(signKey);
   caver.wallet.add(keyringFromPrivateKey);
   keyring = keyringFromPrivateKey;
 
-
-  const contractInstance = new caver.contract(
-    abi,
-    contractAddress
-  );
-  await contractInstance.methods
-    .addService(
-      did,id,pubKey
-    )
-    .send({
+  try {
+    const contractInstance = new caver.contract(abi, contractAddress);
+    await contractInstance.methods.addService(did, id, pubKey).send({
       from: keyring._address,
       gas: "7500000",
     });
-}
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const getAllService = async (did) => {
-    const contractInstance = new caver.contract(
-        abi,
-        contractAddress
-      );
-    const temp = await contractInstance.methods
-    .getAllService(did).call();
-    return temp;
+  const contractInstance = new caver.contract(abi, contractAddress);
+  const temp = await contractInstance.methods.getAllService(did).call();
+  return temp;
 };
 
 const getPemPubKey = async (did) => {
-     const contractInstance = new caver.contract(
-        abi,
-        "0xf95BA0302Bc3a97A89F8d2532C08888d08e2dc80"
-      );
-    const temp = await contractInstance.methods
-    .getAllService(did).call();
-
-    const res = temp.reduce((res,cur,idx)=>{
-      if(cur[0]=='registeredId'){
-        return cur[1];
-      }
-    },'')
-    return res;
+  const contractInstance = new caver.contract(abi, contractAddress);
+  const temp = await contractInstance.methods.getAllService(did).call();
+  const res = temp.reduce((res, cur, idx) => {
+    if (cur.serviceId == "registeredId") {
+      return cur.publicKey;
+    }
+  }, "");
+  console.log(res);
+  return res;
 };
 
 const getDocument = async (did) => {
-    const contractInstance = new caver.contract(
-        abi,
-        contractAddress
-      );
-    const temp = await contractInstance.methods
-    .getDocument(did).call();
-    return temp;
+  const contractInstance = new caver.contract(abi, contractAddress);
+  const temp = await contractInstance.methods.getDocument(did).call();
+  return temp;
 };
 
-module.exports = {genWallet, getDocument , getAllService, addService, getPemPubKey};
+module.exports = {
+  genWallet,
+  getDocument,
+  getAllService,
+  addService,
+  getPemPubKey,
+};

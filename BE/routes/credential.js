@@ -70,7 +70,7 @@ router.post("/retrieve-vc-ipfs", verifyToken, passwordCheck);
     @ subject : Holder
     @ required : Smart Contract
 */
-router.post("/request-vc/:issuerId", verifyToken, requestVC);
+router.post("/request-vc/:issuerId", verifyToken, passwordCheck, requestVC);
 
 /*
     @ dev : Authentication Request From Holder to Verifer
@@ -81,6 +81,7 @@ router.post("/request-vc/:issuerId", verifyToken, requestVC);
 router.post(
   "/verifier/request-auth/:verifierId",
   verifyToken,
+  passwordCheck,
   createVerifyRequest
 );
 
