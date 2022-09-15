@@ -1,31 +1,4 @@
-[
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"name": "id",
-				"type": "string"
-			},
-			{
-				"name": "_type",
-				"type": "string"
-			}
-		],
-		"name": "VerifyVC",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
+module.exports = [
 	{
 		"constant": true,
 		"inputs": [
@@ -60,28 +33,6 @@
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"name": "vcId",
-				"type": "string"
-			},
-			{
-				"name": "_type",
-				"type": "string"
-			}
-		],
-		"name": "issueVC",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"constant": true,
 		"inputs": [
 			{
@@ -102,6 +53,28 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "did",
+				"type": "string"
+			},
+			{
+				"name": "serviceId",
+				"type": "string"
+			},
+			{
+				"name": "publicKey",
+				"type": "string"
+			}
+		],
+		"name": "addService",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -169,24 +142,6 @@
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"name": "proofPubKey",
-				"type": "string"
-			}
-		],
-		"name": "addProof",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"constant": true,
 		"inputs": [
 			{
@@ -243,11 +198,11 @@
 					{
 						"components": [
 							{
-								"name": "id",
+								"name": "serviceId",
 								"type": "string"
 							},
 							{
-								"name": "value",
+								"name": "publicKey",
 								"type": "string"
 							}
 						],
@@ -284,28 +239,6 @@
 			}
 		],
 		"name": "updateService",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"name": "vcId",
-				"type": "string"
-			},
-			{
-				"name": "_hash",
-				"type": "string"
-			}
-		],
-		"name": "addVC",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -443,25 +376,6 @@
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			}
-		],
-		"name": "getProof",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"constant": false,
 		"inputs": [
 			{
@@ -492,11 +406,11 @@
 			{
 				"components": [
 					{
-						"name": "id",
+						"name": "serviceId",
 						"type": "string"
 					},
 					{
-						"name": "value",
+						"name": "publicKey",
 						"type": "string"
 					}
 				],
@@ -597,7 +511,7 @@
 			},
 			{
 				"indexed": false,
-				"name": "value",
+				"name": "AddService",
 				"type": "string"
 			}
 		],
@@ -619,7 +533,7 @@
 			},
 			{
 				"indexed": false,
-				"name": "value",
+				"name": "publicKey",
 				"type": "string"
 			}
 		],
@@ -636,7 +550,7 @@
 			},
 			{
 				"indexed": false,
-				"name": "value",
+				"name": "serviceId",
 				"type": "string"
 			}
 		],

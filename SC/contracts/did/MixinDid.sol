@@ -161,27 +161,68 @@ contract DIDContract is MixinDidStorage, IDid {
     /**
      * @dev add service to did service list
      * @param did did
-     * @param serviceId service id
-     * @param publicKey public Key For Decode(Not Wallet Key)
+     * @param proofPubKey PublicKey For Decode VC
      */
-    function addService(
+    function addProof(string memory did, string memory proofPubKey) public {
+        bytes memory singer = BytesUtils.getSinger(did);
+        did = checkWhenOperate(did, singer);
+        string memory proofKey = KeyUtils.genServiceKey(did);
+        bytes32 key = KeyUtils.genServiceSecondKey("Proof");
+        StorageUtils.Service memory proof = StorageUtils.Service(
+            "Proof",
+            proofPubKey
+        );
+        bytes memory proofBytes = StorageUtils.serializeService(proof);
+        bool replaced = data[proofKey].insert(key, proofBytes);
+        require(!replaced, "service existed");
+        updateTime(did);
+        emit AddService(did, "Proof", proofPubKey);
+    }
+
+    /**
+     * @dev add service to did service list
+     * @param did did
+     * @param vcId service id
+     * @param _type public Key For Decode(Not Wallet Key)
+     */
+    function issueVC(
         string memory did,
-        string memory serviceId,
-        string memory publicKey
+        string memory vcId,
+        string memory _type
     ) public {
         bytes memory singer = BytesUtils.getSinger(did);
         did = checkWhenOperate(did, singer);
         string memory serviceKey = KeyUtils.genServiceKey(did);
-        bytes32 key = KeyUtils.genServiceSecondKey(serviceId);
-        StorageUtils.Service memory service = StorageUtils.Service(
-            serviceId,
-            publicKey
-        );
+        bytes32 key = KeyUtils.genServiceSecondKey(vcId);
+        StorageUtils.Service memory service = StorageUtils.Service(vcId, _type);
         bytes memory serviceBytes = StorageUtils.serializeService(service);
         bool replaced = data[serviceKey].insert(key, serviceBytes);
         require(!replaced, "service existed");
         updateTime(did);
-        emit AddService(did, serviceId, publicKey);
+        emit AddService(did, vcId, _type);
+    }
+
+    /**
+     * @dev add service to did service list
+     * @param did did
+     * @param vcId service id
+     * @param _hash public Key For Decode(Not Wallet Key)
+     */
+    function addVC(
+        string memory did,
+        string memory vcId,
+        string memory _hash
+    ) public {
+        bytes memory singer = BytesUtils.getSinger(did);
+        did = checkWhenOperate(did, singer);
+        string memory serviceKey = KeyUtils.genServiceKey(did);
+        bytes32 key = KeyUtils.genServiceSecondKey(vcId);
+        StorageUtils.Service memory service = StorageUtils.Service(vcId, _hash);
+        bytes memory serviceBytes = StorageUtils.serializeService(service);
+        bool replaced = data[serviceKey].insert(key, serviceBytes);
+        require(!replaced, "service existed");
+        updateTime(did);
+        emit AddService(did, vcId, _hash);
     }
 
     /**
@@ -373,6 +414,17 @@ contract DIDContract is MixinDidStorage, IDid {
      * @dev query service list
      * @param did did
      */
+    function getProof(string memory did) public view returns (string memory) {
+        did = BytesUtils.toLower(did);
+        string memory serviceKey = KeyUtils.genServiceKey(did);
+        IterableMapping.itmap storage serviceList = data[serviceKey];
+        return StorageUtils.getProof(serviceList);
+    }
+
+    /**
+     * @dev query service list
+     * @param did did
+     */
     function getAllService(string memory did)
         public
         view
@@ -382,6 +434,21 @@ contract DIDContract is MixinDidStorage, IDid {
         string memory serviceKey = KeyUtils.genServiceKey(did);
         IterableMapping.itmap storage serviceList = data[serviceKey];
         return StorageUtils.getAllService(serviceList);
+    }
+
+    /**
+     * @dev query service list
+     * @param did did
+     */
+    function VerifyVC(
+        string memory did,
+        string memory id,
+        string memory _type
+    ) public view returns (bool) {
+        did = BytesUtils.toLower(did);
+        string memory serviceKey = KeyUtils.genServiceKey(did);
+        IterableMapping.itmap storage serviceList = data[serviceKey];
+        return StorageUtils.verifyVC(serviceList, id, _type);
     }
 
     /**

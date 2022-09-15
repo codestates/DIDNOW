@@ -26,24 +26,32 @@ interface IDid {
     function removeContext(string calldata did, string[] calldata context)
         external;
 
-    event AddService(string did, string serviceId, string AddService);
+    event AddService(string did, string serviceId, string value);
 
-    function addService(
+    function addProof(string calldata did, string calldata proofPubKey)
+        external;
+
+    function issueVC(
         string calldata did,
-        string calldata serviceId,
-        string calldata publicKey
+        string calldata vcId,
+        string calldata _type
     ) external;
 
-    event UpdateService(string did, string serviceId, string publicKey);
+    function addVC(
+        string calldata did,
+        string calldata vcId,
+        string calldata _hash
+    ) external;
+
+    event UpdateService(string did, string serviceId, string value);
 
     function updateService(
         string calldata did,
         string calldata serviceId,
-        string calldata publicKey
+        string calldata value
     ) external;
 
-    event RemoveService(string did, string serviceId);
+    event RemoveService(string did, string value);
 
-    function removeService(string calldata did, string calldata serviceId)
-        external;
+    function removeService(string calldata did, string calldata value) external;
 }
