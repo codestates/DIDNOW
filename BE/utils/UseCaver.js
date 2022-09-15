@@ -21,6 +21,21 @@ const genWallet = () => {
 };
 
 /*
+    @ dev : get PublicKey For Decoding VC
+    @ desc : DID Document에 proof를 출력합니다.
+    @param did : DID Document ID. (did:klay:'publicKey')
+    @param proof : 인증서를 복호화하는데 사용될 pem PublicKey.
+    @param signKey : 요청을 보내는 sender의 Private Key(클레이튼 프라이빗 키)
+*/
+const getProof = async (did) => {
+  const contractInstance = new caver.contract(abi, contractAddress);
+  const proof = await contractInstance.methods.getProof(did).call();
+  console.log('proof : ', proof)
+  return proof;
+};
+
+
+/*
     @ dev : add PublicKey For Decoding VC
     @ desc : DID Document에 proof를 추가합니다.
     @param did : DID Document ID. (did:klay:'publicKey')
@@ -145,5 +160,6 @@ module.exports = {
   addProof,
   addHash,
   issueVC,
-  verifyVC
+  verifyVC,
+  getProof
 };
