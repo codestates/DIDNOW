@@ -13,6 +13,10 @@ const KeyPairs = require("../models/KeyPairs");
 const axios = require("axios");
 const { genKey, genPrivateKey } = require("../utils/keyPairGenerator");
 const crypto = require("crypto");
+const secp256k1 = require("secp256k1");
+const CryptoJS = require("crypto-js");
+const { addHash, getProof } = require("../utils/UseCaver");
+
 /*
     @ dev : Request VC Publish FROM Holder to Issuer
     @ desc : Issuer에게 VC 발급을 요청합니다.
@@ -31,7 +35,7 @@ const requestVC = async (req, res, next) => {
         cr_name: candidate.username,
       });
 
-      // Issuer가 가진 VC 목록 조회
+      // Issuer가 가진 VC 조회
       const VC_Info = await VerifiableCredential.findOne({
         ownerId: req.params.issuerId,
       });
@@ -60,59 +64,82 @@ const requestVC = async (req, res, next) => {
       };
 
       /*
-        1. VC issuer 비밀키로 암호화
-        2. Holder 공개키로 암호화
-        3. IPFS 업로드 (addr : zxdoiwejoi)
-        4. Verify 요청 할 때 
+        0. Hash 돌리고 (close)
+        1. VC issuer 비밀키로 암호화  (close)
+        2. Holder의 DID Document Update || const addHash = async (did, id, hash, signKey) => {
+        3. Verify 요청 할 때 
           - 파일 가져오고
-          - Holder의 비밀키 까고
-          - VP에다가 깐 VC(holder의 비밀키로 깜)를 배열로 담는다
-        5. VP를 Verifier의 공개키로 암호화를 치고 전송(DB 전송)
-        6. Verifier는 자신의 비밀키로 VP를 까고, 
-          holder, issure의 DID Doc을 보고 검증을 진행
+          - VP에다가 VC를 배열로 담는다
+        4. Verifier가 holder, issure의 DID Doc을 보고 검증을 진행
       */
 
+      // VC Hash
+      let hashedVC = CryptoJS.SHA256(JSON.stringify(VC)).toString(
+        CryptoJS.enc.Hex
+      );
+
       // Issuer의 KeyPair search
-      const privateKeyIssuer = await KeyPairs.findOne({
+      const IssuerKeypair = await KeyPairs.findOne({
         ownerOf: req.params.issuerId,
       });
 
-      // Issuer의 비밀키로 암호화
-      const signedVC = jwt.sign(
-        VC,
-        genPrivateKey(privateKeyIssuer.privateKey),
-        {
-          algorithm: "RS256",
-        }
+      // DB에서 가져올 때 JSON.parse 작업
+      const IssuerPrivateKey = Buffer.from(
+        JSON.parse(IssuerKeypair.privateKey)
       );
 
-      const arrSignedVC = signedVC.split("");
-      const arrsignedVCFinal = [];
-      const pubKeyHolder = await KeyPairs.findOne({ ownerOf: req.user.id });
+      // Issuer의 비밀키로 암호화
+      const signedVC = secp256k1.ecdsaSign(
+        Buffer.from(hashedVC, "hex"),
+        IssuerPrivateKey
+      );
+      
+      const newSignedVC = JSON.stringify(signedVC.signature);
 
-      while(arrSignedVC.length > 0) {
-        const temp = arrSignedVC.splice(0, 350);
-
-        // Holder의 공개키로 암호화
-        const cryptData = crypto.publicEncrypt(
-          pubKeyHolder.pubKey,
-          Buffer.from(temp.join(""))
+      try {
+        // DID Document
+        const did = "did:klay:" + candidate.walletAddress.slice(2);
+        const VC_tileNameType =
+          VC_Info.credentialTitle +
+          VC_Info.credentialType +
+          VC_Info.credentialName;
+        await addHash(
+          did,
+          did + VC_tileNameType,
+          newSignedVC,
+          process.env.PRIVATE_KEY_KAIKAS
         );
-
-        arrsignedVCFinal.push(cryptData);
+      } catch (err) {
+        console.log(err);
       }
 
-      // IPFS에 VC 저장
-      const cid = await storeFiles(
-        makeFileObjects(arrsignedVCFinal, req.body.VC_title),
-        process.env.WEB3STORAGE_TOKEN
-      );
+      // const arrSignedVC = signedVC.split("");
+      // const arrsignedVCFinal = [];
+      // const pubKeyHolder = await KeyPairs.findOne({ ownerOf: req.user.id });
+
+      // while(arrSignedVC.length > 0) {
+      //   const temp = arrSignedVC.splice(0, 350);
+
+      //   // Holder의 공개키로 암호화
+      //   const cryptData = crypto.publicEncrypt(
+      //     pubKeyHolder.pubKey,
+      //     Buffer.from(temp.join(""))
+      //   );
+
+      //   arrsignedVCFinal.push(cryptData);
+      // }
+
+      // // IPFS에 VC 저장
+      // const cid = await storeFiles(
+      //   makeFileObjects(arrsignedVCFinal, req.body.VC_title),
+      //   process.env.WEB3STORAGE_TOKEN
+      // );
 
       // Holder VC List에 저장
       const newHolderVCList = new HolderVC_List({
         owner: req.user.id,
         title: req.body.VC_title,
-        IPFS_Address: cid,
+        originalVC: [VC],
         IssuedBy: req.params.issuerId,
       });
       const savedHolderVCList = await newHolderVCList.save();
@@ -179,36 +206,46 @@ const deleteHolderVCList = async (req, res, next) => {
 const createVerifyRequest = async (req, res, next) => {
   if (req.user.type === "holder") {
     try {
-      
+
+      /* 
+        @ Holder가 Verifier에게 인증 요청
+        1. Holder의 VC를 가져온다 [closed]
+        2. VP를 생성(VC를 포함한) [closed]
+        2-2 해시함수 호출 [closed]
+        3. Vp를 Holder의 개인키로 디지털 서명을 한다. [closed]
+        4. VerifyList Schema 업데이트
+      */
+
+
       // Body에 VC id를 태워 보낸다
       const holderVC_List = await HolderVC_List.findById(req.body.vc_list);
-      
-      // IPFS에서 파일을 가져온다
-      const hashedVC = await axios({
-        url: `https://${holderVC_List.IPFS_Address}.ipfs.w3s.link/${holderVC_List.title}.json`,
-        method: "GET",
-      });
+
+      // // IPFS에서 파일을 가져온다
+      // const hashedVC = await axios({
+      //   url: `https://${holderVC_List.IPFS_Address}.ipfs.w3s.link/${holderVC_List.title}.json`,
+      //   method: "GET",
+      // });
 
       // Holder + Verifier KeyPair 준비
       const HolerKeyPair = await KeyPairs.findOne({
         ownerOf: req.user.id,
       });
-      
-      const VerifierKeyPair = await KeyPairs.findOne({
-        ownerOf: req.params.verifierId,
-      });
-      
+
+      // const VerifierKeyPair = await KeyPairs.findOne({
+      //   ownerOf: req.params.verifierId,
+      // });
+
       // Holder의 비밀키로 복호화 진행
 
-      let uncryptVC = "";
-      
-      for (let i = 0; i < hashedVC.data.length; i++) {
-        const dcrypt = crypto.privateDecrypt(
-          genPrivateKey(HolerKeyPair.privateKey),
-          Buffer.from(hashedVC.data[i].data)
-        );
-        uncryptVC += dcrypt.toString("utf8");
-      }
+      // let uncryptVC = "";
+
+      // for (let i = 0; i < hashedVC.data.length; i++) {
+      //   const dcrypt = crypto.privateDecrypt(
+      //     genPrivateKey(HolerKeyPair.privateKey),
+      //     Buffer.from(hashedVC.data[i].data)
+      //   );
+      //   uncryptVC += dcrypt.toString("utf8");
+      // }
 
       // Issuer PubKey 복호화
       // const KeyIssuer = await KeyPairs.findOne({ownerOf : "6317ff69b388d15aef639f3d"});
@@ -234,39 +271,51 @@ const createVerifyRequest = async (req, res, next) => {
           ],
           "@context": ["https://www.w3.org/2018/credentials/v1"],
           type: ["VerifiablePresentation"],
-          verifiableCredential: [uncryptVC],
+          verifiableCredential: [...holderVC_List.originalVC],
         },
       };
 
+      
+      // 해시 함수 작동
+      let hashedVP = CryptoJS.SHA256(JSON.stringify(vpPayload)).toString(CryptoJS.enc.Hex);
+      
       // Holder의 개인키로 암호화 => Verifier의 공개키 암호화
-      const signedVP = jwt.sign(
-        vpPayload,
-        genPrivateKey(HolerKeyPair.privateKey),
-        {
-          algorithm: "RS256",
-        }
-      );
+      const newHolderPrivKey = Buffer.from(JSON.parse(HolerKeyPair.privateKey))
+
+      const signedVP = secp256k1.ecdsaSign(Buffer.from(hashedVP, "hex"), newHolderPrivKey);
+      console.log(signedVP);
+      console.log(JSON.stringify(signedVP.signature))
+      //
+      // const signedVP = jwt.sign(
+      //   vpPayload,
+      //   genPrivateKey(HolerKeyPair.privateKey),
+      //   {
+      //     algorithm: "RS256",
+      //   }
+      // );
+
+
 
       // Verifier의 공개키 암호화
-      const arrSignedVP = signedVP.split("");
-      const arrsignedVPFinal = [];
+      // const arrSignedVP = signedVP.split("");
+      // const arrsignedVPFinal = [];
 
-      while(arrSignedVP.length > 0) {
-        const temp = arrSignedVP.splice(0, 350);
+      // while (arrSignedVP.length > 0) {
+      //   const temp = arrSignedVP.splice(0, 350);
 
-        // Verifier의 공개키로 암호화
-        const cryptData = crypto.publicEncrypt(
-          VerifierKeyPair.pubKey,
-          Buffer.from(temp.join(""))
-        );
-        arrsignedVPFinal.push(cryptData.toString("hex"));
-      }
-
+      //   // Verifier의 공개키로 암호화
+      //   const cryptData = crypto.publicEncrypt(
+      //     VerifierKeyPair.pubKey,
+      //     Buffer.from(temp.join(""))
+      //   );
+      //   arrsignedVPFinal.push(cryptData.toString("hex"));
+      // }
 
       // Verify List 생성
       const newVerifyList = new VerifyList({
         ...req.body,
-        vp: arrsignedVPFinal,
+        originalVP : [vpPayload],
+        vp: [JSON.stringify(signedVP.signature)],
         requestOwner: req.user.id,
         verifyOwner: req.params.verifierId,
       });
@@ -324,120 +373,157 @@ const getAllVerifyRequest = async (req, res, next) => {
 
 // 구현 예정 controller
 const closeVerifyReqest = async (req, res, next) => {
-
   // holder가 코드스테이츠 한테 졸업증명서
   // holder가 담배를 사러 가는데, 성인인증
-  // verifier가 졸업증명서가 담긴 VC를 받아서 성인인증을 한다 => Failed 
+  // verifier가 졸업증명서가 담긴 VC를 받아서 성인인증을 한다 => Failed
 
   if (req.user.type === "verifier") {
     try {
+
+
+      /* 
+        Close Verify Request 로직
+
+        Verifier가 Holder의 인증요청을 진행
+
+        1. Holder의 VC List를 가져온다 (VC 원본을 보기 위함) [closed]
+        2. Holder의 WalletAddress를 가져온다(DID Document 접근용) [closed]
+        3. Holder의 DID Document에 접근, publicKey를 가져옴 [closed]
+        4. VP를 복호화한다()
+        5. 인증 Factor
+          1) hash(원본VC) === Holder Document의 VC를 Issuer의 publicKey로 복호화 =>Boolean
+          2) 
+          3)
+          4)
+          5)
+      */
+
       // Verify할 VerifyList를 불러옴
       const verifyList = await VerifyList.findById(req.params.verifiyListId);
 
       // Holder/ Verifier 특정
       const holder = await Holder.findById(verifyList.requestOwner);
-      const verifier = await Verifier.findById(verifyList.verifyOwner);
+      // const verifier = await Verifier.findById(verifyList.verifyOwner);
 
       // Verifier Key Pair
-      const VerifierKeyPair = await KeyPairs.findOne({
-        ownerOf: verifier._id,
-      });
+      // const VerifierKeyPair = await KeyPairs.findOne({
+      //   ownerOf: verifier._id,
+      // });
 
       // 본인에게 요청된 VerifyList만 인증가능
-      if (verifyList.verifyOwner === req.user.id) {
-        /************/
-        //  인증 로직 //
-        /************/
-        // 1. DID Document에서 PubKey 2개 가져옴
-        // 2. jwt.verify(vcJWT) 2번 실행
-        // 3. 사용자 정보와 VC내의 정보 비교 검증
-        // - body 이름 / birthDate /
-        // 4. 결과에 따라 응답
-        /*********************************/
-
-        // 1. Verifier의 비밀키로 복호화
-        let uncryptVP = "";
-
-        for (let i = 0; i < verifyList.vp.length + 1; i++) {
-          try {
-            const dcrypt = crypto.privateDecrypt(
-              genPrivateKey(VerifierKeyPair.privateKey),
-              Buffer.from(verifyList.vp[i], "hex")
-            );
-            uncryptVP += dcrypt.toString("utf8");
-          } catch (error) {
-          }
-        }
-
-        // 2.  Holder PubKey 복호화(DID Document에 접근 후 pubKey 사용)
-        /* [블록체인 로직으로 변경 예정] */ 
-        const HolderKeypair = await KeyPairs.findOne({ownerOf : holder._id});
-        const verifiedData = jwt.verify(uncryptVP, HolderKeypair.pubKey);
-        console.log(verifiedData);
-        
-        // 3.  Issuer PubKey 복호화(DID Document에 접근 후 pubKey 사용)
-        /* [블록체인 로직으로 변경 예정] */ 
-        const IssuerKeypair = await KeyPairs.findOne({ownerOf : '6317ff69b388d15aef639f3d'});
-        const verifiedData2 = jwt.verify(verifiedData.vp.verifiableCredential[0], IssuerKeypair.pubKey);
-        console.log(verifiedData2.vc.credentialSubject);
-
-        // Verify 인증
-        /* 
-          1. VC 복호화에 정상적으로 성공한 후, 
-          2. Verifier의 Verify 리스트에 VC type이 포함되어 있는 경우 성공
-          3. 아닌 경우 fail
-        */ 
-        let obj = verifiedData2.vc.credentialSubject
-        if(verifier.verifyList.includes(obj[Object.keys(obj)[0]].type)){
-          console.log('success')
-        }else{  
-          console.log('failed')
-        }
-
-
-        /* 
-          @ dev : 블록체인 로직으로 변경 예정 부분
-        
-              //   // DB Wallet테이블에서 홀더와 이슈어의 지갑주소 불러옴
-              //   const holderAddr = "";
-              //   const issuerAddr = "";
-
-              //   // 지갑주소를 did Id로 치환
-              //   const holderDid = "did:klay:" + holderAddr.slice(2);
-              //   const issuerDid = "did:klay:" + issuerAddr.slice(2);
-
-              //   // didDocument에서 복호화를 위한 퍼블릭 키 호출
-              //   const holderPubKey = getPemPubKey(holderDid);
-              //   const issuerPubKey = getPemPubKey(issuerDid);
-
-              //   // holder pubKey로 jwt.verify 실행
-              //   let result;
-              //   jwt.verify(verifyList, holderPubKey, (err, data) => {
-              //     if (err) return next(createError(403, "Invalid Token!"));
-
-              //     result = data;
-              //     next();
-              //   });
-
-              //   //issuer pubKey로 jwt.verify 실행
-              //   jwt.verify(result, issuerPubKey, (err, data) => {
-              //     if (err) return next(createError(403, "Invalid Token!"));
-
-              //     result = data;
-              //     next();
-              //   });
-
-              //   // 사용자 정보와 VC내의 정보 비교 검증
-
-              //   // 결과에 따라 응답
-
-              // res.status(200).json(JSON.parse(verifyList.vp));
-        */
-        res.status(200).json("success");
-      } else {
-        next(createError(403, "인가되지 않은 접근입니다."));
+      if (verifyList.verifyOwner !== req.user.id) {
+        next(createError(403, '인가되지 않은 접근입니다.'));
       }
+
+      // 1. Verifier의 비밀키로 복호화
+      // let uncryptVP = "";
+
+      // for (let i = 0; i < verifyList.vp.length + 1; i++) {
+      //   try {
+      //     const dcrypt = crypto.privateDecrypt(
+      //       genPrivateKey(VerifierKeyPair.privateKey),
+      //       Buffer.from(verifyList.vp[i], "hex")
+      //     );
+      //     uncryptVP += dcrypt.toString("utf8");
+      //   } catch (error) {}
+      // }
+
+      // 2.  Holder PubKey 복호화(DID Document에 접근 후 pubKey 사용)
+      /* [블록체인 로직으로 변경 예정] */
+      // const HolderKeypair = await KeyPairs.findOne({ ownerOf: holder._id });
+
+      // Holder DID Document에 접근하기 위한 Wallet Address
+      const did = `did:klay:${holder.walletAddress.slice(2)}`;
+
+      // Holder DID Document에서 Proof를 가져옴
+      const HolderPubKey = await getProof(did);
+      console.log('HolderPubKey : ' , HolderPubKey);
+      const decodedHolderPubKey  = new Uint8Array(Object.values(JSON.parse(HolderPubKey)))
+      console.log('decodedHolderPubKey : ', decodedHolderPubKey)
+
+      const decryptedVP = secp256k1.ecdsaVerify(
+        // sigObj.signature,
+        new Uint8Array(Object.values(JSON.parse(verifyList.vp[0]))), //DID Document에서 가져온 데이터
+        Buffer.from(
+          CryptoJS.SHA256(JSON.stringify(verifyList.originalVP[0])).toString(CryptoJS.enc.Hex),
+          "hex"
+        ),
+        decodedHolderPubKey
+      )
+
+      console.log(decryptedVP);
+
+
+
+
+      // const verifiedData = jwt.verify(uncryptVP, HolderKeypair.pubKey);
+      // console.log(verifiedData);
+
+      // 3.  Issuer PubKey 복호화(DID Document에 접근 후 pubKey 사용)
+      /* [블록체인 로직으로 변경 예정] */
+      // const IssuerKeypair = await KeyPairs.findOne({
+      //   ownerOf: "6317ff69b388d15aef639f3d",
+      // });
+      // const verifiedData2 = jwt.verify(
+      //   verifiedData.vp.verifiableCredential[0],
+      //   IssuerKeypair.pubKey
+      // );
+      // console.log(verifiedData2.vc.credentialSubject);
+
+      // Verify 인증
+      /* 
+        1. VC 복호화에 정상적으로 성공한 후, 
+        2. Verifier의 Verify 리스트에 VC type이 포함되어 있는 경우 성공
+        3. 아닌 경우 fail
+      */
+      // let obj = verifiedData2.vc.credentialSubject;
+      // if (verifier.verifyList.includes(obj[Object.keys(obj)[0]].type)) {
+      //   console.log("success");
+      // } else {
+      //   console.log("failed");
+      // }
+
+      /* 
+        @ dev : 블록체인 로직으로 변경 예정 부분
+      
+            //   // DB Wallet테이블에서 홀더와 이슈어의 지갑주소 불러옴
+            //   const holderAddr = "";
+            //   const issuerAddr = "";
+
+            //   // 지갑주소를 did Id로 치환
+            //   const holderDid = "did:klay:" + holderAddr.slice(2);
+            //   const issuerDid = "did:klay:" + issuerAddr.slice(2);
+
+            //   // didDocument에서 복호화를 위한 퍼블릭 키 호출
+            //   const holderPubKey = getPemPubKey(holderDid);
+            //   const issuerPubKey = getPemPubKey(issuerDid);
+
+            //   // holder pubKey로 jwt.verify 실행
+            //   let result;
+            //   jwt.verify(verifyList, holderPubKey, (err, data) => {
+            //     if (err) return next(createError(403, "Invalid Token!"));
+
+            //     result = data;
+            //     next();
+            //   });
+
+            //   //issuer pubKey로 jwt.verify 실행
+            //   jwt.verify(result, issuerPubKey, (err, data) => {
+            //     if (err) return next(createError(403, "Invalid Token!"));
+
+            //     result = data;
+            //     next();
+            //   });
+
+            //   // 사용자 정보와 VC내의 정보 비교 검증
+
+            //   // 결과에 따라 응답
+
+            // res.status(200).json(JSON.parse(verifyList.vp));
+      */
+      res.status(200).json("success");
     } catch (error) {
+      console.log(error);
       next(error);
     }
   } else {
