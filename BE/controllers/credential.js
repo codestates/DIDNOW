@@ -15,7 +15,7 @@ const { genKey, genPrivateKey } = require("../utils/keyPairGenerator");
 const crypto = require("crypto");
 const secp256k1 = require("secp256k1");
 const CryptoJS = require("crypto-js");
-const { addHash, getProof } = require("../utils/UseCaver");
+const { addHash, getProof, getAllService } = require("../utils/UseCaver");
 
 /*
     @ dev : Request VC Publish FROM Holder to Issuer
@@ -261,11 +261,11 @@ const createVerifyRequest = async (req, res, next) => {
         vp: {
           pubKey: [
             {
-              id: `did:klay:${issuer.walletAddress}`,
+              id: `did:klay:${issuer.walletAddress.slice(2)}`,
               type: "ISSUER",
             },
             {
-              id: `did:klay:${holder.walletAddress}`,
+              id: `did:klay:${holder.walletAddress.slice(2)}`,
               type: "HOLDER",
             },
           ],
@@ -391,6 +391,7 @@ const closeVerifyReqest = async (req, res, next) => {
         3. Holder의 DID Document에 접근, publicKey를 가져옴 [closed]
         4. VP를 복호화한다()
         5. 인증 Factor
+          0) VerifyList(원본VP) === Holder Document의 pubKey로 복호화 => Boolean
           1) hash(원본VC) === Holder Document의 VC를 Issuer의 publicKey로 복호화 =>Boolean
           2) 
           3)
@@ -433,15 +434,18 @@ const closeVerifyReqest = async (req, res, next) => {
       // const HolderKeypair = await KeyPairs.findOne({ ownerOf: holder._id });
 
       // Holder DID Document에 접근하기 위한 Wallet Address
-      const did = `did:klay:${holder.walletAddress.slice(2)}`;
+      const HolderDID = `did:klay:${holder.walletAddress.slice(2)}`;
 
       // Holder DID Document에서 Proof를 가져옴
-      const HolderPubKey = await getProof(did);
-      console.log('HolderPubKey : ' , HolderPubKey);
+      const HolderPubKey = await getProof(HolderDID);
+      
+      // Holder PubKey Decoding
       const decodedHolderPubKey  = new Uint8Array(Object.values(JSON.parse(HolderPubKey)))
-      console.log('decodedHolderPubKey : ', decodedHolderPubKey)
+      
 
-      const decryptedVP = secp256k1.ecdsaVerify(
+      /* 인증 Factor.1 */
+      // Holder의 디지털 서명 복호화 확인
+      const factor_01 = secp256k1.ecdsaVerify(
         // sigObj.signature,
         new Uint8Array(Object.values(JSON.parse(verifyList.vp[0]))), //DID Document에서 가져온 데이터
         Buffer.from(
@@ -451,7 +455,33 @@ const closeVerifyReqest = async (req, res, next) => {
         decodedHolderPubKey
       )
 
-      console.log(decryptedVP);
+      
+
+      /* Factor.2 */
+      // Holder(VC) === Issuer PubKey로 복호화 (Boolean)
+      const holderVC = await HolderVC_List.findOne({owner : holder._id});
+     
+      const encryptedHolderVC = await getAllService(HolderDID);
+      console.log('encryptedHolderVC : ', encryptedHolderVC)
+
+      const IssuerDID = await getProof(verifyList.originalVP[0].vp.pubKey.filter(item=>item.type==="ISSUER")[0].id);
+
+      const decodedIssuerPubKey = new Uint8Array(Object.values(JSON.parse(IssuerDID)))
+
+      console.log('decodedIssuerPubKey : ', decodedIssuerPubKey)
+
+      const factor_02 = secp256k1.ecdsaVerify(
+        // sigObj.signature,
+        new Uint8Array(Object.values(JSON.parse())), //DID Document에서 가져온 데이터
+        Buffer.from(
+          CryptoJS.SHA256(JSON.stringify(holderVC.originalVC[0])).toString(CryptoJS.enc.Hex),
+          "hex"
+        ),
+        decodedIssuerPubKey
+      )
+
+      console.log(factor_02);
+
 
 
 
