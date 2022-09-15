@@ -3,6 +3,33 @@ module.exports = 	[
 		"constant": true,
 		"inputs": [
 			{
+				"name": "did",
+				"type": "string"
+			},
+			{
+				"name": "id",
+				"type": "string"
+			},
+			{
+				"name": "_type",
+				"type": "string"
+			}
+		],
+		"name": "VerifyVC",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
 				"name": "",
 				"type": "string"
 			}
@@ -33,52 +60,25 @@ module.exports = 	[
 		"type": "function"
 	},
 	{
-		"constant": true,
+		"constant": false,
 		"inputs": [
 			{
 				"name": "did",
 				"type": "string"
-			}
-		],
-		"name": "getAllPubKey",
-		"outputs": [
+			},
 			{
-				"components": [
-					{
-						"name": "id",
-						"type": "string"
-					},
-					{
-						"name": "keyType",
-						"type": "string"
-					},
-					{
-						"name": "controller",
-						"type": "string[]"
-					},
-					{
-						"name": "pubKeyData",
-						"type": "bytes"
-					},
-					{
-						"name": "deactivated",
-						"type": "bool"
-					},
-					{
-						"name": "isPubKey",
-						"type": "bool"
-					},
-					{
-						"name": "authIndex",
-						"type": "uint256"
-					}
-				],
-				"name": "",
-				"type": "tuple[]"
+				"name": "vcId",
+				"type": "string"
+			},
+			{
+				"name": "_type",
+				"type": "string"
 			}
 		],
+		"name": "issueVC",
+		"outputs": [],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -102,47 +102,6 @@ module.exports = 	[
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "dataId",
-				"type": "string"
-			}
-		],
-		"name": "dataSize",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"name": "serviceId",
-				"type": "string"
-			},
-			{
-				"name": "publicKey",
-				"type": "string"
-			}
-		],
-		"name": "addService",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -210,6 +169,24 @@ module.exports = 	[
 		"type": "function"
 	},
 	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "did",
+				"type": "string"
+			},
+			{
+				"name": "proofPubKey",
+				"type": "string"
+			}
+		],
+		"name": "addProof",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"constant": true,
 		"inputs": [
 			{
@@ -260,7 +237,7 @@ module.exports = 	[
 								"type": "uint256"
 							}
 						],
-						"name": "publicKey",
+						"name": "authentication",
 						"type": "tuple[]"
 					},
 					{
@@ -270,41 +247,7 @@ module.exports = 	[
 								"type": "string"
 							},
 							{
-								"name": "keyType",
-								"type": "string"
-							},
-							{
-								"name": "controller",
-								"type": "string[]"
-							},
-							{
-								"name": "pubKeyData",
-								"type": "bytes"
-							},
-							{
-								"name": "deactivated",
-								"type": "bool"
-							},
-							{
-								"name": "isPubKey",
-								"type": "bool"
-							},
-							{
-								"name": "authIndex",
-								"type": "uint256"
-							}
-						],
-						"name": "authentication",
-						"type": "tuple[]"
-					},
-					{
-						"components": [
-							{
-								"name": "serviceId",
-								"type": "string"
-							},
-							{
-								"name": "publicKey",
+								"name": "value",
 								"type": "string"
 							}
 						],
@@ -354,37 +297,18 @@ module.exports = 	[
 				"type": "string"
 			},
 			{
-				"name": "pubKey",
-				"type": "bytes"
-			}
-		],
-		"name": "setAuthKey",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "dataId",
+				"name": "vcId",
 				"type": "string"
 			},
 			{
-				"name": "key",
-				"type": "bytes32"
+				"name": "_hash",
+				"type": "string"
 			}
 		],
-		"name": "dataValue",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bytes"
-			}
-		],
+		"name": "addVC",
+		"outputs": [],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -519,39 +443,22 @@ module.exports = 	[
 		"type": "function"
 	},
 	{
-		"constant": false,
+		"constant": true,
 		"inputs": [
 			{
 				"name": "did",
 				"type": "string"
-			},
-			{
-				"name": "pubKey",
-				"type": "bytes"
 			}
 		],
-		"name": "deactivateKey",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
+		"name": "getProof",
+		"outputs": [
 			{
-				"name": "did",
+				"name": "",
 				"type": "string"
-			},
-			{
-				"name": "pubKey",
-				"type": "bytes"
 			}
 		],
-		"name": "deactivateAuthKey",
-		"outputs": [],
 		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -585,11 +492,11 @@ module.exports = 	[
 			{
 				"components": [
 					{
-						"name": "serviceId",
+						"name": "id",
 						"type": "string"
 					},
 					{
-						"name": "publicKey",
+						"name": "value",
 						"type": "string"
 					}
 				],
@@ -599,51 +506,6 @@ module.exports = 	[
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"name": "singer",
-				"type": "bytes"
-			}
-		],
-		"name": "checkWhenOperate",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"name": "newPubKey",
-				"type": "bytes"
-			},
-			{
-				"name": "controller",
-				"type": "string[]"
-			}
-		],
-		"name": "addKey",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -683,80 +545,7 @@ module.exports = 	[
 				"type": "string[]"
 			}
 		],
-		"name": "AddKey",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "pubKey",
-				"type": "bytes"
-			}
-		],
-		"name": "DeactivateKey",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "pubKey",
-				"type": "bytes"
-			},
-			{
-				"indexed": false,
-				"name": "controller",
-				"type": "string[]"
-			}
-		],
 		"name": "AddNewAuthKey",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "pubKey",
-				"type": "bytes"
-			}
-		],
-		"name": "SetAuthKey",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "pubKey",
-				"type": "bytes"
-			}
-		],
-		"name": "DeactivateAuthKey",
 		"type": "event"
 	},
 	{
@@ -808,7 +597,7 @@ module.exports = 	[
 			},
 			{
 				"indexed": false,
-				"name": "AddService",
+				"name": "value",
 				"type": "string"
 			}
 		],
@@ -830,7 +619,7 @@ module.exports = 	[
 			},
 			{
 				"indexed": false,
-				"name": "publicKey",
+				"name": "value",
 				"type": "string"
 			}
 		],
@@ -847,7 +636,7 @@ module.exports = 	[
 			},
 			{
 				"indexed": false,
-				"name": "serviceId",
+				"name": "value",
 				"type": "string"
 			}
 		],
