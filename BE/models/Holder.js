@@ -18,7 +18,6 @@ const HolderSchema = new mongoose.Schema(
     walletAddress: {
       type: String,
       required: true,
-      unique: true,
     },
     birthDay: {
       type: Date,

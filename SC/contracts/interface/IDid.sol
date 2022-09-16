@@ -8,18 +8,6 @@ interface IDid {
 
     function deactivateID(string calldata did) external;
 
-    event AddKey(string did, bytes pubKey, string[] controller);
-
-    function addKey(
-        string calldata did,
-        bytes calldata newPubKey,
-        string[] calldata pubKeyController
-    ) external;
-
-    event DeactivateKey(string did, bytes pubKey);
-
-    function deactivateKey(string calldata did, bytes calldata pubKey) external;
-
     event AddNewAuthKey(string did, bytes pubKey, string[] controller);
 
     function addNewAuthKey(
@@ -27,15 +15,6 @@ interface IDid {
         bytes calldata pubKey,
         string[] calldata controller
     ) external;
-
-    event SetAuthKey(string did, bytes pubKey);
-
-    function setAuthKey(string calldata did, bytes calldata pubKey) external;
-
-    event DeactivateAuthKey(string did, bytes pubKey);
-
-    function deactivateAuthKey(string calldata did, bytes calldata pubKey)
-        external;
 
     event AddContext(string did, string context);
 
@@ -47,24 +26,32 @@ interface IDid {
     function removeContext(string calldata did, string[] calldata context)
         external;
 
-    event AddService(string did, string serviceId, string AddService);
+    event AddService(string did, string serviceId, string value);
 
-    function addService(
+    function addProof(string calldata did, string calldata proofPubKey)
+        external;
+
+    function issueVC(
         string calldata did,
-        string calldata serviceId,
-        string calldata publicKey
+        string calldata vcId,
+        string calldata _type
     ) external;
 
-    event UpdateService(string did, string serviceId, string publicKey);
+    function addVC(
+        string calldata did,
+        string calldata vcId,
+        string calldata _hash
+    ) external;
+
+    event UpdateService(string did, string serviceId, string value);
 
     function updateService(
         string calldata did,
         string calldata serviceId,
-        string calldata publicKey
+        string calldata value
     ) external;
 
-    event RemoveService(string did, string serviceId);
+    event RemoveService(string did, string value);
 
-    function removeService(string calldata did, string calldata serviceId)
-        external;
+    function removeService(string calldata did, string calldata value) external;
 }

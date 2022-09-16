@@ -26,10 +26,14 @@ const registerIssuer = async (req, res, next) => {
     // 비밀번호 암호화
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
-    const newIssuer = new Issuer({ ...req.body, password: hashedPassword });
-
+    
     // Issuer의 pubKey, privateKey 생성
     const { publicKey, privateKey } = genKey();
+    
+    //Issuer의 지갑 생성
+    const {WalletPublicKey,WalletPrivateKey} = genWallet();
+    
+    const newIssuer = new Issuer({ ...req.body, password: hashedPassword, walletAddress : WalletPublicKey });
 
     // Issuer의 key pair 저장
     const newKeyPairs = new KeyPair({
@@ -45,31 +49,34 @@ const registerIssuer = async (req, res, next) => {
 
     // methods.function.send({from : 배포 월렛 주소})
 
-    //Issuer의 지갑 생성
-    const {WalletPublicKey,WalletPrivateKey} = genWallet();
-
     //Issuer의 지갑 저장
     const newWallet = new Wallet({
       ownerOf: newIssuer._id,
       publicKey: WalletPublicKey,
       privateKey: WalletPrivateKey,
     });
+    try{
+      //DID Docuement에 publicKey 등록
+      const did = "did:klay:"+WalletPublicKey.slice(2);
+      addService(did,"registeredId",publicKey,WalletPrivateKey);
 
-    //DID Docuement에 publicKey 등록
-    const did = "did:klay:"+WalletPublicKey.slice(2);
-    addService(did,"registeredId",publicKey,WalletPrivateKey);
+    }catch(err){
 
+    }
+
+    // Wallet 저장
+    await newWallet.save();
     // 새로운 Issuer 저장
     await newIssuer.save();
     // KeyPair 저장
     await newKeyPairs.save();
-    // Wallet 저장
-    await newWallet.save();
+    
 
     
 
     res.status(200).json("Issuer가 등록되었습니다.");
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -85,10 +92,16 @@ const registerHolder = async (req, res, next) => {
     // 비밀번호 암호화
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
-    const newHolder = new Holder({ ...req.body, password: hashedPassword });
-
+    
     // Holder의 pubKey, privateKey 생성
     const { publicKey, privateKey } = genKey();
+    
+    //Holder의 지갑 생성
+    const {WalletPublicKey,WalletPrivateKey} = genWallet();
+    console.log('WalletPublicKey type : ', typeof WalletPublicKey)
+    console.log('WalletPrivateKey type: ', typeof WalletPrivateKey)
+
+    const newHolder = new Holder({ ...req.body, password: hashedPassword, walletAddress : WalletPublicKey });
 
     // Holder의 key pair 저장
     const newKeyPairs = new KeyPair({
@@ -97,16 +110,12 @@ const registerHolder = async (req, res, next) => {
       privateKey: privateKey,
     });
 
-    //Holder의 지갑 생성
-    const {WalletPublicKey,WalletPrivateKey} = genWallet();
-
     //Holder의 지갑 저장
     const newWallet = new Wallet({
       ownerOf: newHolder._id,
       publicKey: WalletPublicKey,
       privateKey: WalletPrivateKey,
     });
-
     //DID Docuement에 publicKey 등록
     const did = "did:klay:"+WalletPublicKey.slice(2);
     addService(did,"registeredId",publicKey,WalletPrivateKey);
@@ -120,6 +129,7 @@ const registerHolder = async (req, res, next) => {
 
     res.status(200).json("Holder가 등록되었습니다.");
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -135,9 +145,22 @@ const registerVerifier = async (req, res, next) => {
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
     const newVerifier = new Verifier({ ...req.body, password: hashedPassword });
-
+    
     // 새로운 Verifier 저장
-    await newVerifier.save();
+    const savedVerifier = await newVerifier.save();
+
+    // Verifier의 pubKey, privateKey 생성
+    const { publicKey, privateKey } = genKey();
+
+    // Issuer의 key pair 저장
+    const newKeyPairs = new KeyPair({
+      ownerOf: savedVerifier._id,
+      pubKey: publicKey,
+      privateKey: privateKey,
+    });
+
+    await newKeyPairs.save();
+
 
     res.status(200).json("Verifier가 등록되었습니다.");
   } catch (error) {
