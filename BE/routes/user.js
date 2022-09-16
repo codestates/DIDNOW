@@ -43,7 +43,8 @@ router.get('/issuer/:issuerId', verifyToken, getIssuer)
     @ desc : 모든 Issuer를 가져옵니다.
     @ subject : Holder
 */
-router.get('/issuers', verifyToken, getAllIssuers)
+// Holder가 모든 Issuer를 출력해야됨
+router.get('/issuers', getAllIssuers)
 
 /*
     @ dev : create a Issuer User List
