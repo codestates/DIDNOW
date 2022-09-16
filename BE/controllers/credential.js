@@ -15,7 +15,12 @@ const { genKey, genPrivateKey } = require("../utils/keyPairGenerator");
 const crypto = require("crypto");
 const secp256k1 = require("secp256k1");
 const CryptoJS = require("crypto-js");
-const { addHash, getProof, getAllService } = require("../utils/UseCaver");
+const {
+  addHash,
+  getProof,
+  getAllService,
+  verifyVC,
+} = require("../utils/UseCaver");
 
 /*
     @ dev : Request VC Publish FROM Holder to Issuer
@@ -29,6 +34,7 @@ const requestVC = async (req, res, next) => {
     try {
       // 현재 로그인한 Holder의 정보로 Holder 검색
       const candidate = await Holder.findById(req.user.id);
+      const issuer = await Issuer.findById(req.params.issuerId);
 
       // Holder의 정보로 Issuer에 등록된 IssuerUserList 검색
       const candidateInfo = await IssuerUserList.findOne({
@@ -84,29 +90,42 @@ const requestVC = async (req, res, next) => {
       });
 
       // DB에서 가져올 때 JSON.parse 작업
-      const IssuerPrivateKey = Buffer.from(
-        JSON.parse(IssuerKeypair.privateKey)
-      );
+      const IssuerPrivateKey = Buffer.from(IssuerKeypair.privateKey, "hex");
+      console.log("IssuerPrivateKey : ", IssuerPrivateKey);
 
       // Issuer의 비밀키로 암호화
       const signedVC = secp256k1.ecdsaSign(
         Buffer.from(hashedVC, "hex"),
         IssuerPrivateKey
       );
-      
-      const newSignedVC = JSON.stringify(signedVC.signature);
+
+      const enc_SignedVC = Buffer.from(signedVC.signature).toString("hex");
+      // const dec_SigendVC = new Uint8Array(Buffer.from(enc_SignedVC, 'hex'))
+      // console.log('dec_SigendVC : ', dec_SigendVC);
 
       try {
         // DID Document
-        const did = "did:klay:" + candidate.walletAddress.slice(2);
+        const holderDID = "did:klay:" + candidate.walletAddress.slice(2);
+        const IssuerDID = "did:klay:" + issuer.walletAddress.slice(2);
         const VC_tileNameType =
+          "/" +
           VC_Info.credentialTitle +
+          "/" +
           VC_Info.credentialType +
+          "/" +
           VC_Info.credentialName;
+        // Issuer DID Document Update
         await addHash(
-          did,
-          did + VC_tileNameType,
-          newSignedVC,
+          IssuerDID,
+          holderDID + VC_tileNameType + "testNew",
+          "",
+          process.env.PRIVATE_KEY_KAIKAS
+        );
+        // Holder DID Document Update
+        await addHash(
+          holderDID,
+          holderDID + VC_tileNameType + "testNew",
+          enc_SignedVC,
           process.env.PRIVATE_KEY_KAIKAS
         );
       } catch (err) {
@@ -206,7 +225,6 @@ const deleteHolderVCList = async (req, res, next) => {
 const createVerifyRequest = async (req, res, next) => {
   if (req.user.type === "holder") {
     try {
-
       /* 
         @ Holder가 Verifier에게 인증 요청
         1. Holder의 VC를 가져온다 [closed]
@@ -215,7 +233,6 @@ const createVerifyRequest = async (req, res, next) => {
         3. Vp를 Holder의 개인키로 디지털 서명을 한다. [closed]
         4. VerifyList Schema 업데이트
       */
-
 
       // Body에 VC id를 태워 보낸다
       const holderVC_List = await HolderVC_List.findById(req.body.vc_list);
@@ -275,17 +292,17 @@ const createVerifyRequest = async (req, res, next) => {
         },
       };
 
-      
       // 해시 함수 작동
-      let hashedVP = CryptoJS.SHA256(JSON.stringify(vpPayload)).toString(CryptoJS.enc.Hex);
-      
-      // Holder의 개인키로 암호화 => Verifier의 공개키 암호화
-      const newHolderPrivKey = Buffer.from(JSON.parse(HolerKeyPair.privateKey))
+      let hashedVP = CryptoJS.SHA256(JSON.stringify(vpPayload)).toString(
+        CryptoJS.enc.Hex
+      );
 
-      const signedVP = secp256k1.ecdsaSign(Buffer.from(hashedVP, "hex"), newHolderPrivKey);
-      console.log(signedVP);
-      console.log(JSON.stringify(signedVP.signature))
-      //
+      // Holder의 개인키로 암호화 => Verifier의 공개키 암호화
+      const newHolderPrivKey = Buffer.from(HolerKeyPair.privateKey, "hex");
+      const signedVP = secp256k1.ecdsaSign(
+        Buffer.from(hashedVP, "hex"),
+        newHolderPrivKey
+      );
       // const signedVP = jwt.sign(
       //   vpPayload,
       //   genPrivateKey(HolerKeyPair.privateKey),
@@ -293,8 +310,6 @@ const createVerifyRequest = async (req, res, next) => {
       //     algorithm: "RS256",
       //   }
       // );
-
-
 
       // Verifier의 공개키 암호화
       // const arrSignedVP = signedVP.split("");
@@ -314,8 +329,8 @@ const createVerifyRequest = async (req, res, next) => {
       // Verify List 생성
       const newVerifyList = new VerifyList({
         ...req.body,
-        originalVP : [vpPayload],
-        vp: [JSON.stringify(signedVP.signature)],
+        originalVP: [vpPayload],
+        vp: Buffer.from(signedVP.signature).toString("hex"),
         requestOwner: req.user.id,
         verifyOwner: req.params.verifierId,
       });
@@ -379,8 +394,6 @@ const closeVerifyReqest = async (req, res, next) => {
 
   if (req.user.type === "verifier") {
     try {
-
-
       /* 
         Close Verify Request 로직
 
@@ -404,7 +417,7 @@ const closeVerifyReqest = async (req, res, next) => {
 
       // Holder/ Verifier 특정
       const holder = await Holder.findById(verifyList.requestOwner);
-      // const verifier = await Verifier.findById(verifyList.verifyOwner);
+      const verifier = await Verifier.findById(verifyList.verifyOwner);
 
       // Verifier Key Pair
       // const VerifierKeyPair = await KeyPairs.findOne({
@@ -413,7 +426,7 @@ const closeVerifyReqest = async (req, res, next) => {
 
       // 본인에게 요청된 VerifyList만 인증가능
       if (verifyList.verifyOwner !== req.user.id) {
-        next(createError(403, '인가되지 않은 접근입니다.'));
+        next(createError(403, "인가되지 않은 접근입니다."));
       }
 
       // 1. Verifier의 비밀키로 복호화
@@ -438,52 +451,116 @@ const closeVerifyReqest = async (req, res, next) => {
 
       // Holder DID Document에서 Proof를 가져옴
       const HolderPubKey = await getProof(HolderDID);
-      
+      console.log("HolderPubKey : ", HolderPubKey);
+
       // Holder PubKey Decoding
-      const decodedHolderPubKey  = new Uint8Array(Object.values(JSON.parse(HolderPubKey)))
-      
+      const decodedHolderPubKey = new Uint8Array(
+        Buffer.from(HolderPubKey, "hex")
+      );
 
       /* 인증 Factor.1 */
       // Holder의 디지털 서명 복호화 확인
       const factor_01 = secp256k1.ecdsaVerify(
         // sigObj.signature,
-        new Uint8Array(Object.values(JSON.parse(verifyList.vp[0]))), //DID Document에서 가져온 데이터
+        new Uint8Array(Buffer.from(verifyList.vp, "hex")), //DID Document에서 가져온 데이터
         Buffer.from(
-          CryptoJS.SHA256(JSON.stringify(verifyList.originalVP[0])).toString(CryptoJS.enc.Hex),
+          CryptoJS.SHA256(JSON.stringify(verifyList.originalVP[0])).toString(
+            CryptoJS.enc.Hex
+          ),
           "hex"
         ),
         decodedHolderPubKey
-      )
-
-      
+      );
+      console.log(factor_01);
 
       /* Factor.2 */
+      // Issuer의 디지털 서명 복호화
       // Holder(VC) === Issuer PubKey로 복호화 (Boolean)
-      const holderVC = await HolderVC_List.findOne({owner : holder._id});
-     
-      const encryptedHolderVC = await getAllService(HolderDID);
-      console.log('encryptedHolderVC : ', encryptedHolderVC)
+      // const holderVC = await HolderVC_List.findOne({owner : holder._id});
 
-      const IssuerDID = await getProof(verifyList.originalVP[0].vp.pubKey.filter(item=>item.type==="ISSUER")[0].id);
+      const encryptedAllHolderVC = await getAllService(HolderDID);
+      console.log("encryptedAllHolderVC : ", encryptedAllHolderVC);
 
-      const decodedIssuerPubKey = new Uint8Array(Object.values(JSON.parse(IssuerDID)))
+      const IssuerDID = await getProof(
+        verifyList.originalVP[0].vp.pubKey.filter(
+          (item) => item.type === "ISSUER"
+        )[0].id
+      );
 
-      console.log('decodedIssuerPubKey : ', decodedIssuerPubKey)
+      const IssuerDIDDOCUMNET = await getAllService(
+        verifyList.originalVP[0].vp.pubKey.filter(
+          (item) => item.type === "ISSUER"
+        )[0].id
+      );
+
+      console.log(IssuerDIDDOCUMNET);
+
+      const decodedIssuerPubKey = new Uint8Array(Buffer.from(IssuerDID, "hex"));
+
+      console.log("decodedIssuerPubKey : ", decodedIssuerPubKey);
+
+      const vcId_address = verifyList.originalVP[0].vp.pubKey.filter(
+        (item) => item.type === "HOLDER"
+      )[0].id;
+
+      // console.log('verifyList.originalVP[0].verifiableCredential : ' , verifyList.originalVP[0].vp.verifiableCredential[0].vc.credentialSubject)
+
+      const vcId_title = Object.keys(
+        verifyList.originalVP[0].vp.verifiableCredential[0].vc.credentialSubject
+      );
+      const vcId_type =
+        verifyList.originalVP[0].vp.verifiableCredential[0].vc
+          .credentialSubject[vcId_title[0]].type;
+
+      const vcId_name =
+        verifyList.originalVP[0].vp.verifiableCredential[0].vc
+          .credentialSubject[vcId_title[0]].name;
+
+      const encryptedHolderVC = encryptedAllHolderVC.filter((item) => {
+        const vcIdFromDID = item.id.split("/");
+        console.log(vcIdFromDID);
+
+        return (
+          vcIdFromDID[0] === vcId_address &&
+          vcIdFromDID[1] === vcId_title[0] &&
+          vcIdFromDID[2] === vcId_type &&
+          vcIdFromDID[3] === vcId_name
+        );
+      });
+
+      // console.log('encryptedHolderVC. : ', encryptedHolderVC[0].value)
 
       const factor_02 = secp256k1.ecdsaVerify(
         // sigObj.signature,
-        new Uint8Array(Object.values(JSON.parse())), //DID Document에서 가져온 데이터
+        new Uint8Array(Buffer.from(encryptedHolderVC[0].value, "hex")), //DID Document에서 가져온 데이터
         Buffer.from(
-          CryptoJS.SHA256(JSON.stringify(holderVC.originalVC[0])).toString(CryptoJS.enc.Hex),
+          CryptoJS.SHA256(
+            JSON.stringify(verifyList.originalVP[0].vp.verifiableCredential[0])
+          ).toString(CryptoJS.enc.Hex),
           "hex"
         ),
         decodedIssuerPubKey
-      )
+      );
 
       console.log(factor_02);
 
+      /* Factor 3 */
+      // Issuer DID Document에 Holder의 ID 확인
+      const factor_03 = await verifyVC(
+        verifyList.originalVP[0].vp.pubKey.filter(
+          (item) => item.type === "ISSUER"
+        )[0].id,
+        vcId_address + "/" + vcId_title[0] + "/" + vcId_type + "/" + vcId_name,
+        "",
+        process.env.PRIVATE_KEY_KAIKAS
+      );
+      console.log(factor_03);
 
+      /* factor_04 VC Title 검증 */
 
+      const factor_04 = verifier.verifyList.some(item=>{
+        return vcId_title[0] === item
+      })
 
 
       // const verifiedData = jwt.verify(uncryptVP, HolderKeypair.pubKey);

@@ -139,9 +139,6 @@ const registerVerifier = async (req, res, next) => {
     // 새로운 Verifier 저장
     const savedVerifier = await newVerifier.save();
 
-    await newKeyPairs.save();
-
-
     res.status(200).json("Verifier가 등록되었습니다.");
   } catch (error) {
     next(error);
