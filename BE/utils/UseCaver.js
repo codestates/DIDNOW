@@ -30,10 +30,9 @@ const genWallet = () => {
 const getProof = async (did) => {
   const contractInstance = new caver.contract(abi, contractAddress);
   const proof = await contractInstance.methods.getProof(did).call();
-  console.log('proof : ', proof)
+  console.log("proof : ", proof);
   return proof;
 };
-
 
 /*
     @ dev : add PublicKey For Decoding VC
@@ -44,11 +43,16 @@ const getProof = async (did) => {
 */
 const addProof = async (did, proof, signKey) => {
   let keyring;
-
   const keyringFromPrivateKey =
     caver.wallet.keyring.createFromPrivateKey(signKey);
-  caver.wallet.add(keyringFromPrivateKey);
-  keyring = keyringFromPrivateKey;
+
+  try {
+    caver.wallet.add(keyringFromPrivateKey);
+    keyring = keyringFromPrivateKey;
+  } catch (err) {
+    caver.wallet.updateKeyring(keyringFromPrivateKey);
+    keyring = keyringFromPrivateKey;
+  }
 
   try {
     const contractInstance = new caver.contract(abi, contractAddress);
@@ -71,15 +75,19 @@ const addProof = async (did, proof, signKey) => {
 */
 const issueVC = async (did, id, type, signKey) => {
   let keyring;
-
   const keyringFromPrivateKey =
     caver.wallet.keyring.createFromPrivateKey(signKey);
-  caver.wallet.add(keyringFromPrivateKey);
-  keyring = keyringFromPrivateKey;
 
   try {
+    caver.wallet.add(keyringFromPrivateKey);
+    keyring = keyringFromPrivateKey;
+  } catch (err) {
+    caver.wallet.updateKeyring(keyringFromPrivateKey);
+    keyring = keyringFromPrivateKey;
+  }
+  try {
     const contractInstance = new caver.contract(abi, contractAddress);
-    await contractInstance.methods.issueVC(did,id, type).send({
+    await contractInstance.methods.issueVC(did, id, type).send({
       from: keyring._address,
       gas: "7500000",
     });
@@ -98,15 +106,19 @@ const issueVC = async (did, id, type, signKey) => {
 */
 const addHash = async (did, id, hash, signKey) => {
   let keyring;
-
   const keyringFromPrivateKey =
     caver.wallet.keyring.createFromPrivateKey(signKey);
-  caver.wallet.add(keyringFromPrivateKey);
-  keyring = keyringFromPrivateKey;
 
   try {
+    caver.wallet.add(keyringFromPrivateKey);
+    keyring = keyringFromPrivateKey;
+  } catch (err) {
+    caver.wallet.updateKeyring(keyringFromPrivateKey);
+    keyring = keyringFromPrivateKey;
+  }
+  try {
     const contractInstance = new caver.contract(abi, contractAddress);
-    await contractInstance.methods.issueVC(did,id, hash).send({
+    await contractInstance.methods.issueVC(did, id, hash).send({
       from: keyring._address,
       gas: "7500000",
     });
@@ -124,7 +136,7 @@ const addHash = async (did, id, hash, signKey) => {
 */
 const verifyVC = async (did, id, type) => {
   const contractInstance = new caver.contract(abi, contractAddress);
-  const isExist = await contractInstance.methods.VerifyVC(did,id,type).call();
+  const isExist = await contractInstance.methods.VerifyVC(did, id, type).call();
   return isExist;
 };
 
@@ -161,5 +173,5 @@ module.exports = {
   addHash,
   issueVC,
   verifyVC,
-  getProof
+  getProof,
 };
