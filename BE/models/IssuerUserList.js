@@ -19,6 +19,9 @@ const IssuerUserListSchema = new mongoose.Schema(
     cr_certificateType: {
       type: String,
     },
+    cr_certificateName: {
+      type: String,
+    },
     cr_certificateDate: {
       type: Date,
     },

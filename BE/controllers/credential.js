@@ -53,12 +53,11 @@ const requestVC = async (req, res, next) => {
           type: ["VerifiableCredential"],
           credentialSubject: {
             [VC_Info.credentialTitle]: {
-              type: VC_Info.credentialType,
-              name: VC_Info.credentialName,
               publisher: VC_Info.IssuedBy,
+              type: candidateInfo.cr_certificateType,
+              name: candidateInfo.cr_certificateName,
               userName: candidateInfo.cr_name,
               birthDate: candidateInfo.cr_birthDate,
-              typeOf: candidateInfo.cr_certificateType,
               typeDate: candidateInfo.cr_certificateDate,
               nationality: candidateInfo.cr_Nationality,
               address: candidateInfo.cr_address,
@@ -96,9 +95,9 @@ const requestVC = async (req, res, next) => {
           "/" +
           VC_Info.credentialTitle +
           "/" +
-          VC_Info.credentialType +
+          candidateInfo.cr_certificateType +
           "/" +
-          VC_Info.credentialName;
+          candidateInfo.cr_certificateName;
 
         // Issuer DID Document Update
         await addHash(
@@ -464,6 +463,7 @@ const closeVerifyReqest = async (req, res, next) => {
       }
 
       // 결과값 반환
+      console.log(verifyFactor);
       if (verifyFactor.every((item) => item)) {
         res.status(200).json("success");
       } else {
