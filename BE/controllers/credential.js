@@ -26,10 +26,12 @@ const {
 const requestVC = async (req, res, next) => {
   if (req.user.type === "holder") {
     try {
+      let start = new Date();
+      /* DB 데이터 읽기 */
       // 현재 로그인한 Holder의 정보로 Holder 검색
       const candidate = await Holder.findById(req.user.id);
       const issuer = await Issuer.findById(req.params.issuerId);
-
+      
       // Holder의 정보로 Issuer에 등록된 IssuerUserList 검색
       const candidateInfo = await IssuerUserList.findOne({
         cr_email: candidate.email,
@@ -45,7 +47,11 @@ const requestVC = async (req, res, next) => {
         ownerOf: req.params.issuerId,
       });
 
+      const mid1 = new Date();
+      console.log('mid1 : ', (start-mid1)/1000);
+
       // Verifiable Credential 발급
+      start = new Date();
       const VC = {
         sub: `did:klay:${candidate.walletAddress.slice(2)}`,
         vc: {
@@ -87,6 +93,12 @@ const requestVC = async (req, res, next) => {
       // const dec_SigendVC = new Uint8Array(Buffer.from(enc_SignedVC, 'hex'))
       // console.log('dec_SigendVC : ', dec_SigendVC);
 
+      
+      const mid2 = new Date();
+      console.log('mid2 : ', (start-mid2)/1000);
+
+      /* Blockchain 접근 */
+      
       try {
         // DID Document
         const holderDID = "did:klay:" + candidate.walletAddress.slice(2);
@@ -99,6 +111,7 @@ const requestVC = async (req, res, next) => {
           "/" +
           candidateInfo.cr_certificateName;
 
+          start = new Date();
         // Issuer DID Document Update
         await addHash(
           IssuerDID,
@@ -106,7 +119,10 @@ const requestVC = async (req, res, next) => {
           "",
           process.env.PRIVATE_KEY_KAIKAS
         );
+        const tx1 = new Date();
+        console.log('tx1 : ', tx1-start,'ms')
 
+        start = new Date();
         // Holder DID Document Update
         await addHash(
           holderDID,
@@ -114,6 +130,8 @@ const requestVC = async (req, res, next) => {
           enc_SignedVC,
           process.env.PRIVATE_KEY_KAIKAS
         );
+        const tx2 = new Date();
+        console.log('tx2 : ', tx2-start,'ms')
       } catch (err) {
         console.log(err);
       }
@@ -127,6 +145,8 @@ const requestVC = async (req, res, next) => {
       });
       const savedHolderVCList = await newHolderVCList.save();
 
+      const mid3 = new Date();
+      console.log('mid3 : ', (start-mid3)/1000);
       res.status(200).json(savedHolderVCList);
     } catch (error) {
       console.log(error);
