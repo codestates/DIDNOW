@@ -5,9 +5,6 @@ const KeyPair = require("../models/KeyPairs");
 const passwordCheck = require("../utils/passwordCheck");
 const verifyToken = require("../utils/VerifyToken");
 
-const crypto = require("crypto");
-const jwt = require("jsonwebtoken");
-
 const {
   requestVC,
   getVerifyRequest,

@@ -1,4 +1,3 @@
-const { makeFileObjects, storeFiles, retrieveFiles } = require("../utils/ipfs");
 const VerifiableCredential = require("../models/VerifiableCredential");
 const IssuerUserList = require("../models/IssuerUserList");
 const Holder = require("../models/Holder");
@@ -6,13 +5,8 @@ const VerifyList = require("../models/VerifyList");
 const Verifier = require("../models/Verifier");
 const HolderVC_List = require("../models/HolderVC_List");
 const createError = require("../utils/Error");
-const jwt = require("jsonwebtoken");
-const { getPemPubKey } = require("../utils/UseCaver");
 const Issuer = require("../models/Issuer");
 const KeyPairs = require("../models/KeyPairs");
-const axios = require("axios");
-const { genKey, genPrivateKey } = require("../utils/keyPairGenerator");
-const crypto = require("crypto");
 const secp256k1 = require("secp256k1");
 const CryptoJS = require("crypto-js");
 const {
