@@ -3,8 +3,8 @@
 ## DIDContract
 
 - **contract abi** : [DID_Contract abi](./contracts/abi/DIDContractABI.json)
-- **contract address** : 0x3E4D0595F20518F3f72Ce1C115f4728545550d40
-- **contract scope** : https://baobab.scope.klaytn.com/account/0x3E4D0595F20518F3f72Ce1C115f4728545550d40?tabId=internalTx
+- **contract address** : 0x324177288a0b25F28be9B6e44b578F5B5391A3D5
+- **contract scope** : https://baobab.scope.klaytn.com/account/0x324177288a0b25F28be9B6e44b578F5B5391A3D5?tabId=internalTx
 - **method**
   |Function Name|Parameter|Description|
   |:--:|:--|:--|
