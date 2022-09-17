@@ -145,12 +145,9 @@ const requestVC = async (req, res, next) => {
 };
 
 /*
-    @ dev : Get VC From IPFS
-    @ desc : IPFS에 저장된 VC를 읽어옵니다.
-        - IPFS는 사용자의 대칭키로 암호화 되어 있습니다.
-        - 비밀번호를 요청해야 합니다. 
+    @ dev : Get VC
+    @ desc : 사용자가 가진 VC List를 출력합니다. 
     @ subject : Holder
-    @ required : IPFS module
 */
 const getHolderVCList = async (req, res, next) => {
   if (req.user.type === "holder") {
@@ -168,6 +165,11 @@ const getHolderVCList = async (req, res, next) => {
   }
 };
 
+/*
+    @ dev : Delete VC
+    @ desc : 사용자가 가진 VC List를 삭제합니다. 
+    @ subject : Holder
+*/
 const deleteHolderVCList = async (req, res, next) => {
   if (req.user.type === "holder") {
     try {
@@ -342,10 +344,7 @@ const closeVerifyReqest = async (req, res, next) => {
         next(createError(403, "인가되지 않은 접근입니다."));
       }
 
-      // 2.  Holder PubKey로 VP 복호화(DID Document에 접근 후 pubKey 사용)
-      /* [블록체인 로직으로 변경 예정] */
-      // const HolderKeypair = await KeyPairs.findOne({ ownerOf: holder._id });
-
+      // Holder PubKey로 VP 복호화(DID Document에 접근 후 pubKey 사용)
       // Holder DID Document에 접근하기 위한 Wallet Address
       const HolderDID = `did:klay:${holder.walletAddress.slice(2)}`;
 
@@ -357,38 +356,9 @@ const closeVerifyReqest = async (req, res, next) => {
         Buffer.from(HolderPubKey, "hex")
       );
 
-      /* 인증 Factor.1 */
-      // Holder의 디지털 서명 복호화 확인
-      const factor_01 = secp256k1.ecdsaVerify(
-        new Uint8Array(Buffer.from(verifyList.vp, "hex")), //DID Document에서 가져온 데이터
-        Buffer.from(
-          CryptoJS.SHA256(JSON.stringify(verifyList.originalVP[0])).toString(
-            CryptoJS.enc.Hex
-          ),
-          "hex"
-        ),
-        decodedHolderPubKey
-      );
-
-      /* Factor.2 */
-      // Issuer의 디지털 서명 복호화
-      // Holder(VC) === Issuer PubKey로 복호화 (Boolean)
-      // const holderVC = await HolderVC_List.findOne({owner : holder._id});
-
-      const encryptedAllHolderVC = await getAllService(HolderDID);
       const IssuerDID = verifyList.originalVP[0].vp.pubKey.filter(
         (item) => item.type === "ISSUER"
       )[0].id;
-
-      const IssuerPubKey = await getProof(IssuerDID);
-
-      const IssuerDIDDOCUMNET = await getAllService(IssuerDID);
-
-      // Issuer PubKey 디코딩
-      const decodedIssuerPubKey = new Uint8Array(
-        Buffer.from(IssuerPubKey, "hex")
-      );
-
       const vcId_address = verifyList.originalVP[0].vp.pubKey.filter(
         (item) => item.type === "HOLDER"
       )[0].id;
@@ -401,66 +371,112 @@ const closeVerifyReqest = async (req, res, next) => {
       const vcId_type = vc_In_VP[vcId_title[0]].type;
       const vcId_name = vc_In_VP[vcId_title[0]].name;
 
-      const encryptedHolderVC = encryptedAllHolderVC.filter((item) => {
-        const vcIdFromDID = item.id.split("/");
+      const verifyFactor = [];
 
-        return (
-          vcIdFromDID[0] === vcId_address &&
-          vcIdFromDID[1] === vcId_title[0] &&
-          vcIdFromDID[2] === vcId_type &&
-          vcIdFromDID[3] === vcId_name
+      try {
+        /* 인증 Factor.1 */
+        // Holder의 디지털 서명 복호화 확인
+        const factor_01 = secp256k1.ecdsaVerify(
+          new Uint8Array(Buffer.from(verifyList.vp, "hex")), //DID Document에서 가져온 데이터
+          Buffer.from(
+            CryptoJS.SHA256(JSON.stringify(verifyList.originalVP[0])).toString(
+              CryptoJS.enc.Hex
+            ),
+            "hex"
+          ),
+          decodedHolderPubKey
         );
-      });
-
-      // 디지털 서명 검증 2단계 : 암호화된 VC 검증
-      const factor_02 = secp256k1.ecdsaVerify(
-        new Uint8Array(Buffer.from(encryptedHolderVC[0].value, "hex")), //DID Document에서 가져온 데이터
-        Buffer.from(
-          CryptoJS.SHA256(
-            JSON.stringify(verifyList.originalVP[0].vp.verifiableCredential[0])
-          ).toString(CryptoJS.enc.Hex),
-          "hex"
-        ),
-        decodedIssuerPubKey
-      );
-
-
-      /* Factor 3 */
-      // Issuer DID Document에 Holder의 ID 확인
-      const factor_03 = await verifyVC(
-        IssuerDID,
-        vcId_address + "/" + vcId_title[0] + "/" + vcId_type + "/" + vcId_name,
-        "",
-        process.env.PRIVATE_KEY_KAIKAS
-      );
-
-      /* factor_04 VC Title 검증 */
-      // Verifier가 검증할 인증서종류 일치여부 확인
-      const factor_04 = verifier.verifyList.some((item) => {
-        return vcId_title[0] === item;
-      });
-
-
-      // 결과값 반환
-      if(factor_01 && factor_02 && factor_03 && factor_04){
-        res.status(200).json("success");
-      }else{
-        res.status(200).json("Failed");
+        verifyFactor[0] = factor_01;
+      } catch (error) {
+        verifyFactor[0] = false;
+        console.log(error);
       }
 
+      
+      try {
+        /* Factor.2 */
+        // Issuer의 디지털 서명 복호화
+        // Holder(VC) === Issuer PubKey로 복호화 (Boolean)
+        // const holderVC = await HolderVC_List.findOne({owner : holder._id});
+
+        const encryptedAllHolderVC = await getAllService(HolderDID);
+        const IssuerPubKey = await getProof(IssuerDID);
+
+        // Issuer PubKey 디코딩
+        const decodedIssuerPubKey = new Uint8Array(
+          Buffer.from(IssuerPubKey, "hex")
+        );
+        const encryptedHolderVC = encryptedAllHolderVC.filter((item) => {
+          const vcIdFromDID = item.id.split("/");
+
+          return (
+            vcIdFromDID[0] === vcId_address &&
+            vcIdFromDID[1] === vcId_title[0] &&
+            vcIdFromDID[2] === vcId_type &&
+            vcIdFromDID[3] === vcId_name
+          );
+        });
+
+        // 디지털 서명 검증 2단계 : 암호화된 VC 검증
+        const factor_02 = secp256k1.ecdsaVerify(
+          new Uint8Array(Buffer.from(encryptedHolderVC[0].value, "hex")), //DID Document에서 가져온 데이터
+          Buffer.from(
+            CryptoJS.SHA256(
+              JSON.stringify(
+                verifyList.originalVP[0].vp.verifiableCredential[0]
+              )
+            ).toString(CryptoJS.enc.Hex),
+            "hex"
+          ),
+          decodedIssuerPubKey
+        );
+        verifyFactor[1] = factor_02;
+      } catch (error) {
+        verifyFactor[1] = false;
+        console.log(error);
+      }
+
+      try {
+        /* Factor 3 */
+        // Issuer DID Document에 Holder의 ID 확인
+        const factor_03 = await verifyVC(
+          IssuerDID,
+          vcId_address +
+            "/" +
+            vcId_title[0] +
+            "/" +
+            vcId_type +
+            "/" +
+            vcId_name,
+          "",
+          process.env.PRIVATE_KEY_KAIKAS
+        );
+        verifyFactor[2] = factor_03;
+      } catch (err) {
+        verifyFactor[2] = false;
+        console.log(err);
+      }
+
+      try {
+        /* factor_04 VC Title 검증 */
+        // Verifier가 검증할 인증서종류 일치여부 확인
+        const factor_04 = verifier.verifyList.some((item) => {
+          return vcId_title[0] === item;
+        });
+        verifyFactor[3] = factor_04;
+      } catch (err) {
+        verifyFactor[3] = false;
+        console.log(err);
+      }
+
+      // 결과값 반환
+      if (verifyFactor.every((item) => item)) {
+        res.status(200).json("success");
+      } else {
+        res.status(200).json("Failed");
+      }
     } catch (error) {
       console.log(error);
-      next(error);
-    }
-  } else {
-    next(createError(403, "인가되지 않은 접근입니다."));
-  }
-};
-
-const saveToIPFS = async (req, res, next) => {
-  if (req.user.type === "verifier") {
-    try {
-    } catch (error) {
       next(error);
     }
   } else {

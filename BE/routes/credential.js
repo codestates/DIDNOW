@@ -22,46 +22,25 @@ const {
   getVerifiableCredential,
 } = require("../controllers/credential");
 const VerifiableCredential = require("../models/VerifiableCredential");
-/*
-    @ dev : IPFS VC 저장
-    @ desc : Holder가 발급받은 VC를 IPFS에 저장합니다.
-        - Isser로 부터 VC를 전달받습니다.
-        - VC는 사용자의 비밀번호를 대칭키로 암호화 합니다.
-        - 암호화 된 VC를 IPFS 저장 후 해시값을 받아옵니다.
-    @ subject : Holder
-    @ required : IPFS module
-*/
-router.post("/save-vc-ipfs", verifyToken, passwordCheck);
+
 
 /*
-    @ dev : Get VC From IPFS
+    @ dev : Get VC
     @ desc : 사용자가 가진 VC List를 출력합니다. 
     @ subject : Holder
-    @ required : IPFS module
 */
 router.get("/get-holder-vc-list", verifyToken, getHolderVCList);
 
 /*
-    @ dev : Delete V    C From IPFS
+    @ dev : Delete VC
     @ desc : 사용자가 가진 VC List를 삭제합니다. 
     @ subject : Holder
-    @ required : IPFS module
 */
 router.delete(
   "/delete-holder-vc-list/:holdervcId",
   verifyToken,
   deleteHolderVCList
 );
-
-/*
-    @ dev : Get VC From IPFS
-    @ desc : IPFS에 저장된 VC를 읽어옵니다.
-        - IPFS는 사용자의 대칭키로 암호화 되어 있습니다.
-        - 비밀번호를 요청해야 합니다. 
-    @ subject : Holder
-    @ required : IPFS module
-*/
-router.post("/retrieve-vc-ipfs", verifyToken, passwordCheck);
 
 /*
     @ dev : Request VC Publish FROM Holder to Issuer
