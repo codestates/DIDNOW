@@ -128,7 +128,7 @@ const deleteIssuerUser = async (req, res, next) => {
   }
 };
 
-/*
+/*d
     @ dev : get a Issuer User List
     @ desc : 특정 Issuer User를 출력합니다. 
     @ subject : Issuer
