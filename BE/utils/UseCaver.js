@@ -30,7 +30,6 @@ const genWallet = () => {
 const getProof = async (did) => {
   const contractInstance = new caver.contract(abi, contractAddress);
   const proof = await contractInstance.methods.getProof(did).call();
-  console.log("proof : ", proof);
   return proof;
 };
 
