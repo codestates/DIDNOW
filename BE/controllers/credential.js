@@ -48,7 +48,7 @@ const requestVC = async (req, res, next) => {
       });
 
       const mid1 = new Date();
-      console.log('mid1 : ', (start-mid1)/1000);
+      console.log('DB 데이터 읽기 : ', (mid1-start),'ms');
 
       // Verifiable Credential 발급
       start = new Date();
@@ -95,10 +95,10 @@ const requestVC = async (req, res, next) => {
 
       
       const mid2 = new Date();
-      console.log('mid2 : ', (start-mid2)/1000);
+      console.log('Verifiable Credential 발급 : ', (mid2 - start),'ms');
 
       /* Blockchain 접근 */
-      
+      start = new Date();
       try {
         // DID Document
         const holderDID = "did:klay:" + candidate.walletAddress.slice(2);
@@ -111,7 +111,7 @@ const requestVC = async (req, res, next) => {
           "/" +
           candidateInfo.cr_certificateName;
 
-          start = new Date();
+          
         // Issuer DID Document Update
         await addHash(
           IssuerDID,
@@ -120,7 +120,7 @@ const requestVC = async (req, res, next) => {
           process.env.PRIVATE_KEY_KAIKAS
         );
         const tx1 = new Date();
-        console.log('tx1 : ', tx1-start,'ms')
+        console.log('Blockchain 1(addHash(IssuerDID)) : ', tx1-start,'ms')
 
         start = new Date();
         // Holder DID Document Update
@@ -131,7 +131,7 @@ const requestVC = async (req, res, next) => {
           process.env.PRIVATE_KEY_KAIKAS
         );
         const tx2 = new Date();
-        console.log('tx2 : ', tx2-start,'ms')
+        console.log('Blockchain 1(addHash(HolderDID)) : ', tx2-start,'ms')
       } catch (err) {
         console.log(err);
       }
@@ -145,8 +145,6 @@ const requestVC = async (req, res, next) => {
       });
       const savedHolderVCList = await newHolderVCList.save();
 
-      const mid3 = new Date();
-      console.log('mid3 : ', (start-mid3)/1000);
       res.status(200).json(savedHolderVCList);
     } catch (error) {
       console.log(error);
