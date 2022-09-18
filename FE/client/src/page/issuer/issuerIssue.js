@@ -1,27 +1,37 @@
-import { Breadcrumb, Row, Col } from "antd";
+import { Breadcrumb, Row, Col, message } from "antd";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./style/issuerissue.css";
 
-const IssuerIssue = ({ user }) => {
+const IssuerIssue = ({ user, type }) => {
   const [vc, setVc] = useState({
     credentialTitle: "",
     credentialName: "",
     credentialType: "",
   });
   const onchange = (e) => {
-    setVc({
-      [e.target.id]: e.target.value,
+    setVc((prevVc) => {
+      return {
+        ...prevVc,
+        [e.target.id]: e.target.value,
+      };
     });
   };
 
   const submitVc = () => {
     axios({
-      url: "",
+      url: "http://localhost:9999/api/v1/credential/verifiable-credential",
       method: "POST",
       data: vc,
       withCredentials: true,
-    });
+    })
+      .then(() => {
+        message.success("인증서 등록 성공!!");
+        setVc({ credentialName: "", credentialTitle: "", credentialType: "" });
+      })
+      .catch(() => {
+        message.error("인증서 등록 실패!!");
+      });
   };
   useEffect(() => {});
   return (
@@ -47,7 +57,9 @@ const IssuerIssue = ({ user }) => {
                 </div>
               </Col>
               <Col span={16}>
-                <span className="issuerissue--issuer">{"codestates"}</span>
+                <span className="issuerissue--issuer">
+                  {type === "holder" ? user.username : user.title || ""}
+                </span>
               </Col>
               <Col span={2}></Col>
             </Row>
@@ -63,6 +75,7 @@ const IssuerIssue = ({ user }) => {
                   placeholder="e.g) 졸업증명서"
                   id="credentialTitle"
                   onChange={onchange}
+                  value={vc.credentialTitle}
                 />
               </Col>
               <Col span={2}></Col>
@@ -79,6 +92,7 @@ const IssuerIssue = ({ user }) => {
                   placeholder="e.g) 블록체인 개발자"
                   id="credentialName"
                   onChange={onchange}
+                  value={vc.credentialName}
                 />
               </Col>
               <Col span={2}></Col>
@@ -95,6 +109,7 @@ const IssuerIssue = ({ user }) => {
                   placeholder="e.g) 5기수"
                   id="credentialType"
                   onChange={onchange}
+                  value={vc.credentialType}
                 />
               </Col>
               <Col span={2}></Col>

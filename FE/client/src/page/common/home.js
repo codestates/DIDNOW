@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Row, Col } from "antd";
-import homePicture from "../img/homepage.jpg";
+import homePicture from "../../img/homepage.jpg";
 import "./style/home.css";
 const Home = () => {
   return (

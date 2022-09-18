@@ -1,7 +1,6 @@
 import { Row, Col, message, Radio } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import "./style/signin.css";
-import signInImage from "../img/signin.jpg";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -66,7 +65,7 @@ const SignIn = ({ type, setType, setUser }) => {
         });
         setUser(JSON.parse(userData));
         setType(userObj.data.type);
-        navigate("/");
+        navigate(-1);
       }
     } catch (error) {
       messageError("로그인 실패!!");
@@ -75,12 +74,7 @@ const SignIn = ({ type, setType, setUser }) => {
   return (
     <div className="signin">
       <Row>
-        <Col span={12}>
-          <div className="signin--left">
-            <img src={signInImage} className="signin--image" alt="" />
-          </div>
-        </Col>
-        <Col span={12}>
+        <Col span={12} offset={7}>
           <div className="signin--right">
             <div className="signin--canvas">
               <span className="signin--title">🔐 로그인</span>

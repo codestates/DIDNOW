@@ -1,12 +1,11 @@
 import { Row, Col } from "antd";
 import "./style/signUp.css";
-import signUpImage from "../img/signup.jpg";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import SingUpChoice from "../component/signupChoice";
-import HolderSignUp from "../component/holderSignUp";
-import IssuerSignUp from "../component/issuerSignUp";
-import VerifierSignUp from "../component/verifierSignUp";
+import SingUpChoice from "../../component/signupChoice";
+import HolderSignUp from "../../component/holderSignUp";
+import IssuerSignUp from "../../component/issuerSignUp";
+import VerifierSignUp from "../../component/verifierSignUp";
 
 const SignUp = ({ user }) => {
   const [way, setWay] = useState("");
@@ -37,12 +36,7 @@ const SignUp = ({ user }) => {
     <div className="signup">
       <div className="signup--form">
         <Row style={{ height: "inherit" }}>
-          <Col span={12} style={{ height: "inherit" }}>
-            <div className="signup--left">
-              <img src={signUpImage} className="signup--image" alt="" />
-            </div>
-          </Col>
-          <Col span={12}>
+          <Col span={12} offset={7}>
             <div className="signup--right">
               <div className="signup--canvas">
                 {/* first choice holder or company(issuer or verifier) */}

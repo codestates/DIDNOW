@@ -3,56 +3,27 @@ import "./style/IssuerList.css";
 import { Row, Col, Modal, message } from "antd";
 import axios from "axios";
 
-export default function IssuerList({ issuer, num }) {
-  useEffect(() => {});
+export default function IssuerList({ issuer, issuerUser }) {
+  // before render
   useEffect(() => {
-    axios({
-      url: "http://localhost:9999/api/v1/credential/get-holder-vc-list/",
-      method: "GET",
-      withCredentials: true,
-    }).then((data) => {
-      console.log(data);
-    });
-  }, []);
+  },[])
+  // re-render
+  useEffect(() => {})
   const [modalOpen, setModalOpen] = useState(false);
-  const [title, setTitle] = useState("");
+  const [VCtitle, setVCTitle] = useState("");
   const [password, setPassword] = useState("");
-  // return (
-  //   <>
-  //     <div className="content">
-  //       <h4 className="issuerContent">{num + 1}</h4>
-  //       <h4 className="issuerContent">{issuer._id}</h4>
-  //       <h4 className="issuerContent">{issuer.title}</h4>
-  //       <button
-  //         className="issuerContentButton"
-  //         onClick={() => setIsClick(!isClick)}
-  //       >
-  //         {"인증서 요청"}
-  //       </button>
-  //       {isClick ? (
-  //         <IssuerListModal
-  //           issuer={issuer}
-  //           isSelect={isClick}
-  //           setIsSelect={setIsClick}
-  //         />
-  //       ) : (
-  //         <></>
-  //       )}
-  //     </div>
-  //   </>
-  // );
   const handleOk = async () => {
-    setModalOpen(false);
     const res = await axios({
       url: `http://localhost:9999/api/v1/credential/request-vc/${issuer._id}`,
       method: "POST",
       withCredentials: true,
       data: {
         password: password,
-        VC_title: title,
+        VC_title: VCtitle,
       },
     });
-
+    setPassword("");
+    setModalOpen(false);
     // 홀더가
     if (res.status === 200) {
       message.success("인증서 요청 성공!");
@@ -63,19 +34,25 @@ export default function IssuerList({ issuer, num }) {
 
   const handleCancel = () => {
     setModalOpen(false);
+    setPassword("");
   };
 
   return (
     <Row>
-      <Col span={6}>{issuer.title}</Col>
-      <Col span={6}></Col>
-      <Col span={6}></Col>
-      <Col span={6}>
+      <Col span={4}>{issuerUser.title || ""}</Col>
+      <Col span={4}>{issuerUser.VC_title || ""}</Col>
+      <Col span={5}>{issuerUser.VC_name || ""}</Col>
+      <Col span={3}>{issuerUser.VC_type || ""}</Col>
+      <Col span={4}>{issuer?issuer.requiredVC?issuer.requiredVC.join(","):"":""}</Col>
+      <Col span={4}>
         <button onClick={() => setModalOpen(true)}>인증서 요청</button>
         <Modal
-          title="정보제공 동의"
+          style={{ borderRadius: "50px" }}
+          title="Request Verification"
           open={modalOpen}
           onCancel={handleCancel}
+          requiredVC={issuer?issuer.requiredVC?issuer.requiredVC:"":""}
+          width="450px"
           footer={[
             <button key="submit" onClick={handleOk}>
               인증서 요청
@@ -85,15 +62,30 @@ export default function IssuerList({ issuer, num }) {
             </button>,
           ]}
         >
-          <div>정보 제공에 동의합니다.</div>
-          <div>비밀번호를 입력해주세요</div>
-          <div>
-            <input
-              type="password"
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            ></input>
+          <div className="issuerList--form">
+            <div className="issuerList--title">
+              {" "}
+              아래 정보 제공에 동의합니다.
+            </div>
+            <div className="issuerList--subtitle">
+              정보 제공 항목 :{" "}
+              <span style={{ fontWeight: "700" }}>
+                [ { issuer?issuer.requiredVC?issuer.requiredVC.join(","):"":""} ]
+              </span>
+            </div>
+
+            <div style={{ width: "100%", padding: "0 10%" }}>
+              <div>비밀번호를 입력해주세요</div>
+              <div>
+                <input
+                  className="issuerList--input"
+                  type="password"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                ></input>
+              </div>
+            </div>
           </div>
         </Modal>
       </Col>

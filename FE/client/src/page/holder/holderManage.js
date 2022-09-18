@@ -1,6 +1,6 @@
 import { Breadcrumb, Row, Col } from "antd";
 import "./style/holderManage.css";
-import Vc from "../component/vc";
+import Vc from "../../component/vc";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";

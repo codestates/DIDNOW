@@ -3,7 +3,7 @@ import { useState } from "react";
 import "./style/IssuerListModal.css";
 import axios from "axios";
 
-export default function IssuerListModal({ isSelect, setIsSelect, issuer }) {
+export default function IssuerListModal({ isSelect, setIsSelect, issuer}) {
   const [password, setPassword] = useState("");
   const [title, setTitle] = useState("");
 

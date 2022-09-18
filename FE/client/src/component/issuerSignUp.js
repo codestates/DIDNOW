@@ -1,12 +1,15 @@
 import "./style/issuerSignUp.css";
-import { Row, Col, message } from "antd";
+import { Row, Col, message, Select } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const { Option } = Select;
+
 const IssuerSignUp = () => {
   useEffect(() => {});
   useEffect(() => {}, []);
+  const requiredVCList = ["이름", "이메일", "생년월일", "전화번호", "주소"];
   const navigate = useNavigate();
   const [issuerInfo, setIssuerInfo] = useState({
     email: "",
@@ -40,6 +43,13 @@ const IssuerSignUp = () => {
         navigate("/");
       }
     }
+  };
+
+  // requiredVC 변경
+  const changeRequiredVC = (e) => {
+    setIssuerInfo((prev) => {
+      return { ...prev, requiredVC: e };
+    });
   };
   return (
     <div>
@@ -109,15 +119,25 @@ const IssuerSignUp = () => {
       </Row>
       <Row style={{ alignItems: "center" }}>
         <Col span={6} className="signup--col">
-          requiredVC
+          필수 요구사항
         </Col>
         <Col span={18}>
-          <input
-            className="issuersignup--input"
-            type="text"
-            onChange={onchange}
-            id="requiredVC"
-          ></input>
+          <Select
+            mode="tags"
+            style={{
+              width: "100%",
+              borderTop: "0",
+              borderLeft: "0",
+              borderRight: "0",
+              borderBottom: "1px solid black",
+            }}
+            placeholder=""
+            onChange={changeRequiredVC}
+          >
+            {requiredVCList.map((e, idx) => {
+              return <Option key={e}>{e}</Option>;
+            })}
+          </Select>
         </Col>
       </Row>
       <Row style={{ alignItems: "center" }}>

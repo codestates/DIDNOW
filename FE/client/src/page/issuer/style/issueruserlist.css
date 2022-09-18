@@ -1,27 +1,19 @@
-.mypage {
+.issueruserlist {
   padding: 0;
 }
 
-.mypage--breadcrumb {
+.issueruserlist--breadcrumb {
   font-size: 3rem;
   font-weight: 700;
   margin: 5% 0 0 5%;
 }
 
-.mypage--description {
+.issueruserlist--description {
   font-size: 1.5rem;
   margin: 0 0 0 5%;
 }
 
-.mypage--form {
-  margin: 5%;
-  background-color: white;
-  border-radius: 20px;
-  padding: 5% 0;
-  box-shadow: 2px 2px 5px #777777;
-}
-
-.mypage--regist {
+.issueruserlist--regist {
   border-radius: 30px;
   width: 200px;
   height: 50px;
@@ -32,11 +24,11 @@
   font-weight: 700;
 }
 
-.mypage--regist--container {
+.issueruserlist--regist--container {
   margin: 50px 0 0 0;
 }
 
-.mypage--regist:hover {
+.issueruserlist--regist:hover {
   background: linear-gradient(
     90deg,
     rgba(13, 108, 201, 1) 0%,
@@ -50,27 +42,35 @@
   -o-transform: scale(1.2); /* Opera */
 }
 
-.mypage--title {
+.issueruserlist--form {
+  margin: 5%;
+  background-color: white;
+  border-radius: 20px;
+  padding: 5% 0;
+  box-shadow: 2px 2px 5px #777777;
+}
+
+.issueruserlist--title {
   font-size: 2rem;
   font-weight: 700;
 }
 
-.mypage--sub--title {
+.issueruserlist--sub--title {
   font-size: 1.5rem;
   font-weight: 700;
   color: #777777;
-  margin: 0 0 0 0;
+  margin: 0 0 0 30%;
 }
 
-.mypage--input {
+.issueruserlist--input {
   text-indent: 15px;
   border-radius: 50px;
   width: 100%;
-  height: 2.5rem;
+  height: 3rem;
   border: 1px solid #aaaaaa;
 }
 
-.mypage--row {
+.issueruserlist--row {
   margin: 30px 0;
 }
 
@@ -87,16 +87,42 @@
   animation-name: uploadAnimateInlineOut;
 }
 
-.mypage--issuer {
+.issueruserlist--issuer {
   font-size: 1.2rem;
   font-weight: 700;
   color: #777777;
 }
-.mypage--submit {
+.issueruserlist--submit {
   width: 100%;
 }
 
-.mypage--sumbit--wrapper {
+.issueruserlist--sumbit--wrapper {
   margin: 5% 0 0 0;
   height: 50px;
+}
+
+.issueruserlist--columns--btn {
+  color: white;
+  background-color: rgb(58, 58, 58);
+  border: 0px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.hide {
+  visibility: hidden;
+}
+
+.issueruserlist--columns-input {
+  border: 1px solid #777777;
+  border-radius: 5px;
+  width: 90%;
+  text-indent: 10px;
+  height: 2rem;
+}
+
+.issueruserlist .ant-picker {
+  border: 1px solid #777777;
+  border-radius: 5px;
+  height: 2rem;
 }

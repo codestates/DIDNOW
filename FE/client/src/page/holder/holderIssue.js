@@ -2,7 +2,6 @@
 import { Button, Row, Col, Breadcrumb, Radio, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import "./style/holderIssue.css";
-import axios from "axios";
 
 const fileList = [];
 const props = {
@@ -11,8 +10,6 @@ const props = {
   defaultFileList: [...fileList],
 };
 const HolderIssue = () => {
-  
-
   return (
     <div className="holderissue">
       <Breadcrumb className="holdermanage--breadcrumb" separator=">">
@@ -135,9 +132,7 @@ const HolderIssue = () => {
             <hr />
             <Row className="holderissue--regist--container">
               <Col span={2} offset={11}>
-                <button className="holderissue--regist">
-                  등록 완료
-                </button>
+                <button className="holderissue--regist">등록 완료</button>
               </Col>
             </Row>
           </Col>

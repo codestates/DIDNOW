@@ -1,19 +1,8 @@
-.issueruserlist {
+.verifiervplist {
   padding: 0;
 }
 
-.issueruserlist--breadcrumb {
-  font-size: 3rem;
-  font-weight: 700;
-  margin: 5% 0 0 5%;
-}
-
-.issueruserlist--description {
-  font-size: 1.5rem;
-  margin: 0 0 0 5%;
-}
-
-.issueruserlist--regist {
+.verifiervplist--regist {
   border-radius: 30px;
   width: 200px;
   height: 50px;
@@ -24,11 +13,22 @@
   font-weight: 700;
 }
 
-.issueruserlist--regist--container {
+.verifiervplist--breadcrumb {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 5% 0 0 5%;
+}
+
+.verifiervplist--description {
+  font-size: 1.5rem;
+  margin: 0 0 0 5%;
+}
+
+.verifiervplist--regist--container {
   margin: 50px 0 0 0;
 }
 
-.issueruserlist--regist:hover {
+.verifiervplist--regist:hover {
   background: linear-gradient(
     90deg,
     rgba(13, 108, 201, 1) 0%,
@@ -42,7 +42,7 @@
   -o-transform: scale(1.2); /* Opera */
 }
 
-.issueruserlist--form {
+.verifiervplist--form {
   margin: 5%;
   background-color: white;
   border-radius: 20px;
@@ -50,19 +50,19 @@
   box-shadow: 2px 2px 5px #777777;
 }
 
-.issueruserlist--title {
+.verifiervplist--title {
   font-size: 2rem;
   font-weight: 700;
 }
 
-.issueruserlist--sub--title {
+.verifiervplist--sub--title {
   font-size: 1.5rem;
   font-weight: 700;
   color: #777777;
   margin: 0 0 0 30%;
 }
 
-.issueruserlist--input {
+.verifiervplist--input {
   text-indent: 15px;
   border-radius: 50px;
   width: 100%;
@@ -70,7 +70,7 @@
   border: 1px solid #aaaaaa;
 }
 
-.issueruserlist--row {
+.verifiervplist--row {
   margin: 30px 0;
 }
 
@@ -85,37 +85,4 @@
 }
 .upload-list-inline .ant-upload-animate-leave {
   animation-name: uploadAnimateInlineOut;
-}
-
-.issueruserlist--issuer {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #777777;
-}
-.issueruserlist--submit {
-  width: 100%;
-}
-
-.issueruserlist--sumbit--wrapper {
-  margin: 5% 0 0 0;
-  height: 50px;
-}
-
-.issueruserlist--columns--btn {
-  color: white;
-  background-color: rgb(58, 58, 58);
-  border: 0px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.hide {
-  visibility: hidden;
-}
-
-.issueruserlist--columns-input {
-  border: 1px solid #777777;
-  border-radius: 5px;
-  width: 90%;
-  text-indent: 10px;
 }
