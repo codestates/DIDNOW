@@ -14,6 +14,10 @@ const {
   deleteVerifier,
   getVerifier,
   getAllVerifiers,
+  updateHolder,
+  deleteHolder,
+  getHolder,
+  getAllHolders,
 } = require("../controllers/user");
 
 /*
@@ -42,7 +46,8 @@ router.get("/issuer/:issuerId", verifyToken, getIssuer);
     @ desc : 모든 Issuer를 가져옵니다.
     @ subject : Holder
 */
-router.get("/issuers", verifyToken, getAllIssuers);
+// Holder가 모든 Issuer를 출력해야됨
+router.get("/issuers", getAllIssuers);
 
 /*
     @ dev : create a Issuer User List
@@ -70,6 +75,7 @@ router.put("/issuer-user/:issuerUserId", verifyToken, updateIssuerUser);
     @ desc : 특정 Issuer User를 출력합니다. 
     @ subject : Issuer
 */
+
 router.get("/issuer-user/:issuerUserId", getIssuerUser);
 
 /*
@@ -106,5 +112,33 @@ router.get("/verifier/:verifierId", verifyToken, getVerifier);
     @ subject : Holder
 */
 router.get("/verifiers", verifyToken, getAllVerifiers);
+
+/*
+    @ dev : update Holder
+    @ desc : Verifier 정보를 업데이트 합니다.
+    @ subject : Verifier
+*/
+router.put("/holder/:holderId", verifyToken, updateHolder);
+
+/*
+    @ dev : delete Holder
+    @ desc : Holder을 삭제합니다.
+    @ subject : Holder
+*/
+router.delete("/holder/:holderId", verifyToken, deleteHolder);
+
+/*
+    @ dev : get a Holder
+    @ desc : 특정 Holder를 출력합니다.
+    @ subject : Holder
+*/
+router.get("/holder/:holderId", verifyToken, getHolder);
+
+/*
+    @ dev : get All Holders
+    @ desc : 모든 Holder를 출력합니다.
+    @ subject : Holder
+*/
+router.get("/holders", verifyToken, getAllHolders);
 
 module.exports = router;

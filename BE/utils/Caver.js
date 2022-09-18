@@ -28,7 +28,7 @@ async function testFunction() {
 async function contractFunction() {
   const contractInstance = new caver.contract(
     abi,
-    "0xf95BA0302Bc3a97A89F8d2532C08888d08e2dc80"
+    process.env.DIDCONTRACT_ADDRESS
   );
   // console.log(contractInstance);
   // console.log(contractInstance.options.address);

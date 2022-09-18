@@ -348,9 +348,9 @@ contract DIDContract is MixinDidStorage, IDid {
                     encodePubKeyAndAddr(singer, address(0))
                 );
             }
-            if (signer != msg.sender && signer != tx.origin) {
-                return (false, "signer != msg.sender && signer != tx.origin");
-            }
+            // if (signer != msg.sender && signer != tx.origin) {
+            //     return (false, "signer != msg.sender && signer != tx.origin");
+            // }
             // self sign
             if (signer == didAddr) {
                 return (true, did);

@@ -4,7 +4,7 @@ const Verifier = require("../models/Verifier");
 const KeyPair = require("../models/KeyPairs");
 const Wallet = require("../models/Wallet");
 const { genKey } = require("../utils/keyPairGenerator");
-const { genWallet, addService }  = require("../utils/UseCaver")
+const { genWallet, addProof }  = require("../utils/UseCaver")
 
 const bcrypt = require("bcrypt");
 const createError = require("../utils/Error");
@@ -58,10 +58,10 @@ const registerIssuer = async (req, res, next) => {
     try{
       //DID Docuement에 publicKey 등록
       const did = "did:klay:"+WalletPublicKey.slice(2);
-      addService(did,"registeredId",publicKey,WalletPrivateKey);
+      addProof(did, publicKey, process.env.PRIVATE_KEY_KAIKAS)
 
     }catch(err){
-
+      console.log(err);
     }
 
     // Wallet 저장
@@ -98,8 +98,7 @@ const registerHolder = async (req, res, next) => {
     
     //Holder의 지갑 생성
     const {WalletPublicKey,WalletPrivateKey} = genWallet();
-    console.log('WalletPublicKey type : ', typeof WalletPublicKey)
-    console.log('WalletPrivateKey type: ', typeof WalletPrivateKey)
+    
 
     const newHolder = new Holder({ ...req.body, password: hashedPassword, walletAddress : WalletPublicKey });
 
@@ -118,7 +117,7 @@ const registerHolder = async (req, res, next) => {
     });
     //DID Docuement에 publicKey 등록
     const did = "did:klay:"+WalletPublicKey.slice(2);
-    addService(did,"registeredId",publicKey,WalletPrivateKey);
+    addProof(did, publicKey, process.env.PRIVATE_KEY_KAIKAS);
 
     // 새로운 Holder 저장
     await newHolder.save();
@@ -148,19 +147,6 @@ const registerVerifier = async (req, res, next) => {
     
     // 새로운 Verifier 저장
     const savedVerifier = await newVerifier.save();
-
-    // Verifier의 pubKey, privateKey 생성
-    const { publicKey, privateKey } = genKey();
-
-    // Issuer의 key pair 저장
-    const newKeyPairs = new KeyPair({
-      ownerOf: savedVerifier._id,
-      pubKey: publicKey,
-      privateKey: privateKey,
-    });
-
-    await newKeyPairs.save();
-
 
     res.status(200).json("Verifier가 등록되었습니다.");
   } catch (error) {
@@ -293,7 +279,7 @@ const loginVerifier = async (req, res, next) => {
 const logout = (req, res, next) => {
   try {
     res
-      .cookie("AccessToken", "none")
+      .clearCookie()
       .status(200)
       .json("성공적으로 Logout 되었습니다.");
   } catch (error) {
