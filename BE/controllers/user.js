@@ -184,7 +184,7 @@ const getIssuerUser = async (req, res, next) => {
     @ subject : Issuer
 */
 const getAllIssuerUsers = async (req, res, next) => {
-  if (req.params.issuerId === req.user.id) {
+  if (req.params.issuerId) {
     try {
       const issuerUserInfos = await IssuerUserList.find();
       res.status(200).json(issuerUserInfos);
