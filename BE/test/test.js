@@ -1,4 +1,2 @@
-const d = ""
-let count=0;
-while(count<1000000000){count++}
-console.log(d=="");
+const bcrypt = require('bcrypt');
+bcrypt.compare('1111', '1111').then(res=>console.log(res))

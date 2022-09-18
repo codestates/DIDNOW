@@ -10,10 +10,6 @@ let HolderObj = {};
 let VerifierObj = {};
 let cookie = "";
 
-const sleep = (time) =>{
-    setTimeout(()=>{
-    },time*1000)
-}
 
 describe("🚀 VC 인증 준비(회원가입+로그인+UserList 생성)", () => {
   // Issuer 회원가입
