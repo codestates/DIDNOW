@@ -19,7 +19,8 @@
     "@react-three/fiber": "7.0.26",
     "react-typed": "^1.2.0",
     "three": "0.143.0",
-    "three-stdlib": "^2.15.0"
+    "three-stdlib": "^2.15.0",
+    "react-icons": "^4.3.1"
 
   },
   "scripts": {

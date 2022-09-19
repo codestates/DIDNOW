@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -14,67 +10,4 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-
-#root,
-.bg,
-canvas {
-  margin: 0;
-  padding: 0;
-  /* width: 100%; */
-  height: 100vh;
-}
-
-
-.bg {
-  position: absolute;
-  background: radial-gradient(at 50% 100%, #873740 0%, #272730 40%, #171720 80%, #070710 100%);
-}
-
-body {
-  background-color: #070710;
-}
-
-.layer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(0deg, rgba(63, 12, 88, 0.25) 0%, transparent 100%);
-  pointer-events: none;
-}
-
-.css-selector {
-    background: linear-gradient(269deg, #ffffff, #01beb4, #00faed, #0083d2);
-    background-clip:text;
-        background-size: 600% 600%;
-
-    /* -webkit-background-clip: text; */
-    color:transparent;
-    -webkit-animation: AnimationName 12s ease infinite;
-    -moz-animation: AnimationName 12s ease infinite;
-    -o-animation: AnimationName 12s ease infinite;
-    animation: AnimationName 12s ease infinite;
-}
-@-webkit-keyframes AnimationName {
-    0%{background-position:0% 48%}
-    50%{background-position:100% 53%}
-    100%{background-position:0% 48%}
-}
-@-moz-keyframes AnimationName {
-    0%{background-position:0% 48%}
-    50%{background-position:100% 53%}
-    100%{background-position:0% 48%}
-}
-@-o-keyframes AnimationName {
-    0%{background-position:0% 48%}
-    50%{background-position:100% 53%}
-    100%{background-position:0% 48%}
-}
-@keyframes AnimationName {
-    0%{background-position:0% 48%}
-    50%{background-position:100% 53%}
-    100%{background-position:0% 48%}
 }
