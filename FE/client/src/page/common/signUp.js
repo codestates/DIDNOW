@@ -19,15 +19,15 @@ const SignUp = ({ user }) => {
   }, [user.type, navigate]);
   useEffect(() => {});
 
-  let renderByway = "";
+  let renderByWay = "";
   if (way === "" || way === "company") {
-    renderByway = <SingUpChoice way={way} setWay={setWay} />;
+    renderByWay = <SingUpChoice way={way} setWay={setWay} />;
   } else if (way === "holder") {
-    renderByway = <HolderSignUp />;
+    renderByWay = <HolderSignUp />;
   } else if (way === "issuer") {
-    renderByway = <IssuerSignUp />;
+    renderByWay = <IssuerSignUp />;
   } else if (way === "verifier") {
-    renderByway = <VerifierSignUp />;
+    renderByWay = <VerifierSignUp />;
   } else {
     <>오류 발생</>;
   }
@@ -40,7 +40,7 @@ const SignUp = ({ user }) => {
             <div className="signup--right">
               <div className="signup--canvas">
                 {/* first choice holder or company(issuer or verifier) */}
-                {renderByway}
+                {renderByWay}
               </div>
             </div>
           </Col>

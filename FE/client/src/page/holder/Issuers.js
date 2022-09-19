@@ -85,11 +85,9 @@ const Issuers = () => {
             <hr />
 
             <Row className="holderissue--row">
-              <Col span={4}>기관명</Col>
-              <Col span={4}>인증서 제목</Col>
-              <Col span={5}>인증서 이름</Col>
-              <Col span={3}>인증서 타입</Col>
-              <Col span={4}>필수제공 목록</Col>
+              <Col span={6}>기관명</Col>
+              <Col span={6}>인증서 제목</Col>
+              <Col span={8}>필수제공 목록</Col>
               <Col span={4}>비고</Col>
             </Row>
             {issuerUserList.map((e, idx) => {

@@ -39,11 +39,9 @@ export default function IssuerList({ issuer, issuerUser }) {
 
   return (
     <Row>
-      <Col span={4}>{issuerUser.title || ""}</Col>
-      <Col span={4}>{issuerUser.VC_title || ""}</Col>
-      <Col span={5}>{issuerUser.VC_name || ""}</Col>
-      <Col span={3}>{issuerUser.VC_type || ""}</Col>
-      <Col span={4}>{issuer?issuer.requiredVC?issuer.requiredVC.join(","):"":""}</Col>
+      <Col span={6}>{issuerUser.title || ""}</Col>
+      <Col span={6}>{issuerUser.VC_title || ""}</Col>
+      <Col span={8}>{issuer?issuer.requiredVC?issuer.requiredVC.join(","):"":""}</Col>
       <Col span={4}>
         <button onClick={() => setModalOpen(true)}>인증서 요청</button>
         <Modal
@@ -68,7 +66,7 @@ export default function IssuerList({ issuer, issuerUser }) {
               아래 정보 제공에 동의합니다.
             </div>
             <div className="issuerList--subtitle">
-              정보 제공 항목 :{" "}
+              정보 제공 항목 :
               <span style={{ fontWeight: "700" }}>
                 [ { issuer?issuer.requiredVC?issuer.requiredVC.join(","):"":""} ]
               </span>

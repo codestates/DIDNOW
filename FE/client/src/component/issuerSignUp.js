@@ -17,6 +17,7 @@ const IssuerSignUp = () => {
     title: "",
     requiredVC: "",
     desc: "",
+    walletAddress: "",
   });
   const [isCorrect, setIsCorrect] = useState(false);
   const onchange = (e) => {
@@ -150,6 +151,19 @@ const IssuerSignUp = () => {
             type="text"
             onChange={onchange}
             id="desc"
+          />
+        </Col>
+      </Row>
+      <Row style={{ alignItems: "center" }}>
+        <Col span={6} className="signup--col">
+          지갑 주소
+        </Col>
+        <Col span={18}>
+          <input
+            className="issuersignup--input"
+            type="text"
+            onChange={onchange}
+            id="walletAddress"
           />
         </Col>
       </Row>

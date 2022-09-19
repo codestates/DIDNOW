@@ -117,7 +117,7 @@ const HolderManage = () => {
                   등록된 인증서가 없습니다.
                 </div>
                 <div style={{ fontSize: "1.5rem" }}>
-                  <Link to="/holderissue">📝 인증서 등록하러 가기</Link>
+                  <Link to="/holder/issue">📝 인증서 등록하러 가기</Link>
                 </div>
               </>
             )}

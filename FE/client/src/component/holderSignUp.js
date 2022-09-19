@@ -1,11 +1,13 @@
 import "./style/holderSignUp.css";
-import { Row, Col, message } from "antd";
+import { Row, Col, message, DatePicker } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const HolderSignUp = () => {
-  useEffect(() => {});
+  useEffect(() => {
+    console.log(userInfo);
+  });
   useEffect(() => {}, []);
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
@@ -22,11 +24,6 @@ const HolderSignUp = () => {
   };
   const validate = async () => {
     try {
-      const YYYY = userInfo.birth.slice(0, 4);
-      const MM = userInfo.birth.slice(4, 6);
-      const DD = userInfo.birth.slice(6);
-      const birth = `${YYYY}-${MM}-${DD}`;
-
       if (isCorrect === true) {
         let res = await axios({
           url: `http://localhost:9999/api/v1/auth/register-holder`,
@@ -36,7 +33,7 @@ const HolderSignUp = () => {
             password: userInfo.password,
             username: userInfo.username,
             walletAddress: userInfo.walletAddress,
-            birthDay: birth,
+            birthDay: userInfo.birth,
           },
           withCredentials: true,
         });
@@ -52,6 +49,15 @@ const HolderSignUp = () => {
       console.log("fail");
       message.error("회원 가입 실패!!");
     }
+  };
+
+  const changeDate = (date, dateString) => {
+    setUserInfo((prev) => {
+      return {
+        ...prev,
+        birth: dateString,
+      };
+    });
   };
 
   return (
@@ -141,12 +147,15 @@ const HolderSignUp = () => {
           생년월일
         </Col>
         <Col span={18}>
-          <input
-            type="text"
-            onChange={onchange}
-            id="birth"
-            placeholder="e.g) YYYYMMDD"
-            className="holdersignup--input"
+          <DatePicker
+            style={{
+              width: "100%",
+              borderTop: "0",
+              borderBottom: "1px solid black",
+              borderLeft: "0",
+              borderRight: "0",
+            }}
+            onChange={changeDate}
           />
         </Col>
       </Row>

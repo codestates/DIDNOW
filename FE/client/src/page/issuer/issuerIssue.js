@@ -1,38 +1,34 @@
-import { Breadcrumb, Row, Col, message } from "antd";
+import { Breadcrumb, Row, Col, message, Select } from "antd";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./style/issuerissue.css";
 
+const {Option} = Select;
 const IssuerIssue = ({ user, type }) => {
-  const [vc, setVc] = useState({
-    credentialTitle: "",
-    credentialName: "",
-    credentialType: "",
+  const [vcTitle, setVcTitle] = useState({
+    credentialTitle: ""
   });
   const onchange = (e) => {
-    setVc((prevVc) => {
-      return {
-        ...prevVc,
-        [e.target.id]: e.target.value,
-      };
-    });
+    console.log(e);
+    setVcTitle(e);
   };
 
   const submitVc = () => {
     axios({
       url: "http://localhost:9999/api/v1/credential/verifiable-credential",
       method: "POST",
-      data: vc,
+      data: vcTitle,
       withCredentials: true,
     })
       .then(() => {
         message.success("인증서 등록 성공!!");
-        setVc({ credentialName: "", credentialTitle: "", credentialType: "" });
       })
       .catch(() => {
         message.error("인증서 등록 실패!!");
       });
   };
+
+  const vcList = ["졸업증명서", "출입국증명서", "성인인증서", "수료증", "All"]
   useEffect(() => {});
   return (
     <div className="issuerissue">
@@ -40,8 +36,7 @@ const IssuerIssue = ({ user, type }) => {
         <Breadcrumb.Item href="/">홈</Breadcrumb.Item>
         <Breadcrumb.Item href="/issuerissue">인증서 등록</Breadcrumb.Item>
       </Breadcrumb>
-      <div className="issuerissue--description">{`인증서 발급 대상자에게 인증서를 발급할 수 있습니다.`}</div>
-      <div className="issuerissue--description">{`※ 인증서 발급 완료 시 발급 대상자에게 자동알림이 가며, 커리어 회원이 아닌 경우 발송이 원활하지 않을 수 있습니다.`}</div>
+      <div className="issuerissue--description">{`Issuer가 발급하는 Verifiable Credential을 등록합니다.`}</div>
       <div className="issuerissue--form">
         <Row className="issuerissue--row">
           <Col span={20} offset={2}>
@@ -69,51 +64,15 @@ const IssuerIssue = ({ user, type }) => {
                 <span className="issuerissue--sub--title">인증서 제목</span>
               </Col>
               <Col span={16}>
-                <input
-                  className="issuerissue--input"
-                  type="text"
-                  placeholder="e.g) 졸업증명서"
-                  id="credentialTitle"
-                  onChange={onchange}
-                  value={vc.credentialTitle}
-                />
+                <Select style={{width:"50%", height:"100%"}} placeholder="발급하실 인증서를 선택해주세요." onChange={onchange}>
+                  {vcList.map((e) => {
+                    return <Option key={e}>{e}</Option>
+                  })}
+                </Select>
               </Col>
               <Col span={2}></Col>
             </Row>
 
-            <Row className="issuerissue--row">
-              <Col span={6}>
-                <span className="issuerissue--sub--title">인증서 이름</span>
-              </Col>
-              <Col span={16}>
-                <input
-                  className="issuerissue--input"
-                  type="text"
-                  placeholder="e.g) 블록체인 개발자"
-                  id="credentialName"
-                  onChange={onchange}
-                  value={vc.credentialName}
-                />
-              </Col>
-              <Col span={2}></Col>
-            </Row>
-
-            <Row className="issuerissue--row">
-              <Col span={6}>
-                <span className="issuerissue--sub--title">인증서 타입</span>
-              </Col>
-              <Col span={16}>
-                <input
-                  className="issuerissue--input"
-                  type="text"
-                  placeholder="e.g) 5기수"
-                  id="credentialType"
-                  onChange={onchange}
-                  value={vc.credentialType}
-                />
-              </Col>
-              <Col span={2}></Col>
-            </Row>
             <hr />
             <Row className="issuerissue--sumbit--wrapper">
               <Col span={6} offset={9}>

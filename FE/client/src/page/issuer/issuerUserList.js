@@ -65,7 +65,6 @@ const IssuerUserList = () => {
     cr_birthDate: "",
     cr_certificateType: "",
     cr_certificateName: "",
-    cr_certificateTitle: "",
     cr_certificateDate: "",
     cr_Nationality: "",
     cr_address: "",
@@ -105,7 +104,6 @@ const IssuerUserList = () => {
           cr_birthDate: "",
           cr_certificateType: "",
           cr_certificateName: "",
-          cr_certificateTitle: "",
           cr_certificateDate: "",
           cr_Nationality: "",
           cr_address: "",
@@ -226,18 +224,6 @@ const IssuerUserList = () => {
               </Col>
             </Row>
             <Row>
-              <Col span={5}>인증서 제목</Col>
-              <Col span={12}>
-                <input
-                  className="issueruserlist--columns-input"
-                  type="text"
-                  id="cr_certificateTitle"
-                  onChange={onchange}
-                  value={userListObj.cr_certificateTitle}
-                />
-              </Col>
-            </Row>
-            <Row>
               <Col span={5}>인증서 이름</Col>
               <Col span={12}>
                 <input
@@ -285,19 +271,20 @@ const IssuerUserList = () => {
             </Row>
 
             <Row>
-              <Col span={5}>인증일자</Col>
-              <Col span={12}>
-                <DatePicker
-                  onChange={certDateChange}
-                  style={{ width: "90%" }}
-                />
-              </Col>
-            </Row>
-            <Row>
               <Col span={5}>생년월일</Col>
               <Col span={12}>
                 <DatePicker
                   onChange={birthDateChange}
+                  style={{ width: "90%" }}
+                />
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span={5}>인증일자</Col>
+              <Col span={12}>
+                <DatePicker
+                  onChange={certDateChange}
                   style={{ width: "90%" }}
                 />
               </Col>
@@ -324,20 +311,19 @@ const IssuerUserList = () => {
             </Row>
 
             <Row style={{ margin: "50px 0 ", justifyContent: "center" }}>
-              <button onClick={submitUserList}>등록하기</button>
+              <button className="issueruserlist--submit" onClick={submitUserList}>등록하기</button>
             </Row>
+            <Row><div className="issueruserlist--subtitle">Issuer User List</div></Row>
             <hr />
-
             {userList.map((el, idx) => {
               return (
                 <Row key={idx}>
                   <Col span={3}>{el.cr_name || "null"}</Col>
                   <Col span={5}>{el.cr_email || "null"}</Col>
-                  <Col span={4}>{el.cr_birthDate || "null"}</Col>
-                  <Col span={4}>{el.cr_certificateTitle || "null"}</Col>
+                  <Col span={4}>{el.cr_birthDate.slice(0, 10) || "null"}</Col>
                   <Col span={4}>{el.cr_certificateName || "null"}</Col>
                   <Col span={4}>{el.cr_certificateType || "null"}</Col>
-                  <Col span={4}>{el.cr_certificateDate || "null"}</Col>
+                  <Col span={4}>{el.cr_certificateDate.slice(0, 10) || "null"}</Col>
                   <Col span={2}>{el.cr_Nationality || "null"}</Col>
                   <Col span={2}>{el.cr_isAdult === true ? "O" : "X"}</Col>
                 </Row>

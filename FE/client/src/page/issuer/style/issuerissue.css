@@ -94,7 +94,27 @@
 }
 .issuerissue--submit {
   width: 100%;
+  height: 3rem;
+  margin: 20px auto;
+  cursor: pointer;
+  border-radius: 20px;
+  border: 1px solid #777777;
+  background-color: white;
+  box-shadow: 2px 2px 5px #777777;
+  font-size: 1.2rem;
+  font-weight: 700;
 }
+
+.issuerissue--submit:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(13, 108, 201, 1) 0%,
+    rgba(22, 178, 166, 1) 100%
+  );
+  color: white;
+  cursor: pointer;
+}
+
 
 .issuerissue--sumbit--wrapper {
   margin: 5% 0 0 0;
