@@ -51,3 +51,8 @@ npx artillery report StressTest/02_CloseVerifyRequestTest.json
 ![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FPNr7R%2FbtrMlj0IxDn%2FA6di0oZd045WlWtdzYMKek%2Fimg.png)  
 
 ![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcXC6ep%2FbtrMqr4ym8h%2Fe6HcKkPUE9Saay8dNp9e01%2Fimg.png) 
+
+
+## **Reference**
+1. [YAML to JSON](https://onlineyamltools.com/convert-yaml-to-json)  
+2. [Artillery 공식 홈페이지](https://www.artillery.io/)  
