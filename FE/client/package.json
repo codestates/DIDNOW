@@ -14,7 +14,13 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@react-three/drei": "8.11.0",
+    "@react-three/fiber": "7.0.26",
+    "react-typed": "^1.2.0",
+    "three": "0.143.0",
+    "three-stdlib": "^2.15.0"
+
   },
   "scripts": {
     "start": "react-scripts start",
@@ -39,5 +45,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+   "devDependencies": {
+    "autoprefixer": "^10.4.4",
+    "postcss": "^8.4.12",
+    "tailwindcss": "^3.0.24"
   }
+
+
 }
