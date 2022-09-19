@@ -31,7 +31,7 @@
                 },
                 {
                     "post": {
-                        "url": "/api/v1/credential/request-vc/6326dcef9d3a060e8cf36699",
+                        "url": "/api/v1/credential/request-vc/63280c1fe88e1a7e7dc5de73",
                         "json": {
                             "password": "1111",
                             "VC_title": "test VC"
@@ -46,10 +46,10 @@
                 },
                 {
                     "post": {
-                        "url": "/api/v1/credential/verifier/request-auth/:6326dcf19d3a060e8cf366a5",
+                        "url": "/api/v1/credential/verifier/request-auth/:63280c23e88e1a7e7dc5de80",
                         "json": {
                             "password": "1111",
-                            "vc_list": "6326f02a075991c1677b56ef",
+                            "vc_list": "63280e427a12d2cde94101cd",
                             "completeAt": ""
                         }
                     }
