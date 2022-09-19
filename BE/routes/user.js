@@ -111,7 +111,7 @@ router.get("/verifier/:verifierId", verifyToken, getVerifier);
     @ desc : 모든 Verifier를 출력합니다.
     @ subject : Holder
 */
-router.get("/verifiers", verifyToken, getAllVerifiers);
+router.get("/verifiers", getAllVerifiers);
 
 /*
     @ dev : update Holder
