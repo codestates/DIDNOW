@@ -98,7 +98,6 @@ const registerHolder = async (req, res, next) => {
     
     //Holder의 지갑 생성
     const {WalletPublicKey,WalletPrivateKey} = genWallet();
-    
 
     const newHolder = new Holder({ ...req.body, password: hashedPassword, walletAddress : WalletPublicKey });
 

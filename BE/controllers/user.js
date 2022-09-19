@@ -1,9 +1,11 @@
 const Issuer = require("../models/Issuer");
 const IssuerUserList = require("../models/IssuerUserList");
 const Verifier = require("../models/Verifier");
-const Holder = require('../models/Holder')
+const Holder = require("../models/Holder");
 const createError = require("../utils/Error");
-
+const { addHash } = require("../utils/UseCaver");
+const VerifiableCredential = require("../models/VerifiableCredential");
+const Wallets = require("../models/Wallet");
 /*
     @ dev : update Issuer
     @ desc : Issuer를 업데이트 합니다.
@@ -82,11 +84,46 @@ const getAllIssuers = async (req, res, next) => {
 /*
     @ dev : create a Issuer User List
     @ desc : 새로운 Issuer User List를 생성합니다.
+        - Issuer User List가 생성될 때 DID-Document에 Holder 추가
     @ subject : Issuer
 */
 const createIssuerUser = async (req, res, next) => {
   if (req.params.issuerId === req.user.id) {
     try {
+      try{
+        const issuer = await Issuer.findById(req.user.id);
+        const holder = await Holder.findById(req.body.holderId);
+        const IssuerDID = "did:klay:" + issuer.walletAddress.slice(2);
+        const HolderDID = "did:klay:" + holder.walletAddress.slice(2);
+        const VC_Info = await VerifiableCredential.findOne({
+          ownerId: req.params.issuerId,
+        });
+        const issuerWallet = await Wallets.findOne({
+          ownerOf: req.params.issuerId,
+        }); 
+        const VC_tileNameType =
+        "/" +
+        VC_Info.credentialTitle +
+        "/" +
+        req.body.cr_certificateType +
+        "/" +
+        req.body.cr_certificateName;
+
+        // Issuer DID Document Update
+        let start = new Date();
+        await addHash(
+          IssuerDID,
+          HolderDID + VC_tileNameType,
+          "",
+          issuerWallet.privateKey
+        );
+        const tx1 = new Date();
+        console.log('Blockchain 1(addHash(IssuerDID)) : ', tx1-start,'ms')
+
+      }catch(err){
+        console.log(err);
+      }
+
       const newIssuerUser = new IssuerUserList({
         ...req.body,
         organizationId: req.user.id,

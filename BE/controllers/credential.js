@@ -31,7 +31,6 @@ const requestVC = async (req, res, next) => {
       /* DB 데이터 읽기 */
       // 현재 로그인한 Holder의 정보로 Holder 검색
       const candidate = await Holder.findById(req.user.id);
-      const issuer = await Issuer.findById(req.params.issuerId);
       
       // Holder의 정보로 Issuer에 등록된 IssuerUserList 검색
       const candidateInfo = await IssuerUserList.findOne({
@@ -91,19 +90,14 @@ const requestVC = async (req, res, next) => {
       // 디지털서명 3단계 : 서명된 VC를 인코딩 후 블록체인에 저장
       // 서명된 VC 인코딩
       const enc_SignedVC = Buffer.from(signedVC.signature).toString("hex");
-      // const dec_SigendVC = new Uint8Array(Buffer.from(enc_SignedVC, 'hex'))
-      // console.log('dec_SigendVC : ', dec_SigendVC);
 
-      
       const mid2 = new Date();
       console.log('Verifiable Credential 발급 : ', (mid2 - start),'ms');
 
       /* Blockchain 접근 */
-      start = new Date();
       try {
         // DID Document
         const holderDID = "did:klay:" + candidate.walletAddress.slice(2);
-        const IssuerDID = "did:klay:" + issuer.walletAddress.slice(2);
         const VC_tileNameType =
           "/" +
           VC_Info.credentialTitle +
@@ -111,21 +105,6 @@ const requestVC = async (req, res, next) => {
           candidateInfo.cr_certificateType +
           "/" +
           candidateInfo.cr_certificateName;
-
-        //Get Issuer PrivateKey
-        const issuerWallet = await Wallets.findOne({
-          ownerOf: req.params.issuerId,
-         }); 
-
-        // Issuer DID Document Update
-        await addHash(
-          IssuerDID,
-          holderDID + VC_tileNameType,
-          "",
-          issuerWallet.privateKey
-        );
-        const tx1 = new Date();
-        console.log('Blockchain 1(addHash(IssuerDID)) : ', tx1-start,'ms')
 
         start = new Date();
 

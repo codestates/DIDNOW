@@ -23,6 +23,10 @@ const HolderSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    IssuerList : {
+      type : Array,
+      reqruied : true,
+    }
   },
   {
     timestamps: true,
