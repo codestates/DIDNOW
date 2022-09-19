@@ -6,7 +6,7 @@
                 "duration": 60,
                 "arrivalRate": 8,
                 "name": "Holder Test"
-            }
+            } 
         ]
     },
     "scenarios": [

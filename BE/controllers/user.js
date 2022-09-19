@@ -82,6 +82,7 @@ const getAllIssuers = async (req, res, next) => {
 /*
     @ dev : create a Issuer User List
     @ desc : 새로운 Issuer User List를 생성합니다.
+        - Issuer User List가 생성될 때 DID-Document에 Holder 추가
     @ subject : Issuer
 */
 const createIssuerUser = async (req, res, next) => {
