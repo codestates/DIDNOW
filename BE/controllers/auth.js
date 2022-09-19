@@ -51,7 +51,7 @@ const registerIssuer = async (req, res, next) => {
     try{
       //DID Docuement에 publicKey 등록
       const did = "did:klay:"+WalletPublicKey.slice(2);
-      addProof(did, publicKey, process.env.PRIVATE_KEY_KAIKAS)
+      addProof(did, publicKey, WalletPrivateKey)
 
     }catch(err){
       console.log(err);
@@ -108,7 +108,7 @@ const registerHolder = async (req, res, next) => {
     });
     //DID Docuement에 publicKey 등록
     const did = "did:klay:"+WalletPublicKey.slice(2);
-    addProof(did, publicKey, process.env.PRIVATE_KEY_KAIKAS);
+    addProof(did, publicKey, WalletPrivateKey);
 
     // 새로운 Holder 저장
     await newHolder.save();
