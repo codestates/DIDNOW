@@ -7,6 +7,7 @@ const HolderVC_List = require("../models/HolderVC_List");
 const createError = require("../utils/Error");
 const Issuer = require("../models/Issuer");
 const KeyPairs = require("../models/KeyPairs");
+const Wallets = require("../models/Wallet");
 const secp256k1 = require("secp256k1");
 const CryptoJS = require("crypto-js");
 const {
@@ -111,24 +112,33 @@ const requestVC = async (req, res, next) => {
           "/" +
           candidateInfo.cr_certificateName;
 
-          
+        //Get Issuer PrivateKey
+        const issuerWallet = await Wallets.findOne({
+          ownerOf: req.params.issuerId,
+         }); 
+
         // Issuer DID Document Update
         await addHash(
           IssuerDID,
           holderDID + VC_tileNameType,
           "",
-          process.env.PRIVATE_KEY_KAIKAS
+          issuerWallet.privateKey
         );
         const tx1 = new Date();
         console.log('Blockchain 1(addHash(IssuerDID)) : ', tx1-start,'ms')
 
         start = new Date();
+
+        //Get Holder PrivateKey
+        const holderWallet = await Wallets.findOne({
+          ownerOf: req.user.id,
+         });
         // Holder DID Document Update
         await addHash(
           holderDID,
           holderDID + VC_tileNameType,
           enc_SignedVC,
-          process.env.PRIVATE_KEY_KAIKAS
+          holderWallet.privateKey
         );
         const tx2 = new Date();
         console.log('Blockchain 1(addHash(HolderDID)) : ', tx2-start,'ms')

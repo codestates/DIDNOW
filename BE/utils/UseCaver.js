@@ -3,9 +3,14 @@ const caver = new Caver("https://api.baobab.klaytn.net:8651/");
 const dotenv = require("dotenv");
 dotenv.config();
 const contractAddress = process.env.DIDCONTRACT_ADDRESS;
-const testDID = "did:klay:7423de10c75b1d4d1f30a4d81386e3aaf22584f3";
 
 const abi = require("./abi");
+
+// 서버가 실행될 때 서버 프라이빗 키를 월렛에 등록하여 키링을 생성
+const serverKeyring = caver.wallet.keyring.createFromPrivateKey(
+process.env.PRIVATE_KEY_KAIKAS
+);
+caver.wallet.add(serverKeyring)
 
 /*
     @ dev : Generate Klaytn Wallet
@@ -41,28 +46,48 @@ const getProof = async (did) => {
     @param signKey : 요청을 보내는 sender의 Private Key(클레이튼 프라이빗 키)
 */
 const addProof = async (did, proof, signKey) => {
-  let keyring;
-  const keyringFromPrivateKey =
-    caver.wallet.keyring.createFromPrivateKey(signKey);
+  const sender =
+  caver.wallet.keyring.createFromPrivateKey(signKey);
 
+  //월렛이 등록 안되어 있으면 사인키를 월렛에 등록
   try {
-    caver.wallet.add(keyringFromPrivateKey);
-    keyring = keyringFromPrivateKey;
+    caver.wallet.add(sender);
   } catch (err) {
-    caver.wallet.updateKeyring(keyringFromPrivateKey);
-    keyring = keyringFromPrivateKey;
   }
 
-  try {
-    const contractInstance = new caver.contract(abi, contractAddress);
-    await contractInstance.methods.addProof(did, proof).send({
-      from: keyring._address,
-      gas: "7500000",
+    const _input = caver.abi.encodeFunctionCall({
+		"constant": false,
+		"inputs": [
+			{
+				"name": "did",
+				"type": "string"
+			},
+			{
+				"name": "proofPubKey",
+				"type": "string"
+			}
+		],
+		"name": "addProof",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}, [did, proof]);
+
+    // Create value transfer transaction
+    const executionTx = await caver.transaction.feeDelegatedSmartContractExecution.create({
+        from: sender.address,
+        feePayer: serverKeyring.address,
+        to : contractAddress,
+        input: _input,
+        gas: 1000000000,
     });
-  } catch (error) {
-    console.log(error);
-  }
+
+     const signedSender = await caver.wallet.sign(sender.address, executionTx);
+     const signed  = await caver.wallet.signAsFeePayer(serverKeyring.address, signedSender);
+     const receipt = await caver.rpc.klay.sendRawTransaction(signed);
 };
+
 
 /*
     @ dev : Add VCId And Type For Verifying VC
@@ -73,26 +98,50 @@ const addProof = async (did, proof, signKey) => {
     @param signKey : 요청을 보내는 sender의 Private Key(클레이튼 프라이빗 키)
 */
 const issueVC = async (did, id, type, signKey) => {
-  let keyring;
-  const keyringFromPrivateKey =
-    caver.wallet.keyring.createFromPrivateKey(signKey);
+  const sender =
+  caver.wallet.keyring.createFromPrivateKey(signKey);
 
+  //월렛이 등록 안되어 있으면 사인키를 월렛에 등록
   try {
-    caver.wallet.add(keyringFromPrivateKey);
-    keyring = keyringFromPrivateKey;
+    caver.wallet.add(sender);
   } catch (err) {
-    caver.wallet.updateKeyring(keyringFromPrivateKey);
-    keyring = keyringFromPrivateKey;
   }
-  try {
-    const contractInstance = new caver.contract(abi, contractAddress);
-    await contractInstance.methods.issueVC(did, id, type).send({
-      from: keyring._address,
-      gas: "7500000",
+
+    const _input = caver.abi.encodeFunctionCall({
+		"constant": false,
+		"inputs": [
+			{
+				"name": "did",
+				"type": "string"
+			},
+			{
+				"name": "vcId",
+				"type": "string"
+			},
+			{
+				"name": "_hash",
+				"type": "string"
+			}
+		],
+		"name": "addVC",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}, [did, id, type]);
+
+    // Create value transfer transaction
+    const executionTx = await caver.transaction.feeDelegatedSmartContractExecution.create({
+        from: sender.address,
+        feePayer: serverKeyring.address,
+        to : contractAddress,
+        input: _input,
+        gas: 1000000000,
     });
-  } catch (error) {
-    console.log(error);
-  }
+
+     const signedSender = await caver.wallet.sign(sender.address, executionTx);
+     const signed  = await caver.wallet.signAsFeePayer(serverKeyring.address, signedSender);
+     const receipt = await caver.rpc.klay.sendRawTransaction(signed);
 };
 
 /*
@@ -104,26 +153,52 @@ const issueVC = async (did, id, type, signKey) => {
     @param signKey : 요청을 보내는 sender의 Private Key(클레이튼 프라이빗 키)
 */
 const addHash = async (did, id, hash, signKey) => {
-  let keyring;
-  const keyringFromPrivateKey =
-    caver.wallet.keyring.createFromPrivateKey(signKey);
-
+  const sender =
+  caver.wallet.keyring.createFromPrivateKey(signKey);
+    console.log(did)
+    console.log(sender.address)
+    console.log(id)
+    console.log(hash)
+  //월렛이 등록 안되어 있으면 사인키를 월렛에 등록
   try {
-    caver.wallet.add(keyringFromPrivateKey);
-    keyring = keyringFromPrivateKey;
+    caver.wallet.add(sender);
   } catch (err) {
-    caver.wallet.updateKeyring(keyringFromPrivateKey);
-    keyring = keyringFromPrivateKey;
   }
-  try {
-    const contractInstance = new caver.contract(abi, contractAddress);
-    await contractInstance.methods.issueVC(did, id, hash).send({
-      from: keyring._address,
-      gas: "7500000",
+
+    const _input = caver.abi.encodeFunctionCall({
+		"constant": false,
+		"inputs": [
+			{
+				"name": "did",
+				"type": "string"
+			},
+			{
+				"name": "vcId",
+				"type": "string"
+			},
+			{
+				"name": "_hash",
+				"type": "string"
+			}
+		],
+		"name": "addVC",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}, [did, id, hash]);
+    // Create value transfer transaction
+    const executionTx = await caver.transaction.feeDelegatedSmartContractExecution.create({
+        from: sender.address,
+        feePayer: serverKeyring.address,
+        to : contractAddress,
+        input: _input,
+        gas: 1000000000,
     });
-  } catch (error) {
-    console.log(error);
-  }
+
+     const signedSender = await caver.wallet.sign(sender.address, executionTx);
+     const signed  = await caver.wallet.signAsFeePayer(serverKeyring.address, signedSender);
+     const receipt = await caver.rpc.klay.sendRawTransaction(signed);
 };
 
 /*
