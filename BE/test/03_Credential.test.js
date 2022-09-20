@@ -4,7 +4,7 @@ const chaiHttp = require("chai-http");
 const server = require("../index");
 
 chai.use(chaiHttp);
-const num = 301;
+const num = new Date().getTime();
 let IssuerObj = {};
 let HolderObj = {};
 let VerifierObj = {};
