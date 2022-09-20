@@ -43,8 +43,8 @@ export default function Three() {
   return (
     <>
       <div className="bg text-white" />
-      <div className="absolute max-w-[1280px]  h-screen px-5 flex flex-start flex-col justify-center">
-        <img className="absolute w-[43px] top-5 left-5" src={Didnow} alt="/" />
+      <div className="absolute max-w-[1280px]  h-screen px-12 flex flex-start flex-col justify-center">
+        <img className="absolute w-[43px] top-5 left-12" src={Didnow} alt="/" />
         {/* <div> */}
         <p className="md:text-9xl sm:text-8xl text-7xl font-bold css-selector ">
           DIDNOW
@@ -75,7 +75,7 @@ export default function Three() {
         </p> */}
 
         <Link to="/home">
-          <button className="absolute left-5 top-[80%] z-10 bg-[#0efcfe] w-[200px] rounded-md font-medium my-6  py-3 text-black">
+          <button className="absolute left-12 top-[80%] z-10 bg-[#0efcfe] w-[200px] rounded-md font-medium my-6  py-3 text-black">
             Get Started
           </button>
         </Link>
