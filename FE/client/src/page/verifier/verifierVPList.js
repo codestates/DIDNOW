@@ -9,6 +9,8 @@ const VerifierVPList = () => {
   const navigate = useNavigate();
   // state
   const [user, setUser] = useState({});
+  const [vpList, setVpList] = useState([]);
+  const [holders, setHolders] = useState([]);
 
   // before render
   useEffect(() => {
@@ -21,7 +23,7 @@ const VerifierVPList = () => {
       })
       .then((data) => {
         if (data.data.type !== "verifier") {
-          message("접근 권한이 없습니다!");
+          message.error("접근 권한이 없습니다!");
           navigate("/");
         }
         setUser(data.data.user);
@@ -34,12 +36,23 @@ const VerifierVPList = () => {
             console.log(error);
           })
           .then((data) => {
-            console.log(data);
+            console.log(data.data);
+            setVpList(data.data);
           });
       });
   }, [navigate]);
   // re-render
   useEffect(() => {});
+
+  const verifyVP = (e) => {
+    axios({
+      url: `http://localhost:9999/api/v1/credential/auth-vp/${e.target.id}`,
+      method: "POST",
+      withCredentials: true,
+    }).then((data) => {
+      console.log(data);
+    });
+  };
   return (
     <div className="verifiervplist">
       <Breadcrumb className="verifiervplist--breadcrumb" separator=">">
@@ -60,12 +73,55 @@ const VerifierVPList = () => {
             </div>
             <hr />
             <Row>
-              <Col span={3}>요청인</Col>
-              <Col span={3}>인증서 제목</Col>
-              <Col span={10}>VP id</Col>
+              <Col span={5}>요청인</Col>
+              <Col span={4}>인증서 제목</Col>
+              <Col span={8}>VP id</Col>
               <Col span={5}>요청 날짜</Col>
-              <Col span={3}>상태</Col>
+              <Col span={2}>상태</Col>
             </Row>
+            {vpList.map((e, idx) => {
+              return (
+                <Row key={idx}>
+                  <Col span={5}>
+                    {
+                      e.originalVP[0].vp.verifiableCredential[0].vc
+                        .credentialSubject[
+                        Object.keys(
+                          e.originalVP[0].vp.verifiableCredential[0].vc
+                            .credentialSubject
+                        )[0]
+                      ].userName
+                    }
+                  </Col>
+                  <Col span={4}>
+                    {
+                      e.originalVP[0].vp.verifiableCredential[0].vc
+                        .credentialSubject[
+                        Object.keys(
+                          e.originalVP[0].vp.verifiableCredential[0].vc
+                            .credentialSubject
+                        )[0]
+                      ].name
+                    }
+                  </Col>
+                  <Col span={8}>{e._id}</Col>
+                  <Col span={5}>{e.updatedAt.slice(0, 10)}</Col>
+                  <Col span={2}>
+                    {e.status === "status" ? (
+                      <button onClick={verifyVP} id={e._id}>
+                        검증하기
+                      </button>
+                    ) : e.status === "pending" ? (
+                      <div>pending</div>
+                    ) : e.status === "success" ? (
+                      <div>success</div>
+                    ) : (
+                      <div>failed</div>
+                    )}
+                  </Col>
+                </Row>
+              );
+            })}
           </Col>
         </Row>
       </div>

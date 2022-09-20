@@ -1,19 +1,23 @@
 import "./style/verifierSignUp.css";
-import { Row, Col, message } from "antd";
+import { Row, Col, message, Select } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const {Option} = Select;
+
 const VerifierSignUp = () => {
-  useEffect(() => {});
+  useEffect(() => {
+    console.log(verifierInfo)
+  });
   useEffect(() => {}, []);
   const navigate = useNavigate();
+  const requiredVerifyList = ["졸업증명서", "출입국증명서","성인인증서","수료증"];
   const [verifierInfo, setVerifierInfo] = useState({
     email: "",
     password: "",
     title: "",
-    requiredVC: "",
-    desc: "",
+    verifyList: [],
   });
   const [isCorrect, setIsCorrect] = useState(false);
   const onchange = (e) => {
@@ -29,6 +33,7 @@ const VerifierSignUp = () => {
           email: verifierInfo.email,
           password: verifierInfo.password,
           title: verifierInfo.title,
+          verifyList: verifierInfo.verifyList
         },
         withCredentials: true,
       });
@@ -39,6 +44,16 @@ const VerifierSignUp = () => {
       }
     }
   };
+
+  const changeRequiredVC = (e) => {
+    setVerifierInfo((prev) => {
+      return {
+        ...prev,
+        verifyList: [...e]
+      }
+    })
+  };
+
   return (
     <div>
       <div className="verifiersignup--title">🧐 검증자 회원 가입</div>
@@ -93,6 +108,29 @@ const VerifierSignUp = () => {
             onChange={onchange}
             id="title"
           />
+        </Col>
+      </Row>
+      <Row style={{ alignItems: "center" }}>
+        <Col span={6}>
+          필수 요구사항
+        </Col>
+        <Col span={18}>
+          <Select
+            mode="tags"
+            style={{
+              width: "100%",
+              borderTop: "0",
+              borderLeft: "0",
+              borderRight: "0",
+              borderBottom: "1px solid black",
+            }}
+            placeholder="필요한 인증 사항"
+            onChange={changeRequiredVC}
+          >
+            {requiredVerifyList.map((e, idx) => {
+              return <Option key={e}>{e}</Option>;
+            })}
+          </Select>
         </Col>
       </Row>
       <Row>

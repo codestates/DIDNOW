@@ -19,6 +19,9 @@ const IssuerUserList = () => {
   const [user, setUser] = useState({});
   // 서버에 요청하여 받은 UserList 를 담아을 상태 선언
   const [userList, setUserList] = useState([]);
+  // 로그인한 issuer를 issuerList 로 등록한 holderList
+  const [holderList, setHolderList] = useState([]);
+
   useEffect(() => {
     // User 정보를 받아온다.
     axios({
@@ -52,10 +55,22 @@ const IssuerUserList = () => {
           });
           setUserList([...arr]);
         });
+        axios({
+          url: "http://localhost:9999/api/v1/user/holders",
+          method: "GET",
+          withCredentials: true,
+        }).then((result) => {
+          const arr = result.data.filter((e) => {
+            return e.IssuerList.indexOf(data.data.user._id) >= 0;
+          });
+          setHolderList([...arr]);
+        });
       });
   }, [navigate]);
   // Re-Render 를 위한 useEffect
-  useEffect(() => {});
+  useEffect(() => {
+    console.log(userListObj);
+  });
 
   // input을 관리하기 위한 상태
   const [userListObj, setUserListObj] = useState({
@@ -69,6 +84,7 @@ const IssuerUserList = () => {
     cr_Nationality: "",
     cr_address: "",
     cr_isAdult: false,
+    holderId: "63282f276757db225b9ee418",
   });
 
   // input 변경시 상태 변경
@@ -159,16 +175,23 @@ const IssuerUserList = () => {
     });
   };
 
-  // 인증서 제목
-  const issueableVCList = [
-    "졸업증명서",
-    "수료증명서",
-    "학위증명서",
-    "기타증명서",
-    "주민등록증",
-    "무슨등록증",
-  ];
-
+  const changeHolder = (e) => {
+    const i = holderList.findIndex((el) => {
+      return el.email === e;
+    });
+    setUserListObj({
+      organizationId: "",
+      cr_email: e,
+      cr_name: holderList[i].username,
+      cr_birthDate: holderList[i].birthDay.slice(0, 10),
+      cr_certificateType: "",
+      cr_certificateName: "",
+      cr_certificateDate: "",
+      cr_Nationality: "",
+      cr_address: "",
+      cr_isAdult: false,
+    });
+  };
   return (
     <div className="issueruserlist">
       <Breadcrumb className="issueruserlist--breadcrumb" separator=">">
@@ -194,34 +217,22 @@ const IssuerUserList = () => {
                 </Row>
               </Col>
             </Row>
-
-            <Row>
-              <Col span={5}>이름 </Col>
-              <Col span={12}>
-                {" "}
-                <input
-                  className="issueruserlist--columns-input"
-                  type="text"
-                  id="cr_name"
-                  onChange={onchange}
-                  value={userListObj.cr_name}
-                />
-              </Col>
-              <Col span={3}></Col>
-            </Row>
-
             <Row>
               <Col span={5}>이메일</Col>
               <Col span={12}>
-                {" "}
-                <input
-                  className="issueruserlist--columns-input"
-                  type="text"
-                  id="cr_email"
-                  onChange={onchange}
-                  value={userListObj.cr_email}
-                />
+                <Select style={{ width: "90%" }} onChange={changeHolder}>
+                  {holderList.map((e, idx) => {
+                    return <Option key={e.email}>{e.email}</Option>;
+                  })}
+                </Select>
               </Col>
+            </Row>
+            <Row>
+              <Col span={5}>이름 </Col>
+              <Col span={12}>
+                <Row>{userListObj.cr_name}</Row>
+              </Col>
+              <Col span={3}></Col>
             </Row>
             <Row>
               <Col span={5}>인증서 이름</Col>
@@ -269,7 +280,7 @@ const IssuerUserList = () => {
                 </Select>
               </Col>
             </Row>
-
+            {/* 
             <Row>
               <Col span={5}>생년월일</Col>
               <Col span={12}>
@@ -278,7 +289,7 @@ const IssuerUserList = () => {
                   style={{ width: "90%" }}
                 />
               </Col>
-            </Row>
+            </Row> */}
 
             <Row>
               <Col span={5}>인증일자</Col>
@@ -311,19 +322,26 @@ const IssuerUserList = () => {
             </Row>
 
             <Row style={{ margin: "50px 0 ", justifyContent: "center" }}>
-              <button className="issueruserlist--submit" onClick={submitUserList}>등록하기</button>
+              <button
+                className="issueruserlist--submit"
+                onClick={submitUserList}
+              >
+                등록하기
+              </button>
             </Row>
-            <Row><div className="issueruserlist--subtitle">Issuer User List</div></Row>
+            <Row>
+              <div className="issueruserlist--subtitle">Issuer User List</div>
+            </Row>
             <hr />
             {userList.map((el, idx) => {
               return (
                 <Row key={idx}>
                   <Col span={3}>{el.cr_name || "null"}</Col>
                   <Col span={5}>{el.cr_email || "null"}</Col>
-                  <Col span={4}>{el.cr_birthDate.slice(0, 10) || "null"}</Col>
+                  <Col span={4}>{el.cr_birthDate || "null"}</Col>
                   <Col span={4}>{el.cr_certificateName || "null"}</Col>
                   <Col span={4}>{el.cr_certificateType || "null"}</Col>
-                  <Col span={4}>{el.cr_certificateDate.slice(0, 10) || "null"}</Col>
+                  <Col span={4}>{el.cr_certificateDate || "null"}</Col>
                   <Col span={2}>{el.cr_Nationality || "null"}</Col>
                   <Col span={2}>{el.cr_isAdult === true ? "O" : "X"}</Col>
                 </Row>

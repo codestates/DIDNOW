@@ -6,33 +6,32 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const HolderManage = () => {
-  const [vcList, setVcList] = useState([
-    {
-      issuedBy: "codestates",
-      credentailName: "블록체인 개발자",
-      credentialTitle: "졸업증명서",
-      createdAt: "2001-01-01",
-    },
-  ]);
+  const [vcList, setVcList] = useState([{}]);
   const [selected, setSelected] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [issuers, setIssuers] = useState([]);
 
-  const getVCs = async () => {
-    await axios({
+  useEffect(() => {
+    axios({
       url: "http://localhost:9999/api/v1/credential/get-holder-vc-list/",
       method: "GET",
       withCredentials: true,
     }).then((vcListOfHolder) => {
-      setVcList(vcListOfHolder);
+      setVcList(vcListOfHolder.data);
+      axios({
+        url: "http://localhost:9999/api/v1/user/issuers",
+        method: "GET",
+        withCredentials: true,
+      }).then((data) => {
+        setIssuers(data.data);
+      });
       setIsLoading(false);
     });
-  };
-
-  useEffect(() => {
-    getVCs();
   }, []);
 
-  useEffect(() => {});
+  useEffect(() => {
+    console.log(vcList);
+  });
 
   const selectedHandle = (e) => {
     if (selected.indexOf(e.currentTarget.id) >= 0) {
@@ -85,7 +84,12 @@ const HolderManage = () => {
             </Col>
             <Col span={6}>
               {selected.length >= 1 ? (
-                <Link to="/holdersubmit" state={{ selected: selected }}>
+                <Link
+                  to="/holder/submit"
+                  state={{
+                    selected: vcList.filter((e, idx) => idx in selected),
+                  }}
+                >
                   <div className="holdermanage--submit--label">
                     선택된 {selected.length}개의 인증서 제출하기
                   </div>
@@ -96,31 +100,32 @@ const HolderManage = () => {
             </Col>
           </Row>
           <div className="holdermanage--vc">
-            {vcList.length > 0 ? (
-              vcList.map((e, i) => {
-                return (
-                  <Row gutter={48}>
+            <Row gutter={48}>
+              {vcList.length > 0 ? (
+                vcList.map((e, i) => {
+                  return (
                     <Col key={i} span={6} style={{ margin: "0 0 30px 0" }}>
                       <Vc
                         data={e}
                         selected={selected}
                         selectedHandle={selectedHandle}
-                        idx={e.id}
+                        idx={i}
+                        issuers={issuers}
                       />
                     </Col>
-                  </Row>
-                );
-              })
-            ) : (
-              <>
-                <div style={{ fontSize: "1.5rem" }}>
-                  등록된 인증서가 없습니다.
-                </div>
-                <div style={{ fontSize: "1.5rem" }}>
-                  <Link to="/holder/issue">📝 인증서 등록하러 가기</Link>
-                </div>
-              </>
-            )}
+                  );
+                })
+              ) : (
+                <>
+                  <div style={{ fontSize: "1.5rem" }}>
+                    등록된 인증서가 없습니다.
+                  </div>
+                  <div style={{ fontSize: "1.5rem" }}>
+                    <Link to="/holder/issue">📝 인증서 등록하러 가기</Link>
+                  </div>
+                </>
+              )}
+            </Row>
           </div>
           {/* pagination 은 따로 구현해야 할듯 쓸만한거 없음 */}
         </>

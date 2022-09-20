@@ -25,10 +25,6 @@
   );
   color: white;
   cursor: pointer;
-  transform: scale(1.2); /*  default */
-  -webkit-transform: scale(1.2); /*  크롬 */
-  -moz-transform: scale(1.2); /* FireFox */
-  -o-transform: scale(1.2); /* Opera */
 }
 
 .holderissue--form {

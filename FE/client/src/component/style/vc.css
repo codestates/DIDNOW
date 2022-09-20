@@ -26,8 +26,13 @@
 }
 
 .vc--title {
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   font-weight: 700;
+  text-align: center;
+}
+
+.vc--content {
+  margin: 10px 0 0 0;
 }
 
 .vc--logo {
@@ -49,7 +54,6 @@
 
 .vc--date {
   font-size: 0.8rem;
-  margin: 50px 0 0 0;
 }
 
 .vc--action {

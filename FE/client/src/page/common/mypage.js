@@ -54,7 +54,6 @@ const Mypage = ({ type }) => {
     });
   };
   useEffect(() => {
-    console.log(user);
   });
   const emailDOM = (
     <>

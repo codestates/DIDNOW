@@ -3,13 +3,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./style/issuerissue.css";
 
-const {Option} = Select;
+const { Option } = Select;
 const IssuerIssue = ({ user, type }) => {
-  const [vcTitle, setVcTitle] = useState({
-    credentialTitle: ""
-  });
+  const [vcTitle, setVcTitle] = useState("");
   const onchange = (e) => {
-    console.log(e);
     setVcTitle(e);
   };
 
@@ -17,7 +14,9 @@ const IssuerIssue = ({ user, type }) => {
     axios({
       url: "http://localhost:9999/api/v1/credential/verifiable-credential",
       method: "POST",
-      data: vcTitle,
+      data: {
+        credentialTitle: vcTitle,
+      },
       withCredentials: true,
     })
       .then(() => {
@@ -28,7 +27,7 @@ const IssuerIssue = ({ user, type }) => {
       });
   };
 
-  const vcList = ["졸업증명서", "출입국증명서", "성인인증서", "수료증", "All"]
+  const vcList = ["졸업증명서", "출입국증명서", "성인인증서", "수료증", "All"];
   useEffect(() => {});
   return (
     <div className="issuerissue">
@@ -64,9 +63,13 @@ const IssuerIssue = ({ user, type }) => {
                 <span className="issuerissue--sub--title">인증서 제목</span>
               </Col>
               <Col span={16}>
-                <Select style={{width:"50%", height:"100%"}} placeholder="발급하실 인증서를 선택해주세요." onChange={onchange}>
+                <Select
+                  style={{ width: "50%", height: "100%" }}
+                  placeholder="발급하실 인증서를 선택해주세요."
+                  onChange={onchange}
+                >
                   {vcList.map((e) => {
-                    return <Option key={e}>{e}</Option>
+                    return <Option key={e}>{e}</Option>;
                   })}
                 </Select>
               </Col>

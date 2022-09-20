@@ -1,21 +1,30 @@
 import "./style/holderSignUp.css";
-import { Row, Col, message, DatePicker } from "antd";
+import { Row, Col, message, DatePicker, Select } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const {Option} = Select
+
 const HolderSignUp = () => {
+  const [issuers, setIssuers] = useState([])
   useEffect(() => {
-    console.log(userInfo);
   });
-  useEffect(() => {}, []);
+  useEffect(() => {
+    axios({
+      url:"http://localhost:9999/api/v1/user/issuers",
+      method:"GET"
+    }).then((data) => {
+      setIssuers([...data.data]);
+    })
+  }, []);
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
     username: "",
-    walletAddress: "",
     birth: "",
+    IssuerList: [],
   });
   const [isCorrect, setIsCorrect] = useState(false);
   const onchange = (e) => {
@@ -32,8 +41,8 @@ const HolderSignUp = () => {
             email: userInfo.email,
             password: userInfo.password,
             username: userInfo.username,
-            walletAddress: userInfo.walletAddress,
             birthDay: userInfo.birth,
+            IssuerList: userInfo.IssuerList
           },
           withCredentials: true,
         });
@@ -46,7 +55,6 @@ const HolderSignUp = () => {
         message.error("비밀번호를 동일하게 입력해주세요.");
       }
     } catch (error) {
-      console.log("fail");
       message.error("회원 가입 실패!!");
     }
   };
@@ -59,6 +67,22 @@ const HolderSignUp = () => {
       };
     });
   };
+
+  const changeIssuerList = (e) => {
+    const arr = e.map((el,idx) => {
+      const i =  issuers.findIndex((ele) => {
+          return ele.title === el
+        })
+      return issuers[i]._id
+    }  
+  )
+  setUserInfo((prev) => {
+    return {
+      ...prev,
+      IssuerList: arr
+    }
+  })
+  }
 
   return (
     <div>
@@ -130,20 +154,6 @@ const HolderSignUp = () => {
       </Row>
       <Row style={{ alignItems: "center" }}>
         <Col span={6} style={{ display: "flex" }}>
-          지갑 주소
-        </Col>
-        <Col span={18}>
-          <input
-            type="text"
-            onChange={onchange}
-            id="walletAddress"
-            className="holdersignup--input"
-            placeholder="e.g) 0xwalletAddress20221010plzkaikas"
-          />
-        </Col>
-      </Row>
-      <Row style={{ alignItems: "center" }}>
-        <Col span={6} style={{ display: "flex" }}>
           생년월일
         </Col>
         <Col span={18}>
@@ -157,6 +167,22 @@ const HolderSignUp = () => {
             }}
             onChange={changeDate}
           />
+        </Col>
+      </Row>
+
+      <Row style={{ alignItems: "center" }}>
+        <Col span={6} style={{ display: "flex" }}>
+            소속기관
+        </Col>
+        <Col span={18}>
+          <Select 
+          mode="tags"
+          style={{width:"100%",borderBottom:"1px solid black"}}
+          onChange={changeIssuerList}>
+            {issuers.map((e,idx)=>{
+              return <Option key={e.title}>{e.title}</Option>
+            })}
+          </Select>
         </Col>
       </Row>
       <Row>

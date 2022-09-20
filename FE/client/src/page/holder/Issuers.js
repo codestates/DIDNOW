@@ -10,9 +10,7 @@ import { useEffect } from "react";
 
 const Issuers = () => {
   const [issuers, setIssuers] = useState([]);
-  const [issuerUserList, setIssuerUserList] = useState([]);
-
-  const [user, setUser] = useState({});
+  const [holder, setHolder] = useState({});
   // Issuer 정보 불러오기
   useEffect(() => {
     axios({
@@ -25,7 +23,7 @@ const Issuers = () => {
         if (data.data.type !== "holder") {
           message.error("접근 권한이 없습니다!!");
         }
-        setUser(data.data.user);
+        setHolder(data.data.user);
       });
     // 모든 issuer 목록을 가져온다.
     // 가져온 issuer 의 id를 이용해서 모든 issueruserList 를 가져온다.
@@ -42,31 +40,7 @@ const Issuers = () => {
           url: `http://localhost:9999/api/v1/user/issuer-users/${result.data._id}`,
           method: "GET",
           withCredentials: true,
-        }).then((data) => {
-          // issueruserlist 를 전부 받아왔다.
-          // issueruserlist 에 저장된 organizationId 으로 issuers에서 찾아내어 제목을 정한다.
-          console.log(data);
-          data.data.map((e, idx) => {
-            let title = "";
-            result.data.map((el, idx) => {
-              if (el._id === e.organizationId) {
-                title = el.title;
-              }
-            });
-            const newVc = {
-              title: title,
-              VC_title: data.data.cr_certificateType,
-              VC_name: data.data.cr_certificateName,
-              VC_type: data.data.cr_certificateType,
-              VC_required_info: [],
-            };
-
-            setIssuerUserList((prev) => {
-              return [...prev, newVc];
-            });
-          });
-        });
-      })
+        })})
       .catch((error) => {
         console.log(error);
       });
@@ -86,13 +60,12 @@ const Issuers = () => {
 
             <Row className="holderissue--row">
               <Col span={6}>기관명</Col>
-              <Col span={6}>인증서 제목</Col>
               <Col span={8}>필수제공 목록</Col>
               <Col span={4}>비고</Col>
             </Row>
-            {issuerUserList.map((e, idx) => {
-              const issuer = issuers[idx];
-              return <IssuerList issuerUser={e} key={idx} issuer={issuer} />;
+
+            {issuers.map((e,idx) => {
+              return <IssuerList key={idx} issuer={e} holder={holder} />
             })}
           </Col>
         </Row>

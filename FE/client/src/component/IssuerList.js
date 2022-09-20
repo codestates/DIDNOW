@@ -3,14 +3,21 @@ import "./style/IssuerList.css";
 import { Row, Col, Modal, message } from "antd";
 import axios from "axios";
 
-export default function IssuerList({ issuer, issuerUser }) {
+export default function IssuerList({ issuer}) {
+  const [title,setTitle] = useState("성인인증서");
   // before render
   useEffect(() => {
+    console.log(issuer);
+    // axios({
+    //   url:`http://localhost:9999/api/v1/credential/verifiable-credential/${issuer._id}`,
+    //   method:"GET",
+    // }).then((data) => {
+    //   console.log(data);
+    // })
   },[])
   // re-render
   useEffect(() => {})
   const [modalOpen, setModalOpen] = useState(false);
-  const [VCtitle, setVCTitle] = useState("");
   const [password, setPassword] = useState("");
   const handleOk = async () => {
     const res = await axios({
@@ -19,7 +26,7 @@ export default function IssuerList({ issuer, issuerUser }) {
       withCredentials: true,
       data: {
         password: password,
-        VC_title: VCtitle,
+        VC_title: title
       },
     });
     setPassword("");
@@ -39,8 +46,7 @@ export default function IssuerList({ issuer, issuerUser }) {
 
   return (
     <Row>
-      <Col span={6}>{issuerUser.title || ""}</Col>
-      <Col span={6}>{issuerUser.VC_title || ""}</Col>
+      <Col span={6}>{issuer?issuer.title:""}</Col>
       <Col span={8}>{issuer?issuer.requiredVC?issuer.requiredVC.join(","):"":""}</Col>
       <Col span={4}>
         <button onClick={() => setModalOpen(true)}>인증서 요청</button>
@@ -49,7 +55,7 @@ export default function IssuerList({ issuer, issuerUser }) {
           title="Request Verification"
           open={modalOpen}
           onCancel={handleCancel}
-          requiredVC={issuer?issuer.requiredVC?issuer.requiredVC:"":""}
+          requiredVC={issuer?issuer.requiredVC:""}
           width="450px"
           footer={[
             <button key="submit" onClick={handleOk}>
@@ -72,6 +78,18 @@ export default function IssuerList({ issuer, issuerUser }) {
               </span>
             </div>
 
+            <div style={{ width: "100%", padding: "0 10%" }}>
+              <div>저장할 인증서 이름을 입력해주세요</div>
+              <div>
+                <input
+                  className="issuerList--input"
+                  type="text"
+                  onChange={(e) => {
+                    setTitle(e.target.value);
+                  }}
+                ></input>
+              </div>
+            </div>
             <div style={{ width: "100%", padding: "0 10%" }}>
               <div>비밀번호를 입력해주세요</div>
               <div>

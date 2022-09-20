@@ -18,18 +18,18 @@ const Nav = ({ type, setType, user, setUser }) => {
   const SubMenu = Menu.SubMenu;
   const navigate = useNavigate();
   const logout = async () => {
-    const res = await axios({
+    axios({
       url: "http://localhost:9999/api/v1/auth/logout",
       method: "POST",
       withCredentials: true,
-    });
-
-    if (res.status === 200) {
+    }).then((data) => {
       message.info("로그아웃 되었습니다.");
       setType("");
       setUser({});
       navigate("/");
-    }
+    }).catch(() => {
+      message.error("로그아웃 실패")
+    })
   };
 
   let menu = "";
@@ -111,7 +111,6 @@ const Nav = ({ type, setType, user, setUser }) => {
       </Menu>
     );
   }
-  console.log(type);
   return (
     <Row>
       <Col span={6}>
