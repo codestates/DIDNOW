@@ -469,11 +469,26 @@ const closeVerifyReqest = async (req, res, next) => {
 
       // 결과값 반환
       console.log(verifyFactor);
+      let resultVerify = "";
       if (verifyFactor.every((item) => item)) {
+        resultVerify = "success";
         res.status(200).json("success");
       } else {
+        resultVerify = "failed";
         res.status(200).json("Failed");
       }
+
+      // New Verify List 생성
+      await VerifyList.findByIdAndUpdate(
+        req.params.verifiyListId,
+        {
+          $set: {
+            status: resultVerify,
+          },
+        },
+        { new: true }
+      );
+
     } catch (error) {
       console.log(error);
       next(error);
