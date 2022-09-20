@@ -30,6 +30,9 @@ import IssuerUserList from "./page/issuer/issuerUserList";
 import Verifiers from "./page/verifier/verifiers";
 import VerifierVPList from "./page/verifier/verifierVPList";
 
+// launch page
+import Launch from "./page/launch/launch";
+
 // config
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -70,7 +73,8 @@ function App() {
               <Routes>
                 {/* common Route */}
                 <Route path="/">
-                  <Route path="" element={<Home />} />
+                  <Route path="" element={<Launch />} />
+                  <Route path="home" element={<Home />} />
                   <Route
                     path="signin"
                     element={
