@@ -123,7 +123,7 @@ function App() {
                 <Route path="vplist" element={<VerifierVPList />} />
               </Route>
             </Routes>
-            <div style={{ height: "50px", background: "white" }}></div>
+            
           </Content>
         </Layout>
         {location.pathname === "/" ? null : (

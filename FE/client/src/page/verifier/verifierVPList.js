@@ -36,7 +36,6 @@ const VerifierVPList = () => {
             console.log(error);
           })
           .then((data) => {
-            console.log(data.data);
             setVpList(data.data);
           });
       });
