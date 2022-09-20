@@ -73,8 +73,8 @@ function App() {
               <Routes>
                 {/* common Route */}
                 <Route path="/">
-                  <Route path="launch" element={<Launch />} />
-                  <Route path="" element={<Home />} />
+                  <Route path="" element={<Launch />} />
+                  <Route path="home" element={<Home />} />
                   <Route
                     path="signin"
                     element={

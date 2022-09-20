@@ -1,4 +1,5 @@
 import React, { Suspense, useState } from "react";
+import { Link } from "react-router-dom";
 import { Canvas } from "@react-three/fiber";
 import {
   Loader,
@@ -72,9 +73,12 @@ export default function Three() {
         {/* <p className="md:text-base sm:text-sm mt-2 text-gray-500">
           블록체인 기반의 비정부기관 증명, 인증서 중개 플랫폼
         </p> */}
-        <button className="absolute left-5 top-[80%] z-10 bg-[#0efcfe] w-[200px] rounded-md font-medium my-6  py-3 text-black">
-          Get Started
-        </button>
+
+        <Link to="/home">
+          <button className="absolute left-5 top-[80%] z-10 bg-[#0efcfe] w-[200px] rounded-md font-medium my-6  py-3 text-black">
+            Get Started
+          </button>
+        </Link>
       </div>
       {/* </div> */}
 
