@@ -24,7 +24,7 @@ const Vc = ({ issuers, data, selectedHandle, idx }) => {
           data.originalVC[0].vc.credentialSubject[
             Object.keys(data.originalVC[0].vc.credentialSubject)[0]
           ].publisher || "",
-        title: Object.keys(data.originalVC[0].vc.credentialSubject)[0] || "",
+        title: data.title || "",
         content:
           data.originalVC[0].vc.credentialSubject[
             Object.keys(data.originalVC[0].vc.credentialSubject)[0]

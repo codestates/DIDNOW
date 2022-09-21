@@ -109,7 +109,11 @@ const SignIn = ({ type, setType, setUser }) => {
                 onChange={onchange}
                 id="password"
               />
-              <Link to="/signup">회원이 아니신가요?</Link>
+              <Row>
+                <Col span={6}>
+                  <Link to="/signup">회원이 아니신가요?</Link>
+                </Col>
+              </Row>
               <button className="signin--signinbtn" onClick={signin}>
                 로그인
               </button>

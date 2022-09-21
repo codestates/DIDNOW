@@ -4,19 +4,18 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const {Option} = Select
+const { Option } = Select;
 
 const HolderSignUp = () => {
-  const [issuers, setIssuers] = useState([])
-  useEffect(() => {
-  });
+  const [issuers, setIssuers] = useState([]);
+  useEffect(() => {});
   useEffect(() => {
     axios({
-      url:"http://localhost:9999/api/v1/user/issuers",
-      method:"GET"
+      url: "http://localhost:9999/api/v1/user/issuers",
+      method: "GET",
     }).then((data) => {
       setIssuers([...data.data]);
-    })
+    });
   }, []);
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
@@ -42,7 +41,7 @@ const HolderSignUp = () => {
             password: userInfo.password,
             username: userInfo.username,
             birthDay: userInfo.birth,
-            IssuerList: userInfo.IssuerList
+            IssuerList: userInfo.IssuerList,
           },
           withCredentials: true,
         });
@@ -69,20 +68,19 @@ const HolderSignUp = () => {
   };
 
   const changeIssuerList = (e) => {
-    const arr = e.map((el,idx) => {
-      const i =  issuers.findIndex((ele) => {
-          return ele.title === el
-        })
-      return issuers[i]._id
-    }  
-  )
-  setUserInfo((prev) => {
-    return {
-      ...prev,
-      IssuerList: arr
-    }
-  })
-  }
+    const arr = e.map((el, idx) => {
+      const i = issuers.findIndex((ele) => {
+        return ele.title === el;
+      });
+      return issuers[i]._id;
+    });
+    setUserInfo((prev) => {
+      return {
+        ...prev,
+        IssuerList: arr,
+      };
+    });
+  };
 
   return (
     <div>
@@ -92,9 +90,9 @@ const HolderSignUp = () => {
         <div>원하는 인증서를 제출하는 서비스를 제공받습니다.</div>
       </div>
 
-      <Row style={{ alignItems: "center" }}>
+      <Row className="holdersignup--row">
         <Col span={6} style={{ display: "flex" }}>
-          이메일
+          <span className="signup--label">이메일</span>
         </Col>
         <Col span={18}>
           <input
@@ -102,13 +100,13 @@ const HolderSignUp = () => {
             onChange={onchange}
             id="email"
             className="holdersignup--input"
-            placeholder="e.g) holdername@naver.com"
+            placeholder="holdername@naver.com"
           />
         </Col>
       </Row>
-      <Row style={{ alignItems: "center" }}>
+      <Row className="holdersignup--row">
         <Col span={6} style={{ display: "flex" }}>
-          비밀번호
+          <span className="signup--label">비밀번호</span>
         </Col>
         <Col span={18}>
           <input
@@ -116,13 +114,12 @@ const HolderSignUp = () => {
             onChange={onchange}
             id="password"
             className="holdersignup--input"
-            placeholder="e.g) ●●●●●●"
           />
         </Col>
       </Row>
-      <Row style={{ alignItems: "center" }}>
+      <Row className="holdersignup--row">
         <Col span={6} style={{ display: "flex" }}>
-          비밀번호 확인
+          <span className="signup--label">비밀번호 확인</span>
         </Col>
         <Col span={18}>
           <input
@@ -133,14 +130,13 @@ const HolderSignUp = () => {
                 : setIsCorrect(false);
             }}
             className="holdersignup--input"
-            placeholder="e.g) ●●●●●●"
           />
         </Col>
       </Row>
 
-      <Row style={{ alignItems: "center" }}>
+      <Row className="holdersignup--row">
         <Col span={6} style={{ display: "flex" }}>
-          이름
+          <span className="signup--label">이름</span>
         </Col>
         <Col span={18}>
           <input
@@ -148,13 +144,13 @@ const HolderSignUp = () => {
             onChange={onchange}
             id="username"
             className="holdersignup--input"
-            placeholder="e.g) 김코딩"
+            placeholder="김코딩"
           />
         </Col>
       </Row>
-      <Row style={{ alignItems: "center" }}>
+      <Row className="holdersignup--row">
         <Col span={6} style={{ display: "flex" }}>
-          생년월일
+          <span className="signup--label">생년월일</span>
         </Col>
         <Col span={18}>
           <DatePicker
@@ -165,27 +161,30 @@ const HolderSignUp = () => {
               borderLeft: "0",
               borderRight: "0",
             }}
+            placeholder="날짜를 선택해주세요."
             onChange={changeDate}
           />
         </Col>
       </Row>
 
-      <Row style={{ alignItems: "center" }}>
+      <Row className="holdersignup--row">
         <Col span={6} style={{ display: "flex" }}>
-            소속기관
+          <span className="signup--label">소속 기관</span>
         </Col>
         <Col span={18}>
-          <Select 
-          mode="tags"
-          style={{width:"100%",borderBottom:"1px solid black"}}
-          onChange={changeIssuerList}>
-            {issuers.map((e,idx)=>{
-              return <Option key={e.title}>{e.title}</Option>
+          <Select
+            mode="tags"
+            style={{ width: "100%", borderBottom: "1px solid black" }}
+            onChange={changeIssuerList}
+            placeholder="인증서를 발급 받을 기관을 선택해주세요."
+          >
+            {issuers.map((e, idx) => {
+              return <Option key={e.title}>{e.title}</Option>;
             })}
           </Select>
         </Col>
       </Row>
-      <Row>
+      <Row className="holdersignup--row">
         <button className="signup--btn" onClick={validate}>
           회원가입 완료
         </button>

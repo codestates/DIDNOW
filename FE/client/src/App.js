@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Layout } from "antd";
 import "./App.css";
@@ -27,7 +27,6 @@ import IssuerListModal from "./component/IssuerListModal";
 import IssuerUserList from "./page/issuer/issuerUserList";
 
 // verifier
-import Verifiers from "./page/verifier/verifiers";
 import VerifierVPList from "./page/verifier/verifierVPList";
 
 // launch page
@@ -50,7 +49,6 @@ function App() {
     return userObj;
   };
   useEffect(() => {
-    console.log(location);
     try {
       getUser()
         .then((data) => {
@@ -98,8 +96,6 @@ function App() {
                 <Route path="submit" element={<HolderSubmit />} />
                 <Route path="issuerlist" element={<Issuers user={user} />} />
                 <Route path="modal" element={<IssuerListModal user={user} />} />
-                <Route path="verifierlist" element={<Verifiers />}></Route>
-
                 {/* Not Found */}
                 <Route path={"*"} element={<div>not found</div>} />
                 <Route path="" element={<div>not found</div>} />

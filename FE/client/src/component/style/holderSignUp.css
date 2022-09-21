@@ -30,3 +30,8 @@
 .signup--row {
   height: 100%;
 }
+
+.holdersignup--row {
+  align-items: center;
+  margin: 20px 0 0 0;
+}

@@ -1,6 +1,6 @@
 import { Breadcrumb, Row, Col, message } from "antd";
 import { useEffect, useState } from "react";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./style/mypage.css";
 
@@ -42,19 +42,19 @@ const Mypage = ({ type }) => {
     axios({
       url: `http://localhost:9999/api/v1/user/issuer/${user._id}`,
       method: "PUT",
-      data: {[type === "holder" ? "username" : "title"] :type === "holder" ? user.username : user.title},
+      data: {
+        [type === "holder" ? "username" : "title"]:
+          type === "holder" ? user.username : user.title,
+      },
       withCredentials: true,
     }).then((data) => {
-      if(data.status === 200) {
-        console.log(data);
-        message.success("정보 수정 완료!");
-        navigate("/");
-        navigate(0);
-      }
+      console.log(data);
+      message.success("정보 수정 완료!");
+      navigate("/home");
+      navigate(0);
     });
   };
-  useEffect(() => {
-  });
+  useEffect(() => {});
   const emailDOM = (
     <>
       <div>이메일</div>

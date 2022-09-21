@@ -30,7 +30,7 @@ const HolderManage = () => {
   }, []);
 
   useEffect(() => {
-    console.log(vcList);
+    console.log(vcList.filter((e, idx) => idx in selected));
   });
 
   const selectedHandle = (e) => {
@@ -43,14 +43,6 @@ const HolderManage = () => {
       setSelected([e.currentTarget.id, ...selected]);
     }
   };
-
-  let registByMeCount = 0;
-  let registByOrgCount = 0;
-  if (vcList.length > 0) {
-    vcList.filter((e) =>
-      e.status === 0 ? registByMeCount++ : registByOrgCount++
-    );
-  }
   return (
     <div className="holdermanage">
       <Breadcrumb className="holdermanage--breadcrumb" separator=">">
@@ -63,24 +55,14 @@ const HolderManage = () => {
           <div className="holdermanage--description">
             <div>여러분의 증명, 인증서를 확인 및 다운로드 할 수 있습니다.</div>
             <div>
-              내가 등록한 인증서는
-              <span style={{ color: "blue", fontWeight: "700" }}>파란색</span>,
               기관에서 등록한 인증서는
               <span style={{ color: "red", fontWeight: "700" }}>빨간색</span>
               으로 표시됩니다.
             </div>
           </div>
           <Row className="holdermanage--total">
-            <Col span={3}>
-              <div className="holdermanage--total--label">
-                {`총 ${vcList.length || 0}개`}
-              </div>
-            </Col>
-            <Col span={5}>
-              <div className="holdermanage--total--label">{`내가 등록한 인증서 ${registByMeCount} 개`}</div>
-            </Col>
             <Col span={6}>
-              <div className="holdermanage--total--label">{`블록체인에 등록된 인증서 ${registByOrgCount} 개`}</div>
+              <div className="holdermanage--total--label">{`블록체인에 등록된 인증서 ${vcList.length} 개`}</div>
             </Col>
             <Col span={6}>
               {selected.length >= 1 ? (

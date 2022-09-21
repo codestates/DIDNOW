@@ -22,14 +22,16 @@ const Nav = ({ type, setType, user, setUser }) => {
       url: "http://localhost:9999/api/v1/auth/logout",
       method: "POST",
       withCredentials: true,
-    }).then((data) => {
-      message.info("로그아웃 되었습니다.");
-      setType("");
-      setUser({});
-      navigate("/");
-    }).catch(() => {
-      message.error("로그아웃 실패")
     })
+      .then((data) => {
+        message.info("로그아웃 되었습니다.");
+        setType("");
+        setUser({});
+        navigate("/home");
+      })
+      .catch(() => {
+        message.error("로그아웃 실패");
+      });
   };
 
   let menu = "";
@@ -56,18 +58,12 @@ const Nav = ({ type, setType, user, setUser }) => {
             <Link to="/holder/manage">인증서 관리</Link>
           </Menu.Item>
           <Menu.Item key={4}>
-            <Link to="/holder/issue">인증서 등록</Link>
-          </Menu.Item>
-          <Menu.Item key={5}>
             <Link to="/holder/submit">인증서 제출</Link>
           </Menu.Item>
+          <Menu.Item key={6}>
+            <Link to="/holder/issuerlist">인증서 발급</Link>
+          </Menu.Item>
         </SubMenu>
-        <Menu.Item key={6}>
-          <Link to="/holder/issuerlist">issuer 목록</Link>
-        </Menu.Item>
-        <Menu.Item key={7}>
-          <Link to="/holder/verifierlist">verifier 목록</Link>
-        </Menu.Item>
         <Menu.Item onClick={logout} className="font--red">
           로그아웃
         </Menu.Item>

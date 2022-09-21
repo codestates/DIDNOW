@@ -35,10 +35,15 @@
   margin: 10px 0 0 0;
 }
 
+.vc img {
+  display: inline;
+}
+
 .vc--logo {
   width: 48px;
   height: 48px;
   margin: 0 0 10px 0;
+  padding: 0;
 }
 
 .vc--check {

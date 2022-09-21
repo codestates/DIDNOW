@@ -1,6 +1,7 @@
 .signup {
   padding: 0;
   height: 100vh;
+  margin: 0 0 20vh 0;
 }
 
 .signup--left {
@@ -31,7 +32,7 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 10%;
+  padding: 5% 0;
 }
 
 .signup--title {
@@ -88,14 +89,13 @@
 
 .signup--btn {
   height: 3rem;
-  width: 50%;
+  width: 40%;
   margin: 20px auto;
   cursor: pointer;
-  border-radius: 20px;
   border: 1px solid #777777;
   background-color: white;
   box-shadow: 2px 2px 5px #777777;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
 }
 
