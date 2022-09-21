@@ -1,5 +1,7 @@
 .home {
   padding: 10%;
+  margin: 0 0 20vh 0;
+  height: 100vh;
 }
 .home ul,
 .home li {
