@@ -306,6 +306,40 @@ library StorageUtils {
      * @dev query service list
      * @param serviceList service list
      */
+    function getProof(IterableMapping.itmap storage serviceList)
+        public
+        view
+        returns (string memory)
+    {
+        uint256 count = 0;
+        for (
+            uint256 i = serviceList.iterate_start();
+            serviceList.iterate_valid(i);
+            i = serviceList.iterate_next(i)
+        ) {
+            (, bytes memory serviceData) = serviceList.iterate_get(i);
+            Service memory result = deserializeService(serviceData);
+            string memory proof = "Proof";
+            if (compareStrings(result.id, proof)) {
+                return result.value;
+            }
+        }
+        return "";
+    }
+
+    function compareStrings(string memory a, string memory b)
+        internal
+        view
+        returns (bool)
+    {
+        return (keccak256(abi.encodePacked((a))) ==
+            keccak256(abi.encodePacked((b))));
+    }
+
+    /**
+     * @dev query service list
+     * @param serviceList service list
+     */
     function getAllService(IterableMapping.itmap storage serviceList)
         public
         view
@@ -325,9 +359,32 @@ library StorageUtils {
         return result;
     }
 
+    function verifyVC(
+        IterableMapping.itmap storage serviceList,
+        string memory id,
+        string memory _type
+    ) public view returns (bool) {
+        uint256 count = 0;
+        for (
+            uint256 i = serviceList.iterate_start();
+            serviceList.iterate_valid(i);
+            i = serviceList.iterate_next(i)
+        ) {
+            (, bytes memory serviceData) = serviceList.iterate_get(i);
+            Service memory result = deserializeService(serviceData);
+            if (
+                compareStrings(result.id, id) &&
+                compareStrings(result.value, _type)
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     struct Service {
-        string serviceId;
-        string publicKey;
+        string id;
+        string value;
     }
 
     function serializeService(Service memory service)
@@ -335,13 +392,11 @@ library StorageUtils {
         pure
         returns (bytes memory)
     {
-        bytes memory idBytes = ZeroCopySink.WriteVarBytes(
-            bytes(service.serviceId)
+        bytes memory idBytes = ZeroCopySink.WriteVarBytes(bytes(service.id));
+        bytes memory valueBytes = ZeroCopySink.WriteVarBytes(
+            bytes(service.value)
         );
-        bytes memory publicKeyBytes = ZeroCopySink.WriteVarBytes(
-            bytes(service.publicKey)
-        );
-        bytes memory serviceBytes = abi.encodePacked(idBytes, publicKeyBytes);
+        bytes memory serviceBytes = abi.encodePacked(idBytes, valueBytes);
         return serviceBytes;
     }
 
@@ -362,7 +417,6 @@ library StorageUtils {
     struct DIDDocument {
         string[] context;
         string id;
-        PublicKey[] publicKey;
         PublicKey[] authentication;
         Service[] service;
         uint256 updated;

@@ -18,12 +18,15 @@ const HolderSchema = new mongoose.Schema(
     walletAddress: {
       type: String,
       required: true,
-      unique: true,
     },
     birthDay: {
       type: Date,
       required: true,
     },
+    IssuerList : {
+      type : Array,
+      reqruied : true,
+    }
   },
   {
     timestamps: true,

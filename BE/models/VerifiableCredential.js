@@ -5,22 +5,16 @@ const VerifiableCredentialSchema = new mongoose.Schema(
     ownerId: {
       type: String,
       required: true,
+      unique : true,
     },
     credentialTitle: {
       type: String,
       required: true,
     },
-    credentialType : {
-        type : String,
-        required : true,
-    },
-    credentialName : {
-        type : String,
-        required : true,
-    },
     IssuedBy: {
       type: String,
       required: true,
+      unique : true,
     },
     
   },
@@ -30,3 +24,5 @@ const VerifiableCredentialSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model("VerifiableCredential", VerifiableCredentialSchema);
+
+

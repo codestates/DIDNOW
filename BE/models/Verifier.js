@@ -14,7 +14,10 @@ const VerifierSchema = new mongoose.Schema({
         type : String,
         required : true,
     },
-    
+    verifyList : {
+        type : Array,
+        required : true,
+    },
 },{
     timestamps : true,
 })

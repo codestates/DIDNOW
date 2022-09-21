@@ -7,7 +7,6 @@ const morgan = require('morgan')
 const authRouter = require('./routes/auth')
 const userRouter = require('./routes/user')
 const credentialRouter = require('./routes/credential')
-const testRouter = require('./routes/test')
 
 // Configuration
 dotenv.config();
@@ -30,7 +29,6 @@ mongoose.connect(process.env.MONGO_URL, () => {
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/credential', credentialRouter)
-app.use('/api/v1/test', testRouter);
 
 // Error Handling
 app.use((err, req, res, next)=>{
@@ -46,3 +44,5 @@ app.use((err, req, res, next)=>{
 app.listen(process.env.PORT, () => {
   console.log(`Server is on PORT : ${process.env.PORT}`);
 });
+
+module.exports = app;

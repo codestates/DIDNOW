@@ -5,9 +5,6 @@ const KeyPair = require("../models/KeyPairs");
 const passwordCheck = require("../utils/passwordCheck");
 const verifyToken = require("../utils/VerifyToken");
 
-const crypto = require("crypto");
-const jwt = require("jsonwebtoken");
-
 const {
   requestVC,
   getVerifyRequest,
@@ -16,31 +13,25 @@ const {
   getHolderVCList,
   deleteHolderVCList,
   closeVerifyReqest,
+  createVerifiableCredential,
+  updateVerifiableCredential,
+  deleteVerifiableCredential,
+  getVerifiableCredential,
 } = require("../controllers/credential");
-/*
-    @ dev : IPFS VC 저장
-    @ desc : Holder가 발급받은 VC를 IPFS에 저장합니다.
-        - Isser로 부터 VC를 전달받습니다.
-        - VC는 사용자의 비밀번호를 대칭키로 암호화 합니다.
-        - 암호화 된 VC를 IPFS 저장 후 해시값을 받아옵니다.
-    @ subject : Holder
-    @ required : IPFS module
-*/
-router.post("/save-vc-ipfs", verifyToken, passwordCheck);
+const VerifiableCredential = require("../models/VerifiableCredential");
+
 
 /*
-    @ dev : Get VC From IPFS
+    @ dev : Get VC
     @ desc : 사용자가 가진 VC List를 출력합니다. 
     @ subject : Holder
-    @ required : IPFS module
 */
 router.get("/get-holder-vc-list", verifyToken, getHolderVCList);
 
 /*
-    @ dev : Delete V    C From IPFS
+    @ dev : Delete VC
     @ desc : 사용자가 가진 VC List를 삭제합니다. 
     @ subject : Holder
-    @ required : IPFS module
 */
 router.delete(
   "/delete-holder-vc-list/:holdervcId",
@@ -49,23 +40,13 @@ router.delete(
 );
 
 /*
-    @ dev : Get VC From IPFS
-    @ desc : IPFS에 저장된 VC를 읽어옵니다.
-        - IPFS는 사용자의 대칭키로 암호화 되어 있습니다.
-        - 비밀번호를 요청해야 합니다. 
-    @ subject : Holder
-    @ required : IPFS module
-*/
-router.post("/retrieve-vc-ipfs", verifyToken, passwordCheck);
-
-/*
     @ dev : Request VC Publish FROM Holder to Issuer
     @ desc : Issuer에게 VC 발급을 요청합니다.
         - params로 issuer의 ID를 특정합니다. 
     @ subject : Holder
     @ required : Smart Contract
 */
-router.post("/request-vc/:issuerId", verifyToken, requestVC);
+router.post("/request-vc/:issuerId", verifyToken, passwordCheck, requestVC);
 
 /*
     @ dev : Authentication Request From Holder to Verifer
@@ -76,6 +57,7 @@ router.post("/request-vc/:issuerId", verifyToken, requestVC);
 router.post(
   "/verifier/request-auth/:verifierId",
   verifyToken,
+  passwordCheck,
   createVerifyRequest
 );
 
@@ -101,5 +83,34 @@ router.get("/find/request-auths", verifyToken, getAllVerifyRequest);
     @ required : Smart Contract
 */
 router.post("/auth-vp/:verifiyListId", verifyToken, closeVerifyReqest);
+
+/*
+    @ dev : Create Verifiable Credentil Of Issuer
+    @ desc : Issuer는 발급할 VC를 생성할 수 있습니다.
+    @ subject : Issuer
+*/
+router.post('/verifiable-credential/', verifyToken , createVerifiableCredential);
+
+/*
+    @ dev : Update Verifiable Credentil Of Issuer
+    @ desc : Issuer는 발급할 VC를 업데이트 할 수 있습니다.
+    @ subject : Issuer
+*/
+router.put('/verifiable-credential/:vcId', verifyToken, updateVerifiableCredential)
+
+/*
+    @ dev : Delete Verifiable Credentil Of Issuer
+    @ desc : Issuer는 발급할 VC를 삭제 할 수 있습니다.
+    @ subject : Issuer
+*/
+router.delete('/verifiable-credential/:vcId', verifyToken, deleteVerifiableCredential)
+
+/*
+    @ dev : Get Verifiable Credentil Of Issuer
+    @ desc : Issuer는 발급할 VC를 출력 할 수 있습니다.
+    @ subject : Issuer
+*/
+router.get('/verifiable-credential/:vcId', verifyToken, getVerifiableCredential)
+
 
 module.exports = router;
