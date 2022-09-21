@@ -1,8 +1,8 @@
-.holderissue {
+.verifiervplist {
   padding: 0;
 }
 
-.holderissue--regist {
+.verifiervplist--regist {
   border-radius: 30px;
   width: 200px;
   height: 50px;
@@ -13,11 +13,22 @@
   font-weight: 700;
 }
 
-.holderissue--regist--container {
+.verifiervplist--breadcrumb {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 5% 0 0 5%;
+}
+
+.verifiervplist--description {
+  font-size: 1.5rem;
+  margin: 0 0 0 5%;
+}
+
+.verifiervplist--regist--container {
   margin: 50px 0 0 0;
 }
 
-.holderissue--regist:hover {
+.verifiervplist--regist:hover {
   background: linear-gradient(
     90deg,
     rgba(13, 108, 201, 1) 0%,
@@ -31,7 +42,7 @@
   -o-transform: scale(1.2); /* Opera */
 }
 
-.holderissue--form {
+.verifiervplist--form {
   margin: 5%;
   background-color: white;
   border-radius: 20px;
@@ -39,19 +50,19 @@
   box-shadow: 2px 2px 5px #777777;
 }
 
-.holderissue--title {
+.verifiervplist--title {
   font-size: 2rem;
   font-weight: 700;
 }
 
-.holderissue--sub--title {
+.verifiervplist--sub--title {
   font-size: 1.5rem;
   font-weight: 700;
   color: #777777;
   margin: 0 0 0 30%;
 }
 
-.holderissue--input {
+.verifiervplist--input {
   text-indent: 15px;
   border-radius: 50px;
   width: 100%;
@@ -59,7 +70,7 @@
   border: 1px solid #aaaaaa;
 }
 
-.holderissue--row {
+.verifiervplist--row {
   margin: 30px 0;
 }
 

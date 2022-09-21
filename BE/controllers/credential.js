@@ -318,9 +318,7 @@ const closeVerifyReqest = async (req, res, next) => {
     try {
       /* 
         Close Verify Request 로직
-
         Verifier가 Holder의 인증요청을 진행
-
         1. Holder의 VC List를 가져온다 (VC 원본을 보기 위함) [closed]
         2. Holder의 WalletAddress를 가져온다(DID Document 접근용) [closed]
         3. Holder의 DID Document에 접근, publicKey를 가져옴 [closed]

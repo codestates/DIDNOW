@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Row, Col } from "antd";
-import homePicture from "../img/homepage.jpg";
+import homePicture from "../../img/homepage.jpg";
 import "./style/home.css";
 const Home = () => {
   return (
@@ -30,7 +30,7 @@ const Home = () => {
                 style={{ color: "black", textDecoration: "underline" }}
                 to="/signin"
               >
-                {"📝 내 인증서 관리하기"}
+                {"📝 Get Start DID NOW!"}
               </Link>
             </li>
           </ul>

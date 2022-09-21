@@ -9,9 +9,9 @@ const IssuerUserListSchema = new mongoose.Schema(
     cr_name: {
       type: String,
     },
-    cr_email:{
-      type : String,
-      unique : true,
+    cr_email: {
+      type: String,
+      unique: true,
     },
     cr_birthDate: {
       type: Date,

@@ -114,22 +114,7 @@ const HolderIssue = () => {
               <Col span={2}></Col>
             </Row>
 
-            <Row className="holderissue--row">
-              <Col span={6}>
-                <div>
-                  <span className="holderissue--sub--title">첨부파일</span>
-                </div>
-              </Col>
-              <Col span={16}>
-                <Upload {...props}>
-                  <Button>
-                    <UploadOutlined /> 파일 업로드
-                  </Button>
-                </Upload>
-              </Col>
-              <Col span={2}></Col>
-            </Row>
-            <hr />
+           <hr />
             <Row className="holderissue--regist--container">
               <Col span={2} offset={11}>
                 <button className="holderissue--regist">등록 완료</button>

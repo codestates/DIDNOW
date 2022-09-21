@@ -1,0 +1,148 @@
+.signin {
+  padding: 0;
+  height: 100vh;
+}
+
+.signin--left {
+  width: 100%;
+  padding: 10% 0 0% 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.signin--right {
+  width: 100%;
+  height: 100%;
+  padding: 10% 20% 0% 0;
+}
+
+.signin--image {
+  width: 100%;
+  height: 500px;
+  border-radius: 50px;
+  box-shadow: 2px 2px 5px #777777;
+}
+
+.signin--canvas {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background-color: transparent;
+  padding: 5%;
+}
+
+.signin--title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 30px 0;
+}
+
+.signin--label {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #555555;
+}
+
+.signin--id {
+  border-top: 0px;
+  border-bottom: 1px solid #555555;
+  border-left: 0px;
+  border-right: 0px;
+  height: 3rem;
+  text-indent: 10px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 20px 0 20px 0;
+}
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #555555;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #555555;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #555555;
+}
+
+.signin--signinbtn {
+  height: 3rem;
+  width: 50%;
+  margin: 20px auto;
+  cursor: pointer;
+  border-radius: 20px;
+  border: 1px solid #777777;
+  background-color: white;
+  box-shadow: 2px 2px 5px #777777;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.signin--signinbtn:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(13, 108, 201, 1) 0%,
+    rgba(22, 178, 166, 1) 100%
+  );
+  color: white;
+  cursor: pointer;
+}
+
+.signin--way {
+  background-color: #555555;
+}
+
+.signin--selected {
+  border: 2px solid transparent;
+  background: linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(90deg, rgba(13, 108, 201, 1) 0%, rgba(22, 178, 166, 1) 100%)
+      border-box;
+}
+.signin .ant-radio-button-wrapper {
+  width: 33.3%;
+  display: flex;
+  justify-content: center;
+}
+
+.signin .ant-radio-button-wrapper span {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.signin .ant-radio-button-checked {
+  background: linear-gradient(
+    90deg,
+    rgba(13, 108, 201, 1) 0%,
+    rgba(22, 178, 166, 1) 100%
+  );
+  border-color: linear-gradient(
+    90deg,
+    rgba(13, 108, 201, 1) 0%,
+    rgba(22, 178, 166, 1) 100%
+  );
+}
+
+.signin .ant-radio-button-wrapper-checked {
+  background: linear-gradient(
+    90deg,
+    rgba(13, 108, 201, 1) 0%,
+    rgba(22, 178, 166, 1) 100%
+  );
+  border-color: linear-gradient(
+    90deg,
+    rgba(13, 108, 201, 1) 0%,
+    rgba(22, 178, 166, 1) 100%
+  );
+}
+
+.signin--shadow {
+  box-shadow: 2px 2px 5px #777777;
+}

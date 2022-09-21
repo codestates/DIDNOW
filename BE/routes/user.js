@@ -75,7 +75,8 @@ router.put("/issuer-user/:issuerUserId", verifyToken, updateIssuerUser);
     @ desc : 특정 Issuer User를 출력합니다. 
     @ subject : Issuer
 */
-router.get("/issuer-user/:issuerUserId", verifyToken, getIssuerUser);
+
+router.get("/issuer-user/:issuerUserId", getIssuerUser);
 
 /*
     @ dev : get All Issuer User Lists
@@ -110,7 +111,7 @@ router.get("/verifier/:verifierId", verifyToken, getVerifier);
     @ desc : 모든 Verifier를 출력합니다.
     @ subject : Holder
 */
-router.get("/verifiers", verifyToken, getAllVerifiers);
+router.get("/verifiers", getAllVerifiers);
 
 /*
     @ dev : update Holder

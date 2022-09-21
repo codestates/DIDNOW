@@ -1,0 +1,108 @@
+.mypage {
+  padding: 0;
+}
+
+.mypage--breadcrumb {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 5% 0 0 5%;
+}
+
+.mypage--description {
+  font-size: 1.5rem;
+  margin: 0 0 0 5%;
+}
+
+.mypage--form {
+  margin: 5%;
+  background-color: white;
+  border-radius: 20px;
+  padding: 5% 0;
+  box-shadow: 2px 2px 5px #777777;
+}
+
+.mypage--regist {
+  border-radius: 30px;
+  width: 200px;
+  height: 50px;
+  border: 1px solid #777777;
+  background-color: white;
+  box-shadow: 2px 2px 5px #777777;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.mypage--regist--container {
+  margin: 50px 0 0 0;
+}
+
+.mypage--regist:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(13, 108, 201, 1) 0%,
+    rgba(22, 178, 166, 1) 100%
+  );
+  color: white;
+  cursor: pointer;
+  transform: scale(1.2); /*  default */
+  -webkit-transform: scale(1.2); /*  크롬 */
+  -moz-transform: scale(1.2); /* FireFox */
+  -o-transform: scale(1.2); /* Opera */
+}
+
+.mypage--title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.mypage--sub--title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #777777;
+  margin: 0 0 0 0;
+}
+
+.mypage--input {
+  text-indent: 15px;
+  border-radius: 50px;
+  width: 100%;
+  height: 2.5rem;
+  border: 1px solid #aaaaaa;
+}
+
+.mypage--row {
+  margin: 30px 0;
+}
+
+/* tile uploaded pictures */
+.upload-list-inline .ant-upload-list-item {
+  float: left;
+  width: 200px;
+  margin-right: 8px;
+}
+.upload-list-inline .ant-upload-animate-enter {
+  animation-name: uploadAnimateInlineIn;
+}
+.upload-list-inline .ant-upload-animate-leave {
+  animation-name: uploadAnimateInlineOut;
+}
+
+.mypage--issuer {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #777777;
+}
+.mypage--submit {
+  width: 100%;
+  cursor: pointer;
+}
+
+.mypage--sumbit--wrapper {
+  margin: 5% 0 0 0;
+  height: 50px;
+}
+
+.disabled {
+  color: #777777;
+  background-color: #eeeeee;
+}

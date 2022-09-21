@@ -64,3 +64,4 @@ async function test(){
 };
 //contractFunction();
 test();
+Footer

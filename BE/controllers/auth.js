@@ -41,6 +41,13 @@ const registerIssuer = async (req, res, next) => {
       pubKey: publicKey,
       privateKey: privateKey,
     });
+   
+    // 블록체인 접근
+    // 테스트넷의 지갑주소 생성
+    // wallet keypair DB 저장
+    // faucet
+
+    // methods.function.send({from : 배포 월렛 주소})
 
     //Issuer의 지갑 저장
     const newWallet = new Wallet({
@@ -63,6 +70,8 @@ const registerIssuer = async (req, res, next) => {
     await newIssuer.save();
     // KeyPair 저장
     await newKeyPairs.save();
+    
+
     
 
     res.status(200).json("Issuer가 등록되었습니다.");
@@ -179,7 +188,7 @@ const loginIssuer = async (req, res, next) => {
         secure: false,
       })
       .status(200)
-      .json(others);
+      .json({type:"issuer",...others});
   } catch (error) {
     next(error);
   }
@@ -206,7 +215,7 @@ const loginHolder = async (req, res, next) => {
     const token = jwt.sign(
       { id: holder._id, type: "holder" },
       process.env.JWT_SECRET,
-      { issuer: "DIDNOW", expiresIn: "30m" }
+      { issuer: "DIDNOW", expiresIn: "24h" }
     );
     const { password, ...others } = holder._doc;
 
@@ -310,15 +319,14 @@ const getAccessToken = async (req, res, next) => {
     switch (req.user.type) {
       case "issuer":
         const issuer = await Issuer.findById(req.user.id);
-
-        return res.status(200).json(issuer);
+        return res.status(200).json({type:req.user.type,user:issuer});
       case "holder":
         const holder = await Holder.findById(req.user.id);
 
-        return res.status(200).json(holder);
+        return res.status(200).json({type:req.user.type, user:holder});
       case "verifier":
         const verifier = await Verifier.findById(req.user.id);
-        return res.status(200).json(verifier);
+        return res.status(200).json({type:req.user.type, user:verifier});
 
       default:
         return next(createError(403, "User Not Found"));
