@@ -21,7 +21,7 @@ const genKey = () => {
       publicKey: Buffer.from(publicKey).toString("hex"),
     };
   } catch (error) {
-    console.log(error);
+    debug && console.log(error);
   }
 };
 
@@ -34,23 +34,23 @@ const genKeyTest = () => {
     const privateKey = getPrivateKey();
     const publicKey = secp256k1.publicKeyCreate(privateKey);
 
-    console.log(privateKey)
-    console.log(publicKey)
+    debug && console.log(privateKey)
+    debug && console.log(publicKey)
 
     // DB 저장
     const enc_privateKey = privateKey.toString("hex");
     const enc_publicKey = Buffer.from(publicKey).toString("hex");
 
-    // console.log(enc_privateKey)
-    // console.log(enc_publicKey)
+    // debug && console.log(enc_privateKey)
+    // debug && console.log(enc_publicKey)
 
     // DB 불러오기
     const dec_privateKey = Buffer.from(enc_privateKey, 'hex');
     const dec_publicKey = new Uint8Array(Buffer.from(enc_publicKey, 'hex')) 
 
 
-    console.log(dec_privateKey);
-    console.log(dec_publicKey);
+    debug && console.log(dec_privateKey);
+    debug && console.log(dec_publicKey);
 
     // 해시
     let hash = CryptoJS.SHA256(str).toString(CryptoJS.enc.Hex);
@@ -58,7 +58,7 @@ const genKeyTest = () => {
     // 암호화
     const sigObj = secp256k1.ecdsaSign(Buffer.from(hash, "hex"), dec_privateKey);
 
-    console.log(sigObj);
+    debug && console.log(sigObj);
 
     // 복호화
     const result = secp256k1.ecdsaVerify(
@@ -71,11 +71,11 @@ const genKeyTest = () => {
       dec_publicKey
     )
 
-    console.log(result);
+    debug && console.log(result);
 
 
   } catch (error) {
-    console.log(error);
+    debug && console.log(error);
   }
 };
 
@@ -106,21 +106,21 @@ const genKeyTest = () => {
 
 //   return { publicKey, privateKey};
 // } catch (error) {
-//   console.log(error)
+//   debug && console.log(error)
 // }
 
 // // TEST
 // const {publicKey, privateKey} = genKey();
 
-// // console.log(publicKey);
-// // console.log(privateKey);
+// // debug && console.log(publicKey);
+// // debug && console.log(privateKey);
 
 // const data = "hello world"
 
 // // 암호화
 // const cryt = crypto.publicEncrypt(publicKey, Buffer.from(data))
 // const cryptResult = cryt.toString("base64");
-// console.log(cryptResult)
+// debug && console.log(cryptResult)
 
 // // 복호화
 // const dcrypt = crypto.privateDecrypt(
@@ -128,6 +128,6 @@ const genKeyTest = () => {
 //   Buffer.from(cryptResult, "base64")
 // );
 // const dcryptResult = dcrypt.toString('utf8');
-// console.log(dcryptResult)
+// debug && console.log(dcryptResult)
 
 module.exports = { genKey };

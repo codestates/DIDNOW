@@ -118,10 +118,10 @@ const createIssuerUser = async (req, res, next) => {
           issuerWallet.privateKey
         );
         const tx1 = new Date();
-        console.log('Blockchain 1(addHash(IssuerDID)) : ', tx1-start,'ms')
+        debug && console.log('Blockchain 1(addHash(IssuerDID)) : ', tx1-start,'ms')
 
       }catch(err){
-        console.log(err);
+        debug && console.log(err);
       }
 
       const newIssuerUser = new IssuerUserList({

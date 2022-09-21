@@ -90,7 +90,7 @@ describe("🚀 VC 인증 준비(회원가입+로그인+UserList 생성)", () => 
           done();
         });
     } catch (err) {
-      console.log(err);
+      debug && console.log(err);
     }
   });
   // Verifier 로그인
@@ -244,7 +244,7 @@ describe("🚀 VC 발급 (Holder => Issuer)", () => {
             done();
           });
     }catch(err){
-        console.log(err);
+        debug && console.log(err);
         done();
     }
   });

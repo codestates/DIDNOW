@@ -8,6 +8,9 @@ const authRouter = require('./routes/auth')
 const userRouter = require('./routes/user')
 const credentialRouter = require('./routes/credential')
 
+const debug = process.env.NODE_ENV === 'development'
+const prod = process.env.NODE_ENV === 'production'
+
 // Configuration
 dotenv.config();
 const app = express();
@@ -22,7 +25,7 @@ app.use(cors({
 
 // DB Connection
 mongoose.connect(process.env.MONGO_URL, () => {
-  console.log("Connection to Mongo DB ...");
+  debug && console.log("Connection to Mongo DB ...");
 });
 
 // Router
@@ -41,8 +44,10 @@ app.use((err, req, res, next)=>{
   })
 })
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is on PORT : ${process.env.PORT}`);
+app.listen(process.env.AUTH_PORT, () => {
+  // 무중단 배포 = Main Processor에게 ready 신호 전달
+  process.send("ready");
+  debug && console.log(`Server is on PORT : ${process.env.AUTH_PORT}`);
 });
 
 module.exports = app;

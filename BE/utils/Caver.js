@@ -13,7 +13,7 @@ async function testFunction() {
     publicKey: keyring._address,
     privateKey: keyring._key._privateKey
   }
-  console.log(res);
+  debug && console.log(res);
 }
 //testFunction();
 
@@ -30,8 +30,8 @@ async function contractFunction() {
     abi,
     process.env.DIDCONTRACT_ADDRESS
   );
-  // console.log(contractInstance);
-  // console.log(contractInstance.options.address);
+  // debug && console.log(contractInstance);
+  // debug && console.log(contractInstance.options.address);
   await contractInstance.methods
     .addService(
       "did:klay:7423de10c75b1d4d1f30a4d81386e3aaf22584f8",
@@ -43,7 +43,7 @@ async function contractFunction() {
       gas: "75000000",
     });
   //   const temp = await contractInstance.methods.retrieve().call();
-  //   console.log(temp);
+  //   debug && console.log(temp);
 }
 
 async function test(){
@@ -60,7 +60,7 @@ async function test(){
       }
     },'')
 
-    console.log(res)
+    debug && console.log(res)
 };
 //contractFunction();
 test();

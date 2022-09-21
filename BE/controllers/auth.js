@@ -61,7 +61,7 @@ const registerIssuer = async (req, res, next) => {
       addProof(did, publicKey, WalletPrivateKey)
 
     }catch(err){
-      console.log(err);
+      debug && console.log(err);
     }
 
     // Wallet 저장
@@ -76,7 +76,7 @@ const registerIssuer = async (req, res, next) => {
 
     res.status(200).json("Issuer가 등록되었습니다.");
   } catch (error) {
-    console.log(error);
+    debug && console.log(error);
     next(error);
   }
 };
@@ -127,7 +127,7 @@ const registerHolder = async (req, res, next) => {
 
     res.status(200).json("Holder가 등록되었습니다.");
   } catch (error) {
-    console.log(error);
+    debug && console.log(error);
     next(error);
   }
 };

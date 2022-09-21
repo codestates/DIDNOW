@@ -155,10 +155,10 @@ const issueVC = async (did, id, type, signKey) => {
 const addHash = async (did, id, hash, signKey) => {
   const sender =
   caver.wallet.keyring.createFromPrivateKey(signKey);
-    console.log(did)
-    console.log(sender.address)
-    console.log(id)
-    console.log(hash)
+    debug && console.log(did)
+    debug && console.log(sender.address)
+    debug && console.log(id)
+    debug && console.log(hash)
   //월렛이 등록 안되어 있으면 사인키를 월렛에 등록
   try {
     caver.wallet.add(sender);
@@ -228,7 +228,7 @@ const getPemPubKey = async (did) => {
       return cur.publicKey;
     }
   }, "");
-  console.log(res);
+  debug && console.log(res);
   return res;
 };
 
