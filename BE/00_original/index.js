@@ -44,7 +44,7 @@ app.use((err, req, res, next)=>{
   })
 })
 
-app.listen(process.env.AUTH_PORT, () => {
+app.listen(process.env.PORT, () => {
   // 무중단 배포 = Main Processor에게 ready 신호 전달
   process.send("ready");
   debug && console.log(`Server is on PORT : ${process.env.AUTH_PORT}`);

@@ -1,38 +1,55 @@
 version: '3.8'
 services: 
-  server1: 
+  auth-server: 
     build: 
-      context: ./BE
+      context: ./BE/01_AUTH-server
       dockerfile : Dockerfile
-    image: server:latest
+    image: auth-server:1.0.0
     expose:
-      - 9192
+      - 9111
     ports:
-      - 9192:9999
-    container_name: server1
+      - 9111:9991
+    container_name: auth-server
 
-  server2: 
-    image: server:latest
+  issuer-server: 
+    build: 
+      context: ./BE/02_ISSUER-server
+      dockerfile : Dockerfile
+    image: issuer-server:1.0.0
     expose:
-      - 9193
+      - 9112
     ports:
-      - 9193:9999
-    container_name: server2
+      - 9112:9992
+    container_name: issuer-server
 
-  server3: 
-    image: server:latest
+  holder-server:
+    build: 
+      context: ./BE/03_HOLDER-server
+      dockerfile : Dockerfile
+    image: holder-server:1.0.0 
     expose:
-      - 9194
+      - 9113
     ports:
-      - 9194:9999
-    container_name: server3
+      - 9113:9993
+    container_name: holder-server
+
+  verifier-server:
+    build: 
+      context: ./BE/04_VERIFIER-server
+      dockerfile : Dockerfile 
+    image: verifier-server:1.0.0
+    expose:
+      - 9114
+    ports:
+      - 9114:9994
+    container_name: verifier-server
 
   react-nginx-app:
     stdin_open: true
     build:
       context: ./FE/client
       dockerfile: Dockerfile
-    image: client:latest
+    image: react-ngninx-app:1.0.0
     expose:
       - 3010
     ports:
@@ -46,7 +63,7 @@ services:
     build :
       context : ./Proxy
       dockerfile : Dockerfile
-    image: proxy:latest
+    image: proxy:1.0.0
     expose:
       - 5777
     ports:
