@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "pm2-runtime start ecosystem.config.js",
-    "test": "mocha --exit --timeout 15000",
-    "deploy" : "pm2-runtime reload ecosystem.config.js"
+    "start": "nodemon index",
+    "test": "mocha --exit --timeout 15000"
   },
   "author": "",
   "license": "ISC",

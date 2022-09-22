@@ -48,7 +48,7 @@ const requestVC = async (req, res, next) => {
       });
 
       const mid1 = new Date();
-      debug && console.log('DB 데이터 읽기 : ', (mid1-start),'ms');
+      console.log('DB 데이터 읽기 : ', (mid1-start),'ms');
 
       // Verifiable Credential 발급
       start = new Date();
@@ -92,7 +92,7 @@ const requestVC = async (req, res, next) => {
       const enc_SignedVC = Buffer.from(signedVC.signature).toString("hex");
 
       const mid2 = new Date();
-      debug && console.log('Verifiable Credential 발급 : ', (mid2 - start),'ms');
+      console.log('Verifiable Credential 발급 : ', (mid2 - start),'ms');
 
       /* Blockchain 접근 */
       try {
@@ -120,9 +120,9 @@ const requestVC = async (req, res, next) => {
           holderWallet.privateKey
         );
         const tx2 = new Date();
-        debug && console.log('Blockchain 1(addHash(HolderDID)) : ', tx2-start,'ms')
+        console.log('Blockchain 1(addHash(HolderDID)) : ', tx2-start,'ms')
       } catch (err) {
-        debug && console.log(err);
+        console.log(err);
       }
 
       // Holder VC List에 저장
@@ -136,7 +136,7 @@ const requestVC = async (req, res, next) => {
 
       res.status(200).json(savedHolderVCList);
     } catch (error) {
-      debug && console.log(error);
+      console.log(error);
       next(error);
     }
   } else {
@@ -265,7 +265,7 @@ const createVerifyRequest = async (req, res, next) => {
 
       res.status(200).json({ data: savedVerifyList, message: "success" });
     } catch (error) {
-      debug && console.log(error);
+      console.log(error);
       next(error);
     }
   } else {
@@ -387,7 +387,7 @@ const closeVerifyReqest = async (req, res, next) => {
         verifyFactor[0] = factor_01;
       } catch (error) {
         verifyFactor[0] = false;
-        debug && console.log(error);
+        console.log(error);
       }
 
       
@@ -431,7 +431,7 @@ const closeVerifyReqest = async (req, res, next) => {
         verifyFactor[1] = factor_02;
       } catch (error) {
         verifyFactor[1] = false;
-        debug && console.log(error);
+        console.log(error);
       }
 
       try {
@@ -452,7 +452,7 @@ const closeVerifyReqest = async (req, res, next) => {
         verifyFactor[2] = factor_03;
       } catch (err) {
         verifyFactor[2] = false;
-        debug && console.log(err);
+        console.log(err);
       }
 
       try {
@@ -464,11 +464,11 @@ const closeVerifyReqest = async (req, res, next) => {
         verifyFactor[3] = factor_04;
       } catch (err) {
         verifyFactor[3] = false;
-        debug && console.log(err);
+        console.log(err);
       }
 
       // 결과값 반환
-      debug && console.log(verifyFactor);
+      console.log(verifyFactor);
       let resultVerify = "";
       if (verifyFactor.every((item) => item)) {
         resultVerify = "success";
@@ -490,7 +490,7 @@ const closeVerifyReqest = async (req, res, next) => {
       );
 
     } catch (error) {
-      debug && console.log(error);
+      console.log(error);
       next(error);
     }
   } else {

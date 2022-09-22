@@ -2,20 +2,23 @@ const assert = require("chai").assert;
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../index");
+const axios = require('axios')
 
 chai.use(chaiHttp);
 const num = new Date().getTime();
 let IssuerObj = {};
 let HolderObj = {};
 let VerifierObj = {};
-let cookie = "";
+let IssuerCookie = "";
+let HolderCookie = "";
+let VerifierCookie = "";
 
 const debug = process.env.NODE_ENV === "development";
 const prod = process.env.NODE_ENV === "production";
 
 describe("📙 Issuer Register + Login + CRUD", () => {
   // 🚀 Issuer 회원가입
-  it("🚀 Issuer 회원가입", (done) => {
+  it("✅️ Issuer 회원가입", (done) => {
     const user = {
       title: `testIssuer${num}`,
       email: `testIssuer${num}@gmail.com`,
@@ -24,7 +27,7 @@ describe("📙 Issuer Register + Login + CRUD", () => {
     };
     chai
       .request(server)
-      .post("/api/v1/auth/register-issuer")
+      .post("/aut/api/v1/register-issuer")
       .send(user)
       .end((err, res) => {
         assert.equal(res.status, "200");
@@ -33,17 +36,17 @@ describe("📙 Issuer Register + Login + CRUD", () => {
       });
   });
   // 🚀 Holder 회원가입
-  it("🚀 Holder 회원가입", (done) => {
+  it("✅️ Holder 회원가입", (done) => {
     const user = {
       username: `testHolder${num}`,
       email: `testHolder${num}@gmail.com`,
       password: `1111`,
       birthDay: `2000-01-01`,
-      IssuerList: ["632800f9914130afc4350b50"],
+      IssuerList: [IssuerObj._id],
     };
     chai
       .request(server)
-      .post("/api/v1/auth/register-holder")
+      .post("/aut/api/v1/register-holder")
       .send(user)
       .end((err, res) => {
         assert.equal(res.status, "200");
@@ -52,7 +55,7 @@ describe("📙 Issuer Register + Login + CRUD", () => {
       });
   });
   // 🚀 Verifier 회원가입
-  it("🚀 Verifier 회원가입", (done) => {
+  it("✅️ Verifier 회원가입", (done) => {
     const user = {
       title: `testVerifier${num}`,
       email: `testVerifier${num}@gmail.com`,
@@ -61,7 +64,7 @@ describe("📙 Issuer Register + Login + CRUD", () => {
     };
     chai
       .request(server)
-      .post("/api/v1/auth/register-verifier")
+      .post("/aut/api/v1/register-verifier")
       .send(user)
       .end((err, res) => {
         assert.equal(res.status, "200");
@@ -73,17 +76,17 @@ describe("📙 Issuer Register + Login + CRUD", () => {
 
 describe("📙 Issuer Login + CRUD", () => {
   // Issuer 로그인
-  it("🚀 Issuer Login", (done) => {
+  it("✅️ #1 Issuer Login", (done) => {
     const user = {
       email: `testIssuer${num}@gmail.com`,
       password: "1111",
     };
     chai
       .request(server)
-      .post("/api/v1/auth/login-issuer/")
+      .post("/aut/api/v1/login-issuer/")
       .send(user)
       .end((err, res) => {
-        cookie = res.headers["set-cookie"][0].split(";")[0];
+        IssuerCookie = res.headers["set-cookie"][0].split(";")[0];
         IssuerObj = res.body;
         assert.equal(res.status, "200");
         assert.equal(res.body.email, `testIssuer${num}@gmail.com`);
@@ -91,56 +94,17 @@ describe("📙 Issuer Login + CRUD", () => {
         done();
       });
   });
-  // Update Issuer
-  it("🚀 CRUD #2 : Issuer Update", (done) => {
-    const userUpdated = {
-      title: `testIssuer${num} updated`,
-    };
 
+  // Logout Issuer
+  it("✅️ #2 : Issuer Logout", (done) => {
     try {
       chai
         .request(server)
-        .put(`/api/v1/user/issuer/${IssuerObj._id}`)
-        .set("Cookie", cookie)
-        .send(userUpdated)
+        .post(`/aut/api/v1/logout/`)
+        .set("Cookie", IssuerCookie)
         .end((err, res) => {
           assert.equal(res.status, "200");
-          assert.equal(res.body.data.title, `testIssuer${num} updated`);
-          done();
-        });
-    } catch (err) {
-      debug && console.log(err);
-    }
-    // User Delete
-  });
-  // Get a Issuer
-  it("🚀 CRUD #2 : Get a Issuer", (done) => {
-    try {
-      chai
-        .request(server)
-        .get(`/api/v1/user/issuer/${IssuerObj._id}`)
-        .set("Cookie", cookie)
-        .end((err, res) => {
-          assert.equal(res.status, "200");
-          assert.equal(res.body.title, `testIssuer${num} updated`);
-          assert.equal(res.body._id, IssuerObj._id);
-        });
-      done();
-    } catch (err) {
-      debug && console.log(err);
-    }
-  });
-
-  // Delete Issuer
-  it("🚀 CRUD #3 : Issuer Delete", (done) => {
-    try {
-      chai
-        .request(server)
-        .delete(`/api/v1/user/issuer/${IssuerObj._id}`)
-        .set("Cookie", cookie)
-        .end((err, res) => {
-          assert.equal(res.status, "200");
-          assert.equal(res.body, "성공적으로 Issuer가 삭제되었습니다.");
+          assert.equal(res.body, "성공적으로 Logout 되었습니다.");
         });
       done();
     } catch (err) {
@@ -151,17 +115,17 @@ describe("📙 Issuer Login + CRUD", () => {
 
 describe("📙 Holder Login + CRUD", () => {
   // Holder 로그인
-  it("🚀 Holder Login", (done) => {
+  it("✅️ #1 Holder Login", (done) => {
     const user = {
       email: `testHolder${num}@gmail.com`,
       password: "1111",
     };
     chai
       .request(server)
-      .post("/api/v1/auth/login-holder/")
+      .post("/aut/api/v1/login-holder/")
       .send(user)
       .end((err, res) => {
-        cookie = res.headers["set-cookie"][0].split(";")[0];
+        HolderCookie = res.headers["set-cookie"][0].split(";")[0];
         HolderObj = res.body;
         assert.equal(res.status, "200");
         assert.equal(res.body.email, `testHolder${num}@gmail.com`);
@@ -169,55 +133,16 @@ describe("📙 Holder Login + CRUD", () => {
         done();
       });
   });
-  // Update Holder 
-  it("🚀 CRUD #2 : Holder Update", (done) => {
-    const userUpdated = {
-      username: `testHolder${num} updated`,
-    };
-
+  // Logout Holder
+  it("✅️ #2 : Holder Logout", (done) => {
     try {
       chai
         .request(server)
-        .put(`/api/v1/user/holder/${HolderObj._id}`)
-        .set("Cookie", cookie)
-        .send(userUpdated)
+        .post(`/aut/api/v1/logout/`)
+        .set("Cookie", HolderCookie)
         .end((err, res) => {
           assert.equal(res.status, "200");
-          assert.equal(res.body.data.username, `testHolder${num} updated`);
-          done();
-        });
-    } catch (err) {
-      debug && console.log(err);
-    }
-  });
-  // Get a Holder
-  it("🚀 CRUD #2 : Get a Holder", (done) => {
-    try {
-      chai
-        .request(server)
-        .get(`/api/v1/user/holder/${HolderObj._id}`)
-        .set("Cookie", cookie)
-        .end((err, res) => {
-          assert.equal(res.status, "200");
-          assert.equal(res.body.username, `testHolder${num} updated`);
-          assert.equal(res.body._id, HolderObj._id);
-        });
-      done();
-    } catch (err) {
-      debug && console.log(err);
-    }
-  });
-
-  // Delete Holder
-  it("🚀 CRUD #3 : Holder Delete", (done) => {
-    try {
-      chai
-        .request(server)
-        .delete(`/api/v1/user/holder/${HolderObj._id}`)
-        .set("Cookie", cookie)
-        .end((err, res) => {
-          assert.equal(res.status, "200");
-          assert.equal(res.body, "성공적으로 holder가 삭제되었습니다.");
+          assert.equal(res.body, "성공적으로 Logout 되었습니다.");
         });
       done();
     } catch (err) {
@@ -228,7 +153,7 @@ describe("📙 Holder Login + CRUD", () => {
 
 describe("📙 Verifier Login + CRUD", () => {
   // Verifier 로그인
-  it("🚀 Verifier Login", (done) => {
+  it("✅️ #1 Verifier Login", (done) => {
     const user = {
       email: `testVerifier${num}@gmail.com`,
       password: "1111",
@@ -237,10 +162,10 @@ describe("📙 Verifier Login + CRUD", () => {
     try {
       chai
         .request(server)
-        .post("/api/v1/auth/login-verifier/")
+        .post("/aut/api/v1/login-verifier/")
         .send(user)
         .end((err, res) => {
-          cookie = res.headers["set-cookie"][0].split(";")[0];
+          VerifierCookie = res.headers["set-cookie"][0].split(";")[0];
           VerifierObj = res.body;
           assert.equal(res.status, "200");
           assert.equal(res.body.email, `testVerifier${num}@gmail.com`);
@@ -250,59 +175,79 @@ describe("📙 Verifier Login + CRUD", () => {
       debug && console.log(err);
     }
   });
-  // Update Verifier 
-  it("🚀 CRUD #2 : Verifier Update", (done) => {
-    const userUpdated = {
-      title: `testVerifier${num} updated`,
-    };
-
+  // Logout Verifier
+  it("✅️ #2 : Verifier Logout", (done) => {
     try {
       chai
         .request(server)
-        .put(`/api/v1/user/verifier/${VerifierObj._id}`)
-        .set("Cookie", cookie)
-        .send(userUpdated)
+        .post(`/aut/api/v1/logout/`)
+        .set("Cookie", VerifierCookie)
         .end((err, res) => {
           assert.equal(res.status, "200");
-          assert.equal(res.body.data.title, `testVerifier${num} updated`);
-          done();
-        });
-    } catch (err) {
-      debug && console.log(err);
-    }
-  });
-  // Get a Verifier
-  it("🚀 CRUD #2 : Get a Verifier", (done) => {
-    try {
-      chai
-        .request(server)
-        .get(`/api/v1/user/verifier/${VerifierObj._id}`)
-        .set("Cookie", cookie)
-        .end((err, res) => {
-          assert.equal(res.status, "200");
-          assert.equal(res.body.title, `testVerifier${num} updated`);
-          assert.equal(res.body._id, VerifierObj._id);
+          assert.equal(res.body, "성공적으로 Logout 되었습니다.");
         });
       done();
     } catch (err) {
       debug && console.log(err);
     }
   });
-
-  // Delete Verifier
-  it("🚀 CRUD #3 : Verifier Delete", (done) => {
-    try {
-      chai
-        .request(server)
-        .delete(`/api/v1/user/verifier/${VerifierObj._id}`)
-        .set("Cookie", cookie)
-        .end((err, res) => {
-          assert.equal(res.status, "200");
-          assert.equal(res.body, "성공적으로 verifier가 삭제되었습니다.");
-        });
-      done();
-    } catch (err) {
-      debug && console.log(err);
-    }
+});
+describe("📙 Issuer + Holder + Verifier Delete 삭제", () => {
+  // Issuer Delete
+  it("🚀 #1 Issuer Delete", (done) => {
+    axios({
+      url: `http://localhost:9992/iss/api/v1/issuer/${IssuerObj._id}`,
+      method: "DELETE",
+      headers: {
+        Cookie: IssuerCookie,
+      },
+      withCredential: true,
+    })
+      .then((result) => {
+        assert.equal(result.status, "200");
+        assert.equal(result.data, "성공적으로 Issuer가 삭제되었습니다.");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+  // Holder Delete
+  it("🚀 #2 Holder Delete", (done) => {
+    axios({
+      url: `http://localhost:9993/hol/api/v1/holder/${HolderObj._id}`,
+      method: "DELETE",
+      headers: {
+        Cookie: HolderCookie,
+      },
+      withCredential: true,
+    })
+      .then((result) => {
+        assert.equal(result.status, "200");
+        assert.equal(result.data, "성공적으로 holder가 삭제되었습니다.");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+  // Verifier Delete
+  it("🚀 #3 Verifier Delete", (done) => {
+    axios({
+      url: `http://localhost:9994/ver/api/v1/verifier/${VerifierObj._id}`,
+      method: "DELETE",
+      headers: {
+        Cookie: VerifierCookie,
+      },
+      withCredential: true,
+    })
+      .then((result) => {
+        assert.equal(result.status, "200");
+        assert.equal(result.data, "성공적으로 verifier가 삭제되었습니다.");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
   });
 });

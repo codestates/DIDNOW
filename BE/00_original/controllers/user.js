@@ -6,6 +6,9 @@ const createError = require("../utils/Error");
 const { addHash } = require("../utils/UseCaver");
 const VerifiableCredential = require("../models/VerifiableCredential");
 const Wallets = require("../models/Wallet");
+
+
+
 /*
     @ dev : update Issuer
     @ desc : Issuer를 업데이트 합니다.
@@ -118,10 +121,11 @@ const createIssuerUser = async (req, res, next) => {
           issuerWallet.privateKey
         );
         const tx1 = new Date();
-        debug && console.log('Blockchain 1(addHash(IssuerDID)) : ', tx1-start,'ms')
+        console.log('Blockchain 1(addHash(IssuerDID)) : ', tx1-start,'ms')
 
       }catch(err){
-        debug && console.log(err);
+
+        console.log(err);
       }
 
       const newIssuerUser = new IssuerUserList({

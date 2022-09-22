@@ -25,10 +25,13 @@ app.use(cors({
 
 // DB Connection
 mongoose.connect(process.env.MONGO_URL, () => {
-  debug && console.log("Connection to Mongo DB ...");
+  console.log("Connection to Mongo DB ...");
 });
 
 // Router
+app.get('/test', (req, res)=>{
+  res.json("성공했습니다")
+})
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/credential', credentialRouter)
@@ -46,8 +49,8 @@ app.use((err, req, res, next)=>{
 
 app.listen(process.env.PORT, () => {
   // 무중단 배포 = Main Processor에게 ready 신호 전달
-  process.send("ready");
-  debug && console.log(`Server is on PORT : ${process.env.AUTH_PORT}`);
+  prod && process.send("ready");
+  console.log(`Server is on PORT : ${process.env.AUTH_PORT}`);
 });
 
 module.exports = app;

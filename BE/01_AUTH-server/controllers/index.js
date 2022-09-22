@@ -61,7 +61,7 @@ const registerIssuer = async (req, res, next) => {
       addProof(did, publicKey, WalletPrivateKey)
 
     }catch(err){
-      debug && console.log(err);
+      console.log(err);
     }
 
     // Wallet 저장
@@ -76,7 +76,7 @@ const registerIssuer = async (req, res, next) => {
 
     res.status(200).json("Issuer가 등록되었습니다.");
   } catch (error) {
-    debug && console.log(error);
+    console.log(error);
     next(error);
   }
 };
@@ -127,7 +127,7 @@ const registerHolder = async (req, res, next) => {
 
     res.status(200).json("Holder가 등록되었습니다.");
   } catch (error) {
-    debug && console.log(error);
+    console.log(error);
     next(error);
   }
 };
@@ -278,7 +278,7 @@ const loginVerifier = async (req, res, next) => {
 const logout = (req, res, next) => {
   try {
     res
-      .clearCookie()
+      .clearCookie("AccessToken")
       .status(200)
       .json("성공적으로 Logout 되었습니다.");
   } catch (error) {

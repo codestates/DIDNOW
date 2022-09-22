@@ -65,7 +65,7 @@ describe("📙 Issuer Register + Login + CRUD", () => {
             done();
           });
       } catch (err) {
-        debug && console.log(err);
+        console.log(err);
       }
       // User Delete
       
@@ -82,7 +82,7 @@ describe("📙 Issuer Register + Login + CRUD", () => {
         });
         done();
       } catch (err) {
-        debug && console.log(err);
+        console.log(err);
       }
   })
 });

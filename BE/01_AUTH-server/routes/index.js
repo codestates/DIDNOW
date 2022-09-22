@@ -10,7 +10,7 @@ const {
     logout,
     getKeyPair,
     getAccessToken
-} = require('../controllers/auth')
+} = require('../controllers')
 
 /*
     @ dev : Register a Issuer

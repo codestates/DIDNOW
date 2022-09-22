@@ -4,12 +4,11 @@ const chaiHttp = require("chai-http");
 const server = require("../index");
 
 chai.use(chaiHttp);
-const num = new Date().getTime();
+const num = 404;
 let IssuerObj = {};
 let HolderObj = {};
 let VerifierObj = {};
 let cookie = "";
-
 
 describe("🚀 VC 인증 준비(회원가입+로그인+UserList 생성)", () => {
   // Issuer 회원가입
@@ -58,7 +57,7 @@ describe("🚀 VC 인증 준비(회원가입+로그인+UserList 생성)", () => 
       email: `testHolder${num}@gmail.com`,
       password: "1111",
       birthDay: "2000-01-01",
-      IssuerList : [IssuerObj._id]
+      IssuerList: [IssuerObj._id],
     };
     chai
       .request(server)
@@ -90,7 +89,7 @@ describe("🚀 VC 인증 준비(회원가입+로그인+UserList 생성)", () => 
           done();
         });
     } catch (err) {
-      debug && console.log(err);
+      console.log(err);
     }
   });
   // Verifier 로그인
@@ -178,25 +177,30 @@ describe("🚀 VC 인증 준비(회원가입+로그인+UserList 생성)", () => 
       cr_certificateName: "5기",
       cr_certificateDate: "2022-01-01",
       cr_Nationality: "Korea",
-      holderId : HolderObj._id,
+      holderId: HolderObj._id,
     };
-    chai
-      .request(server)
-      .post(`/api/v1/user/issuer-user/${IssuerObj._id}`)
-      .set("Cookie", cookie)
-      .send(body)
-      .end((err, res) => {
-        assert.equal(res.status, "200");
-        assert.equal(res.body.data.cr_name, `testHolder${num}`);
-        assert.equal(res.body.data.cr_email, `testHolder${num}@gmail.com`);
-        assert.equal(res.body.data.cr_certificateName, "5기");
-        assert.equal(res.body.data.cr_certificateType, "블록체인 부트캠프");
-        assert.equal(
-          res.body.message,
-          "IssuerUserList가 성공적으로 저장되었습니다."
-        );
-        done();
-      });
+    try {
+      chai
+        .request(server)
+        .post(`/api/v1/user/issuer-user/${IssuerObj._id}`)
+        .set("Cookie", cookie)
+        .send(body)
+        .end((err, res) => {
+          assert.equal(res.status, "200");
+          assert.equal(res.body.data.cr_name, `testHolder${num}`);
+          assert.equal(res.body.data.cr_email, `testHolder${num}@gmail.com`);
+          assert.equal(res.body.data.cr_certificateName, "5기");
+          assert.equal(res.body.data.cr_certificateType, "블록체인 부트캠프");
+          assert.equal(
+            res.body.message,
+            "IssuerUserList가 성공적으로 저장되었습니다."
+          );
+          done();
+        });
+    } catch (err) {
+      console.log(er);
+      done(err);
+    }
   });
 });
 describe("🚀 VC 발급 (Holder => Issuer)", () => {
@@ -225,27 +229,26 @@ describe("🚀 VC 발급 (Holder => Issuer)", () => {
       password: "1111",
       VC_title: "testHolder`s 졸업증명서",
     };
-    try{
-
-        chai
-          .request(server)
-          .post(`/api/v1/credential/request-vc/${IssuerObj._id}`)
-          .set("Cookie", cookie)
-          .send(body)
-          .end((err, res) => {
-            assert.equal(res.status, "200");
-            assert.exists(res.body.originalVC);
-            assert.equal(res.body.title, "testHolder`s 졸업증명서");
-            assert.equal(res.body.IssuedBy, IssuerObj._id);
-            assert.equal(
-              res.body.originalVC[0].sub,
-              `did:klay:${HolderObj.walletAddress.slice(2)}`
-            );
-            done();
-          });
-    }catch(err){
-        debug && console.log(err);
-        done();
+    try {
+      chai
+        .request(server)
+        .post(`/api/v1/credential/request-vc/${IssuerObj._id}`)
+        .set("Cookie", cookie)
+        .send(body)
+        .end((err, res) => {
+          assert.equal(res.status, "200");
+          assert.exists(res.body.originalVC);
+          assert.equal(res.body.title, "testHolder`s 졸업증명서");
+          assert.equal(res.body.IssuedBy, IssuerObj._id);
+          assert.equal(
+            res.body.originalVC[0].sub,
+            `did:klay:${HolderObj.walletAddress.slice(2)}`
+          );
+          done();
+        });
+    } catch (err) {
+      console.log(err);
+      done();
     }
   });
 });
