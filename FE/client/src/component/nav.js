@@ -82,9 +82,6 @@ const Nav = ({ type, setType, user, setUser }) => {
           <Menu.Item key={4}>
             <Link to="/issuer/userlist">인증 목록 등록</Link>
           </Menu.Item>
-          <Menu.Item key={5}>
-            <Link to="/issuer/manage">인증서 발급통계</Link>
-          </Menu.Item>
         </SubMenu>
         <Menu.Item onClick={logout} key={7} className="font--red">
           로그아웃

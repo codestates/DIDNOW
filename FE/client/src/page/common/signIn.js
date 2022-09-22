@@ -8,7 +8,7 @@ const SignIn = ({ type, setType, setUser }) => {
   const navigate = useNavigate();
   useEffect(() => {
     if (type !== "") {
-      navigate("/");
+      navigate("/home");
     }
   }, [navigate, type]);
 
@@ -65,12 +65,18 @@ const SignIn = ({ type, setType, setUser }) => {
         });
         setUser(JSON.parse(userData));
         setType(userObj.data.type);
-        navigate(-1);
+        navigate("/home");
       }
     } catch (error) {
       messageError("로그인 실패!!");
     }
   };
+
+  const isEnter = (e) => {
+    if (e.keyCode === 13) {
+      signin();
+    }
+  }
   return (
     <div className="signin">
       <Row>
@@ -108,6 +114,7 @@ const SignIn = ({ type, setType, setUser }) => {
                 placeholder="PASSWORD"
                 onChange={onchange}
                 id="password"
+                onKeyDown={isEnter}
               />
               <Row>
                 <Col span={6}>

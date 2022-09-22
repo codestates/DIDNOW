@@ -17,7 +17,7 @@ const HolderManage = () => {
       method: "GET",
       withCredentials: true,
     }).then((vcListOfHolder) => {
-      setVcList(vcListOfHolder.data);
+      setVcList(vcListOfHolder.data.reverse());
       axios({
         url: "http://localhost:9999/api/v1/user/issuers",
         method: "GET",
@@ -29,9 +29,7 @@ const HolderManage = () => {
     });
   }, []);
 
-  useEffect(() => {
-    console.log(vcList.filter((e, idx) => idx in selected));
-  });
+  useEffect(() => {});
 
   const selectedHandle = (e) => {
     if (selected.indexOf(e.currentTarget.id) >= 0) {
@@ -103,7 +101,7 @@ const HolderManage = () => {
                     등록된 인증서가 없습니다.
                   </div>
                   <div style={{ fontSize: "1.5rem" }}>
-                    <Link to="/holder/issue">📝 인증서 등록하러 가기</Link>
+                    <Link to="/holder/issuerlist">📝 인증서 등록하러 가기</Link>
                   </div>
                 </>
               )}

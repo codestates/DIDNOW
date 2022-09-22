@@ -28,9 +28,6 @@ const Verifiers = () => {
   // re-render
   useEffect(() => {});
 
-  // request to verifier
-  const requestVP = (e) => {};
-
   const handleOk = (e) => {
     setPassword(e.target.value);
     setModalOpen(false);

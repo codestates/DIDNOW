@@ -44,7 +44,7 @@ const ModalContent = ({
         });
     } else if (title === "") {
       setIsOkLoading(false);
-      message.error("제목을 입력해주세요.");
+      message.error("인증서 이름을 입력해주세요.");
     } else if (password === "") {
       setIsOkLoading(false);
       message.error("비밀번호를 입력해주세요.");

@@ -21,6 +21,8 @@ const IssuerUserList = () => {
   const [userList, setUserList] = useState([]);
   // 로그인한 issuer를 issuerList 로 등록한 holderList
   const [holderList, setHolderList] = useState([]);
+  // 선택한 홀더의 id
+  const [holderId, setHolderId] = useState("");
 
   useEffect(() => {
     // User 정보를 받아온다.
@@ -101,10 +103,11 @@ const IssuerUserList = () => {
   const submitUserList = () => {
     userListObj.organizationId = user._id;
     setUserListObj(userListObj);
+    console.log({...userListObj, organizationId: user._id});
     axios({
       url: `http://localhost:9999/api/v1/user/issuer-user/${user._id}`,
       method: "POST",
-      data: { ...userListObj, organizationId: user._id },
+      data: { ...userListObj, organizationId: user._id, holderId: holderId },
       withCredentials: true,
     })
       .catch((error) => {
@@ -166,7 +169,6 @@ const IssuerUserList = () => {
     { flag: "🇨🇳", value: "China" },
   ];
   const nationalityChange = (e) => {
-    console.log(e);
     setUserListObj((prevUserListObj) => {
       return {
         ...prevUserListObj,
@@ -191,6 +193,7 @@ const IssuerUserList = () => {
       cr_address: "",
       cr_isAdult: false,
     });
+    setHolderId(holderList[i]._id);
   };
   return (
     <div className="issueruserlist">
@@ -336,13 +339,12 @@ const IssuerUserList = () => {
             {userList.map((el, idx) => {
               return (
                 <Row key={idx}>
+                  <Col span={1}>{idx + 1}</Col>
                   <Col span={3}>{el.cr_name || "null"}</Col>
                   <Col span={5}>{el.cr_email || "null"}</Col>
-                  <Col span={4}>{el.cr_birthDate || "null"}</Col>
                   <Col span={4}>{el.cr_certificateName || "null"}</Col>
                   <Col span={4}>{el.cr_certificateType || "null"}</Col>
                   <Col span={4}>{el.cr_certificateDate || "null"}</Col>
-                  <Col span={2}>{el.cr_Nationality || "null"}</Col>
                   <Col span={2}>{el.cr_isAdult === true ? "O" : "X"}</Col>
                 </Row>
               );

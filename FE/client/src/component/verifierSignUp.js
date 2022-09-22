@@ -45,12 +45,13 @@ const VerifierSignUp = () => {
 
       if (res.status === 200) {
         message.info(res.data);
-        navigate("/");
+        navigate("/home");
       }
     }
   };
 
   const changeRequiredVC = (e) => {
+    console.log(e);
     setVerifierInfo((prev) => {
       return {
         ...prev,

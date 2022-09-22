@@ -34,14 +34,14 @@ const IssuerSignUp = () => {
           password: issuerInfo.password,
           title: issuerInfo.title,
           requiredVC: [issuerInfo.requiredVC],
-          desc: issuerInfo.desc,
+          // desc: issuerInfo.desc,
         },
         withCredentials: true,
       });
 
       if (res.status === 200) {
         message.info(res.data);
-        navigate("/");
+        navigate("/home");
       }
     }
   };

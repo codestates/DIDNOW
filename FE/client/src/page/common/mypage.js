@@ -57,7 +57,7 @@ const Mypage = ({ type }) => {
 
   const updateInfo = (e) => {
     const userNameRegex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|]+$/;
-    const userTitleRegex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|[0-9]]+$/;
+    const userTitleRegex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9]+$/;
     if (type === "holder") {
       if (user.IssuerList.length < 1) {
         message.error("소속기관을 최소 1개이상 선택해주세요.");
@@ -84,6 +84,7 @@ const Mypage = ({ type }) => {
       if (!userTitleRegex.test(user.title)) {
         message.error("기관명은 한글, 영어, 숫자로만 입력해주세요.");
       } else if (user.title.length < 1 || user.title.length > 20) {
+        console.log(user.title);
         message.error("기관명은 1글자이상 20글자 이하로 해주세요.");
       } else {
         axios({
