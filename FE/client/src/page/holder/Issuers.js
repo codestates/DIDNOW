@@ -14,7 +14,7 @@ const Issuers = () => {
   // Issuer 정보 불러오기
   useEffect(() => {
     axios({
-      url: "http://localhost:9999/api/v1/auth/accesstoken",
+      url: "/aut/api/v1/accesstoken",
       method: "GET",
       withCredentials: true,
     })
@@ -30,17 +30,18 @@ const Issuers = () => {
     // 그 중 내 이메일과 일치하는 issueruserlist 를 찾는다.
     // 출력한다.
     axios({
-      url: "http://localhost:9999/api/v1/user/issuers",
+      url: "/iss/api/v1/issuer/find/all",
       method: "GET",
       withCredentials: true,
     })
       .then((result) => {
         setIssuers(result.data);
         axios({
-          url: `http://localhost:9999/api/v1/user/issuer-users/${result.data._id}`,
+          url: `/iss/api/v1/issuer-user/all/${result.data._id}`,
           method: "GET",
           withCredentials: true,
-        })})
+        });
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -50,24 +51,44 @@ const Issuers = () => {
     <div className="holderissue">
       <Breadcrumb className="holdermanage--breadcrumb" separator=">">
         <Breadcrumb.Item href="/">홈</Breadcrumb.Item>
-        <Breadcrumb.Item href="/holder/issuerlist">Issuer List</Breadcrumb.Item>
+        <Breadcrumb.Item href="/holder/issuerlist">인증서 발급</Breadcrumb.Item>
       </Breadcrumb>
       <div className="holderissue--form">
         <Row className="holderissue--row">
           <Col span={20} offset={2}>
-            <div className="holderissue--title">요청할 Issuer 정보</div>
+            <div className="issuerlist--title">발급할 Issuer 정보</div>
             <hr />
 
-            <Row className="holderissue--row">
-              <Col span={6}>기관명</Col>
-              <Col span={8}>필수제공 목록</Col>
-              <Col span={4}>비고</Col>
+            <Row className="holderissuerlist--row">
+              <Col span={2} offset={2}>
+                <span className="holderissuerlist--columns">번호</span>
+              </Col>
+              <Col span={7}>
+                <span className="holderissuerlist--columns">기관명</span>
+              </Col>
+              <Col span={8}>
+                <span className="holderissuerlist--columns">필수제공 목록</span>
+              </Col>
+              <Col span={3}>
+                <span
+                  className="holderissuerlist--columns"
+                  style={{ justifyContent: "center" }}
+                >
+                  발급
+                </span>
+              </Col>
             </Row>
+            <hr />
 
-            {issuers.map((e,idx) => {
-              return <IssuerList key={idx} issuer={e} holder={holder} />
+            {issuers.map((e, idx) => {
+              return (
+                <IssuerList key={idx} issuer={e} idx={idx} holder={holder} />
+              );
             })}
           </Col>
+        </Row>
+        <Row>
+          <Col offset={11}>pagination 들어갈 자리</Col>
         </Row>
       </div>
     </div>

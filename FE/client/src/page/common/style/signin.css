@@ -1,6 +1,7 @@
 .signin {
   padding: 0;
   height: 100vh;
+  margin: 0 0 20vh 0;
 }
 
 .signin--left {
@@ -14,13 +15,6 @@
   width: 100%;
   height: 100%;
   padding: 10% 20% 0% 0;
-}
-
-.signin--image {
-  width: 100%;
-  height: 500px;
-  border-radius: 50px;
-  box-shadow: 2px 2px 5px #777777;
 }
 
 .signin--canvas {
@@ -82,7 +76,7 @@
   border-radius: 20px;
   border: 1px solid #777777;
   background-color: white;
-  box-shadow: 2px 2px 5px #777777;
+  box-shadow: 1px 1px 2px #aaaaaa;
   font-size: 1.2rem;
   font-weight: 700;
 }
@@ -144,5 +138,5 @@
 }
 
 .signin--shadow {
-  box-shadow: 2px 2px 5px #777777;
+  box-shadow: 1px 1px 2px #aaaaaa;
 }

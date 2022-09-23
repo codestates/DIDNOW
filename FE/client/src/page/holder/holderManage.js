@@ -1,25 +1,32 @@
-import { Breadcrumb, Row, Col } from "antd";
+import { Breadcrumb, Row, Col, Modal, Select, message, Spin } from "antd";
 import "./style/holderManage.css";
 import Vc from "../../component/vc";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+const { Option } = Select;
+
 const HolderManage = () => {
   const [vcList, setVcList] = useState([{}]);
   const [selected, setSelected] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const [issuers, setIssuers] = useState([]);
+  const [verifiers, setVerifiers] = useState([]);
+  const [verifier, setVerifier] = useState({});
+  const [modalOpen, setModalOpen] = useState(false);
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     axios({
-      url: "http://localhost:9999/api/v1/credential/get-holder-vc-list/",
+      url: "/hol/api/v1/verify/vc-list",
       method: "GET",
       withCredentials: true,
     }).then((vcListOfHolder) => {
-      setVcList(vcListOfHolder.data);
+      setVcList(vcListOfHolder.data.reverse());
       axios({
-        url: "http://localhost:9999/api/v1/user/issuers",
+        url: "/iss/api/v1/issuer/find/all",
         method: "GET",
         withCredentials: true,
       }).then((data) => {
@@ -27,11 +34,16 @@ const HolderManage = () => {
       });
       setIsLoading(false);
     });
+
+    axios({
+      url: "/ver/api/v1/verifier/find/all",
+      withCredentials: true,
+    }).then((data) => {
+      setVerifiers([...data.data]);
+    });
   }, []);
 
-  useEffect(() => {
-    console.log(vcList);
-  });
+  useEffect(() => {});
 
   const selectedHandle = (e) => {
     if (selected.indexOf(e.currentTarget.id) >= 0) {
@@ -44,13 +56,47 @@ const HolderManage = () => {
     }
   };
 
-  let registByMeCount = 0;
-  let registByOrgCount = 0;
-  if (vcList.length > 0) {
-    vcList.filter((e) =>
-      e.status === 0 ? registByMeCount++ : registByOrgCount++
-    );
-  }
+  const handleCancel = () => {
+    setVerifier({});
+    setModalOpen(false);
+    setPassword("");
+  };
+
+  const handleOk = () => {
+    if (Object.keys(verifier).length === 0) {
+      message.error("제출할 기업을 선택해주세요.");
+    } else if (password === "") {
+      message.error("비밀번호를 입력해주세요.");
+    } else {
+      setSubmitLoading(true);
+      const arr = vcList
+        .filter((e, idx) => idx in selected)
+        .map((e, i) => e._id);
+      axios({
+        url: `/hol/api/v1/verify/request-auth/${verifier}`,
+        method: "POST",
+        data: {
+          password: password,
+          vc_list: [...arr],
+        },
+        withCredentials: true,
+      })
+        .then((data) => {
+          setVerifier({});
+          setPassword("");
+          setSubmitLoading(false);
+          setModalOpen(false);
+          message.success("인증서 제출 성공.");
+        })
+        .catch((error) => {
+          if (error.response.data.status === 400) {
+            message.error("비밀번호를 틀렸습니다.");
+            setSubmitLoading(false);
+          }
+        });
+    }
+  };
+
   return (
     <div className="holdermanage">
       <Breadcrumb className="holdermanage--breadcrumb" separator=">">
@@ -63,37 +109,145 @@ const HolderManage = () => {
           <div className="holdermanage--description">
             <div>여러분의 증명, 인증서를 확인 및 다운로드 할 수 있습니다.</div>
             <div>
-              내가 등록한 인증서는
-              <span style={{ color: "blue", fontWeight: "700" }}>파란색</span>,
               기관에서 등록한 인증서는
               <span style={{ color: "red", fontWeight: "700" }}>빨간색</span>
               으로 표시됩니다.
             </div>
           </div>
           <Row className="holdermanage--total">
-            <Col span={3}>
-              <div className="holdermanage--total--label">
-                {`총 ${vcList.length || 0}개`}
-              </div>
-            </Col>
-            <Col span={5}>
-              <div className="holdermanage--total--label">{`내가 등록한 인증서 ${registByMeCount} 개`}</div>
-            </Col>
             <Col span={6}>
-              <div className="holdermanage--total--label">{`블록체인에 등록된 인증서 ${registByOrgCount} 개`}</div>
+              <div className="holdermanage--total--label">{`블록체인에 등록된 인증서 ${vcList.length} 개`}</div>
             </Col>
             <Col span={6}>
               {selected.length >= 1 ? (
-                <Link
-                  to="/holder/submit"
-                  state={{
-                    selected: vcList.filter((e, idx) => idx in selected),
-                  }}
-                >
-                  <div className="holdermanage--submit--label">
+                <>
+                  <div
+                    className="holdermanage--submit--label"
+                    onClick={() => {
+                      return setModalOpen(true);
+                    }}
+                  >
                     선택된 {selected.length}개의 인증서 제출하기
                   </div>
-                </Link>
+
+                  <Modal
+                    style={{ borderRadius: "50px" }}
+                    title="인증서 제출"
+                    open={modalOpen}
+                    onCancel={handleCancel}
+                    width="50%"
+                    footer={[]}
+                  >
+                    <Spin size="large" tip="요청중..." spinning={submitLoading}>
+                      <Row>
+                        <Col span={12} offset={6}>
+                          <div style={{ height: "2rem" }}>
+                            특정 기업에 제출하여 인증서를 검증받을 수 있습니다.
+                          </div>
+                          <div>
+                            <div style={{ fontSize: "1rem", height: "1.5rem" }}>
+                              제출할 기업을 선택해주세요.
+                            </div>
+                            <Select
+                              style={{
+                                width: "100%",
+                                border: "1px solid black",
+                                borderRadius: "5px",
+                                margin: "0 0 5% 0",
+                              }}
+                              placeholder="제출할 기업을 선택해주세요."
+                              value={verifier}
+                              onChange={(e) => setVerifier(e)}
+                            >
+                              {verifiers.map((e, idx) => {
+                                return <Option key={e._id}>{e.title}</Option>;
+                              })}
+                            </Select>
+                          </div>
+                          {/* 모달창을 열고, verifier가 선택되어야만 렌더링 */}
+                          {Object.keys(verifier).length > 0 ? (
+                            <>
+                              <div
+                                style={{ fontSize: "1rem", height: "1.5rem" }}
+                              >
+                                제출이 필요한 목록
+                              </div>
+                              <div className="holdermanage--submitlist">
+                                {modalOpen
+                                  ? verifiers[
+                                      verifiers.findIndex((el) => {
+                                        return el._id === verifier;
+                                      })
+                                    ].verifyList.map((e, idx) => {
+                                      return (
+                                        <>
+                                          <Row style={{ margin: "10px 0" }}>
+                                            <Col span={21}>{`${
+                                              idx + 1
+                                            }. ${e}`}</Col>
+                                            <Col span={3}>
+                                              {/* 만약 verifyList에 selected 한것들이 전부 존재한다면 */}
+                                            </Col>
+                                          </Row>
+                                          <hr />
+                                        </>
+                                      );
+                                    })
+                                  : "" || ""}
+                              </div>
+                            </>
+                          ) : (
+                            ""
+                          )}
+
+                          <div style={{ width: "100%", margin: "5% 0 0 0" }}>
+                            <div style={{ fontSize: "1rem" }}>
+                              비밀번호를 입력해주세요
+                            </div>
+                            <div>
+                              <input
+                                className="holdermanage--input"
+                                type="password"
+                                onChange={(e) => {
+                                  setPassword(e.target.value);
+                                }}
+                                value={password}
+                              ></input>
+                            </div>
+                          </div>
+
+                          <Row
+                            style={{
+                              justifyContent: "center",
+                              margin: "10px 0 0 0",
+                            }}
+                            gutter={10}
+                          >
+                            <Col span={12}>
+                              <button
+                                className="holdermanage--btn"
+                                key="submit"
+                                onClick={handleOk}
+                              >
+                                인증서 요청
+                              </button>
+                            </Col>
+                            <Col span={12}>
+                              <button
+                                className="holdermanage--btn"
+                                style={{ backgroundColor: "#777777" }}
+                                key="cancel"
+                                onClick={handleCancel}
+                              >
+                                취소
+                              </button>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </Spin>
+                  </Modal>
+                </>
               ) : (
                 ""
               )}
@@ -121,7 +275,7 @@ const HolderManage = () => {
                     등록된 인증서가 없습니다.
                   </div>
                   <div style={{ fontSize: "1.5rem" }}>
-                    <Link to="/holder/issue">📝 인증서 등록하러 가기</Link>
+                    <Link to="/holder/issuerlist">📝 인증서 등록하러 가기</Link>
                   </div>
                 </>
               )}

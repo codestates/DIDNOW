@@ -21,11 +21,13 @@ const IssuerUserList = () => {
   const [userList, setUserList] = useState([]);
   // 로그인한 issuer를 issuerList 로 등록한 holderList
   const [holderList, setHolderList] = useState([]);
+  // 선택한 홀더의 id
+  const [holderId, setHolderId] = useState("");
 
   useEffect(() => {
     // User 정보를 받아온다.
     axios({
-      url: "http://localhost:9999/api/v1/auth/accesstoken",
+      url: "/aut/api/v1/accesstoken",
       method: "GET",
       withCredentials: true,
     })
@@ -44,7 +46,7 @@ const IssuerUserList = () => {
         setUser(data.data.user);
         // User 정보를 토대로 UserList를 받아온다.
         axios({
-          url: `http://localhost:9999/api/v1/user/issuer-users/${data.data.user._id}`,
+          url: `/iss/api/v1/issuer-user/${data.data.user._id}`,
           method: "GET",
           withCredentials: true,
         }).then((userListData) => {
@@ -56,7 +58,7 @@ const IssuerUserList = () => {
           setUserList([...arr]);
         });
         axios({
-          url: "http://localhost:9999/api/v1/user/holders",
+          url: "/hol/api/v1/holder/find/all",
           method: "GET",
           withCredentials: true,
         }).then((result) => {
@@ -101,10 +103,11 @@ const IssuerUserList = () => {
   const submitUserList = () => {
     userListObj.organizationId = user._id;
     setUserListObj(userListObj);
+    console.log({ ...userListObj, organizationId: user._id });
     axios({
-      url: `http://localhost:9999/api/v1/user/issuer-user/${user._id}`,
+      url: `/iss/api/v1/issuer-user/${user._id}`,
       method: "POST",
-      data: { ...userListObj, organizationId: user._id },
+      data: { ...userListObj, organizationId: user._id, holderId: holderId },
       withCredentials: true,
     })
       .catch((error) => {
@@ -126,16 +129,6 @@ const IssuerUserList = () => {
           cr_isAdult: false,
         });
       });
-  };
-
-  // 생년월일 변경
-  const birthDateChange = (date, dateString) => {
-    setUserListObj((prev) => {
-      return {
-        ...prev,
-        cr_birthDate: dateString,
-      };
-    });
   };
 
   // 인증일자 변경
@@ -166,7 +159,6 @@ const IssuerUserList = () => {
     { flag: "🇨🇳", value: "China" },
   ];
   const nationalityChange = (e) => {
-    console.log(e);
     setUserListObj((prevUserListObj) => {
       return {
         ...prevUserListObj,
@@ -191,6 +183,7 @@ const IssuerUserList = () => {
       cr_address: "",
       cr_isAdult: false,
     });
+    setHolderId(holderList[i]._id);
   };
   return (
     <div className="issueruserlist">
@@ -207,16 +200,6 @@ const IssuerUserList = () => {
             </div>
             <hr />
 
-            <Row>
-              <Col span={24}>
-                <Row>
-                  <Col span={5}>항목</Col>
-                  <Col span={12}>내용</Col>
-                  <Col span={3}>제거</Col>
-                  <Col span={3}></Col>
-                </Row>
-              </Col>
-            </Row>
             <Row>
               <Col span={5}>이메일</Col>
               <Col span={12}>
@@ -321,6 +304,11 @@ const IssuerUserList = () => {
               </Col>
             </Row>
 
+            <Row>
+              <Col span={3}>이름</Col>
+              <Col span={9}>e</Col>
+            </Row>
+
             <Row style={{ margin: "50px 0 ", justifyContent: "center" }}>
               <button
                 className="issueruserlist--submit"
@@ -336,13 +324,12 @@ const IssuerUserList = () => {
             {userList.map((el, idx) => {
               return (
                 <Row key={idx}>
+                  <Col span={1}>{idx + 1}</Col>
                   <Col span={3}>{el.cr_name || "null"}</Col>
                   <Col span={5}>{el.cr_email || "null"}</Col>
-                  <Col span={4}>{el.cr_birthDate || "null"}</Col>
                   <Col span={4}>{el.cr_certificateName || "null"}</Col>
                   <Col span={4}>{el.cr_certificateType || "null"}</Col>
                   <Col span={4}>{el.cr_certificateDate || "null"}</Col>
-                  <Col span={2}>{el.cr_Nationality || "null"}</Col>
                   <Col span={2}>{el.cr_isAdult === true ? "O" : "X"}</Col>
                 </Row>
               );

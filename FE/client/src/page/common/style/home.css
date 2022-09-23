@@ -1,5 +1,7 @@
 .home {
   padding: 10%;
+  margin: 0 0 20vh 0;
+  height: 100vh;
 }
 .home ul,
 .home li {
@@ -15,7 +17,7 @@
 }
 
 .main--sub--title {
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   font-weight: 500;
 }
 
