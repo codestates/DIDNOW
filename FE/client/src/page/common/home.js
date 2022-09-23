@@ -5,7 +5,7 @@ import "./style/home.css";
 const Home = () => {
   return (
     <div className="home">
-      <Row>
+      <Row gutter={20}>
         <Col
           span={12}
           style={{
@@ -30,7 +30,7 @@ const Home = () => {
                 style={{ color: "black", textDecoration: "underline" }}
                 to="/signin"
               >
-                {"📝 Get Start DID NOW!"}
+                {"📝 Get Started DID NOW!"}
               </Link>
             </li>
           </ul>

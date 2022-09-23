@@ -51,12 +51,12 @@ const Issuers = () => {
     <div className="holderissue">
       <Breadcrumb className="holdermanage--breadcrumb" separator=">">
         <Breadcrumb.Item href="/">홈</Breadcrumb.Item>
-        <Breadcrumb.Item href="/holder/issuerlist">인증서 요청</Breadcrumb.Item>
+        <Breadcrumb.Item href="/holder/issuerlist">인증서 발급</Breadcrumb.Item>
       </Breadcrumb>
       <div className="holderissue--form">
         <Row className="holderissue--row">
           <Col span={20} offset={2}>
-            <div className="issuerlist--title">요청할 Issuer 정보</div>
+            <div className="issuerlist--title">발급할 Issuer 정보</div>
             <hr />
 
             <Row className="holderissuerlist--row">
@@ -74,7 +74,7 @@ const Issuers = () => {
                   className="holderissuerlist--columns"
                   style={{ justifyContent: "center" }}
                 >
-                  요청
+                  발급
                 </span>
               </Col>
             </Row>

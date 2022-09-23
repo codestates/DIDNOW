@@ -29,7 +29,7 @@ export default function IssuerList({ issuer, idx }) {
       </Col>
       <Col span={4} className="issuerlist--col">
         <button className="issuerlist--btn" onClick={() => setModalOpen(true)}>
-          인증서 요청
+          인증서 발급
         </button>
         <Modal
           style={{ borderRadius: "50px" }}
@@ -41,7 +41,7 @@ export default function IssuerList({ issuer, idx }) {
           footer={[]}
         >
           {isOkLoading ? (
-            <Spin tip="요청중...">
+            <Spin size="large" tip="요청중...">
               <ModalContent
                 issuer={issuer}
                 modalOpen={modalOpen}

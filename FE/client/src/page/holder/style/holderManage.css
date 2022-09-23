@@ -11,7 +11,7 @@
 }
 
 .holdermanage--description {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   margin: 0 0 0 5%;
 }
 
@@ -23,7 +23,7 @@
   width: 80%;
   height: 3rem;
   border-radius: 15px;
-  font-size: 1.3rem;
+  font-size: 1rem;
   color: white;
   font-weight: 700;
   display: flex;
@@ -40,7 +40,7 @@
   width: 80%;
   height: 3rem;
   border-radius: 15px;
-  font-size: 1.3rem;
+  font-size: 1rem;
   color: white;
   font-weight: 700;
   display: flex;
@@ -64,4 +64,28 @@
 .holdermanage--vc {
   margin: 0 5% 0 5%;
   min-height: 50vh;
+}
+
+.holdermanage--input {
+  width: 100%;
+  border: 1px solid #777777;
+  height: 2rem;
+  border-radius: 5px;
+  text-indent: 10px;
+  margin: 0 0 0 0;
+}
+
+.holdermanage--btn {
+  background-color: #000630;
+  color: white;
+  height: 2rem;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.holdermanage--submitlist {
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid black;
+  padding: 0 5%;
 }

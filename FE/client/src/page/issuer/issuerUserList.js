@@ -103,7 +103,7 @@ const IssuerUserList = () => {
   const submitUserList = () => {
     userListObj.organizationId = user._id;
     setUserListObj(userListObj);
-    console.log({...userListObj, organizationId: user._id});
+    console.log({ ...userListObj, organizationId: user._id });
     axios({
       url: `http://localhost:9999/api/v1/user/issuer-user/${user._id}`,
       method: "POST",
@@ -129,16 +129,6 @@ const IssuerUserList = () => {
           cr_isAdult: false,
         });
       });
-  };
-
-  // 생년월일 변경
-  const birthDateChange = (date, dateString) => {
-    setUserListObj((prev) => {
-      return {
-        ...prev,
-        cr_birthDate: dateString,
-      };
-    });
   };
 
   // 인증일자 변경
@@ -210,16 +200,6 @@ const IssuerUserList = () => {
             </div>
             <hr />
 
-            <Row>
-              <Col span={24}>
-                <Row>
-                  <Col span={5}>항목</Col>
-                  <Col span={12}>내용</Col>
-                  <Col span={3}>제거</Col>
-                  <Col span={3}></Col>
-                </Row>
-              </Col>
-            </Row>
             <Row>
               <Col span={5}>이메일</Col>
               <Col span={12}>
