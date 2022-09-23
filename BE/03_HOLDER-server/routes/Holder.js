@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const verifyToken = require("../utils/VerifyToken");
-const passwordCheck = require("../utils/passwordCheck");
 const {
   updateHolder,
   deleteHolder,
