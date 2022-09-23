@@ -1,15 +1,7 @@
-const Issuer = require("../models/Issuer");
-const { addHash } = require("../utils/UseCaver");
-
 const createError = require("../utils/Error");
 const Holder = require("../models/Holder");
-const HolderVC_List = require("../models/HolderVC_List");
-const IssuerUserList = require("../models/IssuerUserList");
-const VerifiableCredential = require("../models/VerifiableCredential");
 const KeyPairs = require("../models/KeyPairs");
-const secp256k1 = require("secp256k1");
-const CryptoJS = require("crypto-js");
-const Wallets = require("../models/Wallet");
+const Wallet = require("../models/Wallet");
 
 /*
     @ dev : update Holder
@@ -48,6 +40,8 @@ const deleteHolder = async (req, res, next) => {
   if (req.params.holderId === req.user.id) {
     try {
       await Holder.findByIdAndDelete(req.params.holderId);
+      await Wallet.findOneAndDelete({ownerOf : req.params.holderId})
+      await KeyPairs.findOneAndDelete({ownerOf : req.params.holderId})
       res.status(200).json("성공적으로 holder가 삭제되었습니다.");
     } catch (error) {
       next(error);

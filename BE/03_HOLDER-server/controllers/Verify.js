@@ -268,9 +268,31 @@ const createVerifyRequest = async (req, res, next) => {
   }
 };
 
+/*
+    @ dev : Delete VerifyList To Verifier
+    @ desc : Verifier에게 요청한 인증을 삭제합니다.
+        - params로 인증받고자 하는 verifier를 특정합니다.
+    @ subject : Holder
+*/
+
+const deleteVerifyRequest = async (req, res, next) => {
+  if (req.params.holderId === req.user.id) {
+    try {
+      await VerifyList.findByIdAndDelete(req.body.verifyListId);
+      res.status(200).json("성공적으로 VerifyList가 삭제되었습니다.");
+    } catch (error) {
+      next(error);
+    }
+  } else {
+    return next(createError(403, "인가되지 않은 접근입니다."));
+  }
+};
+
+
 module.exports = {
   getHolderVCList,
   deleteHolderVCList,
   requestVC,
   createVerifyRequest,
+  deleteVerifyRequest
 };

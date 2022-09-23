@@ -6,6 +6,7 @@ const {
   deleteHolderVCList,
   requestVC,
   createVerifyRequest,
+  deleteVerifyRequest
 } = require("../controllers/Verify");
 
 /*
@@ -46,6 +47,19 @@ router.post(
   verifyToken,
   passwordCheck,
   createVerifyRequest
+);
+
+/*
+    @ dev : Delete VerifyList To Verifier
+    @ desc : Verifier에게 요청한 인증을 삭제합니다.
+        - params로 인증받고자 하는 verifier를 특정합니다.
+    @ subject : Holder
+*/
+router.delete(
+  "/request-auth/:holderId",
+  verifyToken,
+  passwordCheck,
+  deleteVerifyRequest
 );
 
 module.exports = router;

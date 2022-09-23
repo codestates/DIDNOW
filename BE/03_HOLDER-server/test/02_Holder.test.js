@@ -17,7 +17,10 @@ let IssuerCookie = "";
 let HolderCookie = "";
 let VerifierCookie = "";
 
-let HolderVC_ListObj = [];
+let HolderVC_ListObj;
+let VerifiableCredential;
+let IssuerUserList;
+let VerifyListObj;
 
 describe("📙 Holder Login + CRUD", () => {
   it("🚀 #1 Holder Login", async () => {
@@ -77,7 +80,6 @@ describe("📙 Holder Login + CRUD", () => {
     HolderCookie = result2.headers["set-cookie"][0].split(";")[0];
     HolderObj = result2.data;
 
-
     // Verifier Register
     await axios({
       url: "http://localhost:9991/aut/api/v1/register-verifier",
@@ -103,7 +105,6 @@ describe("📙 Holder Login + CRUD", () => {
     });
     VerifierCookie = result3.headers["set-cookie"][0].split(";")[0];
     VerifierObj = result3.data;
-
   });
 
   // Holder Update
@@ -148,7 +149,7 @@ describe("📙 Issuer 인증서 발급 준비", () => {
   // Create Issuer Verifiable Crential List
   it("🚀 #1 Craete Issuer Verifiable Crential List", async () => {
     try {
-      await axios({
+      const res = await axios({
         url: `http://localhost:9992/iss/api/v1/verifiable-credential`,
         method: "POST",
         headers: {
@@ -161,7 +162,8 @@ describe("📙 Issuer 인증서 발급 준비", () => {
         },
       });
 
-      assert.equal(result.status, "200");
+      VerifiableCredential = res.data.data;
+      assert.equal(res.status, "200");
       assert.equal(res.data, "Verifiable Credential이 생성되었습니다.");
     } catch (err) {}
   });
@@ -186,6 +188,7 @@ describe("📙 Issuer 인증서 발급 준비", () => {
       },
     });
 
+    IssuerUserList = result.data.data;
     assert.equal(result.status, "200");
     assert.equal(
       result.data.message,
@@ -209,6 +212,7 @@ describe("📙 Holder Request Verifiable Credential To Issuer", () => {
       },
       withCredential: true,
     });
+
     assert.equal(result.status, "200");
     assert.equal(result.data.IssuedBy, IssuerObj._id);
   });
@@ -241,13 +245,99 @@ describe("📙 Holder Request Verifiable Credential To Issuer", () => {
       },
       withCredential: true,
     });
+    VerifyListObj = result.data.data;
     assert.equal(result.status, "200");
   });
 });
 
 describe("📙 Issuer + Delete 삭제", () => {
+  // Verifiable Crential 삭제
+  it("🚀 #1 Verifiable Crential 삭제", (done) => {
+    axios({
+      url: `http://localhost:9992/iss/api/v1/verifiable-credential/${VerifiableCredential._id}`,
+      method: "DELETE",
+      headers: {
+        Cookie: IssuerCookie,
+      },
+      withCredential: true,
+    })
+      .then((result) => {
+        assert.equal(result.status, "200");
+        assert.equal(result.data, "VC가 성공적으로 삭제 되었습니다.");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  // IssuerUserList 삭제
+  it("🚀 #2 IssuerUserList 삭제", (done) => {
+    axios({
+      url: `http://localhost:9992/iss/api/v1/issuer-user/${IssuerUserList._id}`,
+      method: "DELETE",
+      headers: {
+        Cookie: IssuerCookie,
+      },
+      withCredential: true,
+    })
+      .then((result) => {
+        assert.equal(result.status, "200");
+        assert.equal(result.data, "IssuerUser가 성공적으로 삭제되었습니다.");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  // VerifyList 삭제
+  it("✅️ #3 Holder VC Request List 삭제", (done) => {
+    axios({
+      url: `http://localhost:9993/hol/api/v1/verify/request-auth/${HolderObj._id}`,
+      method: "DELETE",
+      headers: {
+        Cookie: HolderCookie,
+      },
+      data: {
+        password: "1111",
+        verifyListId: VerifyListObj._id,
+      },
+      withCredential: true,
+    })
+      .then((result) => {
+        assert.equal(result.status, "200");
+        assert.equal(result.data, "성공적으로 VerifyList가 삭제되었습니다.");
+        done();
+      })
+      .catch((err) => {
+        console.log(err);
+        done(err);
+      });
+  });
+
+  // Holder VC List 삭제
+  it("✅️ #4 Holder VC List 삭제", (done) => {
+    axios({
+      url: `http://localhost:9993/hol/api/v1/verify/vc-list/${HolderVC_ListObj[0]._id}`,
+      method: "DELETE",
+      headers: {
+        Cookie: HolderCookie,
+      },
+      withCredential: true,
+    })
+      .then((result) => {
+        assert.equal(result.status, "200");
+        assert.equal(result.data, "VC가 정상적으로 삭제되었습니다.");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
   // Issuer Delete
-  it("🚀 #1 Issuer Delete", (done) => {
+  it("🚀 #5 Issuer Delete", (done) => {
     axios({
       url: `http://localhost:9992/iss/api/v1/issuer/${IssuerObj._id}`,
       method: "DELETE",
@@ -266,7 +356,7 @@ describe("📙 Issuer + Delete 삭제", () => {
       });
   });
   // Holder Delete
-  it("🚀 #2 Holder Delete", (done) => {
+  it("🚀 #6 Holder Delete", (done) => {
     axios({
       url: `http://localhost:9993/hol/api/v1/holder/${HolderObj._id}`,
       method: "DELETE",
@@ -285,7 +375,7 @@ describe("📙 Issuer + Delete 삭제", () => {
       });
   });
   // Verifier Delete
-  it("🚀 #3 Verifier Delete", (done) => {
+  it("🚀 #7 Verifier Delete", (done) => {
     axios({
       url: `http://localhost:9994/ver/api/v1/verifier/${VerifierObj._id}`,
       method: "DELETE",

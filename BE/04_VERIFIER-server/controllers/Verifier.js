@@ -1,8 +1,5 @@
 const createError = require("../utils/Error");
 const Verifier = require("../models/Verifier");
-// const VerifyList = require('../models/VerifyList');
-// const Holder = require("../models/Holder");
-// const { getProof, getAllService, verifyVC } = require("../utils/UseCaver");
 
 /*
     @ dev : update Verifier

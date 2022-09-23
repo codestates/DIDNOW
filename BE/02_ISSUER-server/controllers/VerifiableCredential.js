@@ -1,13 +1,6 @@
-// const IssuerUserList = require("../models/IssuerUserList");
 const VerifiableCredential = require("../models/VerifiableCredential");
-// const Wallet = require("../models/Wallet");
-// const Holder = require("../models/Holder");
 const Issuer = require("../models/Issuer");
-// const { addHash } = require("../utils/UseCaver");
 const createError = require("../utils/Error");
-
-
-
 
 /*
     @ dev : Create Verifiable Credentil Of Issuer

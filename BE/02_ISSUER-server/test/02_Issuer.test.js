@@ -12,6 +12,9 @@ let HolderObj = {};
 let IssuerCookie = "";
 let HolderCookie = "";
 
+let VerifiableCredential;
+let IssuerUserList;
+
 describe("📙 Issuer Login + CRUD", () => {
   it("🚀 #1 Issuer Login", async () => {
     // Issuer Register
@@ -125,6 +128,7 @@ describe("📙 Issuer 인증서 발급 준비", () => {
         .set("Cookie", IssuerCookie)
         .send(data)
         .end((err, res) => {
+          VerifiableCredential = res.body.data;
           assert.equal(res.status, "200");
           assert.equal(res.body.message, "Verifiable Credential이 생성되었습니다.");
         });
@@ -153,6 +157,7 @@ describe("📙 Issuer 인증서 발급 준비", () => {
         .set("Cookie", IssuerCookie)
         .send(data)
         .end((err, res) => {
+          IssuerUserList = res.body.data;
           assert.equal(res.status, "200");
           assert.equal(
             res.body.message,
@@ -205,4 +210,47 @@ describe("📙 Issuer + Delete 삭제", () => {
         done(err);
       });
   });
+
+
+  // Verifiable Crential 삭제
+  it("✅️ #3 VerifiableCredentail Delete", (done) => {
+    axios({
+      url: `http://localhost:9992/iss/api/v1/verifiable-credential/${VerifiableCredential._id}`,
+      method: "DELETE",
+      headers: {
+        Cookie: IssuerCookie,
+      },
+      withCredential: true,
+    })
+      .then((result) => {
+        assert.equal(result.status, "200");
+        assert.equal(result.data, "VC가 성공적으로 삭제 되었습니다.");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  // IssuerUserList 삭제
+  it("✅️ #4 Holder Delete", (done) => {
+    axios({
+      url: `http://localhost:9992/iss/api/v1/issuer-user/${IssuerUserList._id}`,
+      method: "DELETE",
+      headers: {
+        Cookie: IssuerCookie,
+      },
+      withCredential: true,
+    })
+      .then((result) => {
+        assert.equal(result.status, "200");
+        assert.equal(result.data, "IssuerUser가 성공적으로 삭제되었습니다.");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+
 });

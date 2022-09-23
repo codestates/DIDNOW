@@ -1,9 +1,6 @@
-// const IssuerUserList = require("../models/IssuerUserList");
-// const VerifiableCredential = require("../models/VerifiableCredential");
-// const Wallet = require("../models/Wallet");
-// const Holder = require("../models/Holder");
+const Wallet = require("../models/Wallet");
+const KeyPairs = require('../models/KeyPairs')
 const Issuer = require("../models/Issuer");
-// const { addHash } = require("../utils/UseCaver");
 const createError = require("../utils/Error");
 
 /*
@@ -44,6 +41,9 @@ const deleteIssuer = async (req, res, next) => {
   if (req.params.issuerId === req.user.id) {
     try {
       await Issuer.findByIdAndDelete(req.params.issuerId);
+      await Wallet.findOneAndDelete({ownerOf : req.params.issuerId})
+      await KeyPairs.findOneAndDelete({ownerOf : req.params.issuerId})
+
       res.status(200).json("성공적으로 Issuer가 삭제되었습니다.");
     } catch (error) {
       next(error);
