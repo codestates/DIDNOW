@@ -123,7 +123,9 @@ const SideMenu = ({ type, logout }) => {
       ? [...homeItem, ...holderItems, ...commonItems]
       : type === "issuer"
       ? [...homeItem, ...issuerItems, ...commonItems]
-      : [...homeItem, ...verifierItems, ...commonItems];
+      : type === "verifier"
+      ? [...homeItem, ...verifierItems, ...commonItems]
+      : "";
   return <Menu style={{ height: "100%" }} items={items} />;
 };
 

@@ -304,6 +304,11 @@ const IssuerUserList = () => {
               </Col>
             </Row>
 
+            <Row>
+              <Col span={3}>이름</Col>
+              <Col span={9}>e</Col>
+            </Row>
+
             <Row style={{ margin: "50px 0 ", justifyContent: "center" }}>
               <button
                 className="issueruserlist--submit"

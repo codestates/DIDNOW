@@ -38,7 +38,7 @@ const ModalContent = ({
             message.error("비밀번호가 불일치합니다.");
             setIsOkLoading(false);
           } else {
-            message.error("인증서 요청 실패!");
+            message.error("발급 불가능한 인증서입니다.");
             setIsOkLoading(false);
           }
         });
