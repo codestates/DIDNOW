@@ -1,0 +1,60 @@
+{
+    "config": {
+        "target" : "/",
+        "phases": [
+            {
+                "duration": 60,
+                "arrivalRate": 8,
+                "name": "Holder Test"
+            } 
+        ]
+    },
+    "scenarios": [
+        {
+            "name": "Holder Login+Request VC+Create Verify Request",
+            "flow": [
+                {
+                    "post": {
+                        "url": "http://localhost:9991/aut/api/v1/login-holder",
+                        "json": {
+                            "email": "testHolder999@gmail.com",
+                            "password": "1111"
+                        },
+                        "capture" : {
+                            "json" : "$._id",
+                            "as" : "holderId"
+                        }
+                    }
+                },
+                {
+                    "think": 5
+                },
+                {
+                    "post": {
+                        "url": "http://localhost:9993/hol/api/v1/verify/request/632d36ec7ee124723f7e6adc",
+                        "json": {
+                            "password": "1111",
+                            "VC_title": "test VC"
+                        },
+                        "capture" : {
+                            "json" : "$._id",
+                            "as" : "verifialbleCredentialId"
+                        }
+                    }
+                },{
+                    "think": 10
+                },
+                {
+                    "post": {
+                        "url": "http://localhost:9993/hol/api/v1/verify/request-auth/632d37677ee124723f7e6aec",
+                        "json": {
+                            "password": "1111",
+                            "vc_list": "{{verifialbleCredentialId}}",
+                            "completeAt": ""
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
