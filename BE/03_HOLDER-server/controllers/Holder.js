@@ -3,10 +3,10 @@ const { addHash } = require("../utils/UseCaver");
 
 const createError = require("../utils/Error");
 const Holder = require("../models/Holder");
-const HolderVC_List = require('../models/HolderVC_List')
+const HolderVC_List = require("../models/HolderVC_List");
 const IssuerUserList = require("../models/IssuerUserList");
 const VerifiableCredential = require("../models/VerifiableCredential");
-const KeyPairs = require('../models/KeyPairs')
+const KeyPairs = require("../models/KeyPairs");
 const secp256k1 = require("secp256k1");
 const CryptoJS = require("crypto-js");
 const Wallets = require("../models/Wallet");
@@ -20,9 +20,11 @@ const Wallets = require("../models/Wallet");
 const updateHolder = async (req, res, next) => {
   if (req.params.holderId === req.user.id) {
     try {
+      const { IssuerList, ...others } = req.body;
+
       const updatedHolder = await Holder.findByIdAndUpdate(
         req.params.holderId,
-        { $set: req.body },
+        { $addToSet: { IssuerList: IssuerList },  $set: others },
         { new: true }
       );
       res.status(200).json({
@@ -87,11 +89,9 @@ const getAllHolders = async (req, res, next) => {
   }
 };
 
-
 module.exports = {
-    updateHolder,
-    deleteHolder,
-    getHolder,
-    getAllHolders,
-  };
-  
+  updateHolder,
+  deleteHolder,
+  getHolder,
+  getAllHolders,
+};

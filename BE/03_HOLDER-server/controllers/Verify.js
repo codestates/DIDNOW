@@ -21,6 +21,7 @@ const getHolderVCList = async (req, res, next) => {
     try {
       // holder가 소유한 모든 VC를 가져옴
       const holderVCList = await HolderVC_List.find({ owner: req.user.id });
+
       // 출력
       res.status(200).json(holderVCList);
     } catch (error) {
@@ -171,7 +172,7 @@ const requestVC = async (req, res, next) => {
         IssuedBy: req.params.issuerId,
       });
       const savedHolderVCList = await newHolderVCList.save();
-
+      
       res.status(200).json(savedHolderVCList);
     } catch (error) {
       console.log(error);
@@ -202,7 +203,7 @@ const createVerifyRequest = async (req, res, next) => {
           */
 
       // Body에 VC id를 태워 보낸다
-      const holderVC_List = await HolderVC_List.findById(req.body.vc_list);
+      let holderVC_List = await HolderVC_List.findById(req.body.vc_list);
 
       // Holder + Verifier KeyPair 준비
       const HolerKeyPair = await KeyPairs.findOne({

@@ -4,20 +4,22 @@ const Verifier = require("../models/Verifier");
 // const Holder = require("../models/Holder");
 // const { getProof, getAllService, verifyVC } = require("../utils/UseCaver");
 
-
 /*
     @ dev : update Verifier
     @ desc : Verifier 정보를 업데이트 합니다.
     @ subject : Verifier
 */
 
-
 const updateVerifier = async (req, res, next) => {
   if (req.params.verifierId === req.user.id) {
     try {
+      const { verifyList, ...others } = req.body;
       const updatedVerifier = await Verifier.findByIdAndUpdate(
         req.params.verifierId,
-        { $set: req.body },
+        {
+          $addToSet: { verifyList: verifyList },
+          $set: others,
+        },
         { new: true }
       );
       res.status(200).json({
@@ -82,7 +84,6 @@ const getAllVerifiers = async (req, res, next) => {
     next(error);
   }
 };
-
 
 module.exports = {
   updateVerifier,

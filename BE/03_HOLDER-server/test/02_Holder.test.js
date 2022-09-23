@@ -77,7 +77,6 @@ describe("📙 Holder Login + CRUD", () => {
     HolderCookie = result2.headers["set-cookie"][0].split(";")[0];
     HolderObj = result2.data;
 
-    assert.equal(result1.status, "200");
 
     // Verifier Register
     await axios({
@@ -197,66 +196,52 @@ describe("📙 Issuer 인증서 발급 준비", () => {
 
 describe("📙 Holder Request Verifiable Credential To Issuer", () => {
   // request VC
-  it("✅️ #1 request VC", (done) => {
-    const data = {
-      password: "1111",
-      VC_title: "나의 인증서",
-    };
-
-    try {
-      chai
-        .request(server)
-        .post(`/hol/api/v1/verify/request/${IssuerObj._id}`)
-        .set("Cookie", HolderCookie)
-        .send(data)
-        .end((err, res) => {
-          assert.equal(res.status, "200");
-          assert.equal(res.body.IssuedBy, IssuerObj._id);
-        });
-      done();
-    } catch (err) {
-      console.log(err);
-    }
+  it("✅️ #1 request VC", async () => {
+    const result = await axios({
+      url: `http://localhost:9993/hol/api/v1/verify/request/${IssuerObj._id}`,
+      method: "POST",
+      headers: {
+        Cookie: HolderCookie,
+      },
+      data: {
+        password: "1111",
+        VC_title: "test VC",
+      },
+      withCredential: true,
+    });
+    assert.equal(result.status, "200");
+    assert.equal(result.data.IssuedBy, IssuerObj._id);
   });
 
   // Check Holder's VC List
-  it("✅️ #2 Check Holder's VC List", (done) => {
-    try {
-      chai
-        .request(server)
-        .get(`/hol/api/v1/verify/vc-list/`)
-        .set("Cookie", HolderCookie)
-        .end((err, res) => {
-          console.log(res.body);
-          HolderVC_ListObj = res.body;
-          assert.equal(res.status, "200");
-        });
-      done();
-    } catch (err) {
-      console.log(err);
-    }
+  it("✅️ #2 Check Holder's VC List", async () => {
+    const result = await axios({
+      url: `http://localhost:9993/hol/api/v1/verify/vc-list`,
+      method: "GET",
+      headers: {
+        Cookie: HolderCookie,
+      },
+      withCredential: true,
+    });
+    HolderVC_ListObj = result.data;
+    assert.equal(result.status, "200");
   });
 
   // Request Verify VC To Verifier
-  it("✅️ #3 Request Verify VC To Verifier", (done) => {
-    const data = {
-      password: "1111",
-      vc_list: HolderVC_ListObj[0]._id,
-    };
-
-    try {
-      chai
-        .request(server)
-        .get(`/hol/api/v1/verify/request-auth/${VerifyObj._id}`)
-        .set("Cookie", HolderCookie)
-        .send(data)
-        .end((err, res) => {
-          assert.equal(res.status, "200");
-        });
-      done();
-    } catch (err) {
-      console.log(err);
-    }
+  it("✅️ #3 Request Verify VC To Verifier", async () => {
+    const result = await axios({
+      url: `http://localhost:9993/hol/api/v1/verify/request-auth/${VerifierObj._id}`,
+      method: "POST",
+      headers: {
+        Cookie: HolderCookie,
+      },
+      data: {
+        password: "1111",
+        vc_list: HolderVC_ListObj[0]._id,
+      },
+      withCredential: true,
+    });
+    assert.equal(result.status, "200");
   });
 });
 

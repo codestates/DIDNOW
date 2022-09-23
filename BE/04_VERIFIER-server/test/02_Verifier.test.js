@@ -24,7 +24,7 @@ describe("📙 Holder Login + CRUD", () => {
   it("🚀 #1 Holder Login", async () => {
     // Issuer Register
     await axios({
-      url: "http://localhost:9999/api/v1/auth/register-issuer/",
+      url: "http://localhost:9991/aut/api/v1/register-issuer",
       method: "POST",
       data: {
         title: `testIssuer${num}`,
@@ -38,7 +38,7 @@ describe("📙 Holder Login + CRUD", () => {
 
     // Issuer Login
     const result1 = await axios({
-      url: "http://localhost:9999/api/v1/auth/login-issuer/",
+      url: "http://localhost:9991/aut/api/v1/login-issuer",
       method: "POST",
       data: {
         email: `testIssuer${num}@gmail.com`,
@@ -54,7 +54,7 @@ describe("📙 Holder Login + CRUD", () => {
 
     // Holder Register
     await axios({
-      url: "http://localhost:9999/api/v1/auth/register-holder/",
+      url: "http://localhost:9991/aut/api/v1/register-holder",
       method: "POST",
       data: {
         username: `testHolder${num}`,
@@ -68,7 +68,7 @@ describe("📙 Holder Login + CRUD", () => {
 
     // // Holder Login
     const result2 = await axios({
-      url: "http://localhost:9999/api/v1/auth/login-holder/",
+      url: "http://localhost:9991/aut/api/v1/login-holder",
       method: "POST",
       data: {
         email: `testHolder${num}@gmail.com`,
@@ -81,7 +81,7 @@ describe("📙 Holder Login + CRUD", () => {
 
     // Verifier Register
     await axios({
-      url: "http://localhost:9999/api/v1/auth/register-verifier/",
+      url: "http://localhost:9991/aut/api/v1/register-verifier",
       method: "POST",
       data: {
         title: `testVerifier${num}`,
@@ -94,7 +94,7 @@ describe("📙 Holder Login + CRUD", () => {
 
     // Verifier Login
     const result3 = await axios({
-      url: "http://localhost:9999/api/v1/auth/login-verifier/",
+      url: "http://localhost:9991/aut/api/v1/login-verifier",
       method: "POST",
       data: {
         email: `testVerifier${num}@gmail.com`,
@@ -110,7 +110,7 @@ describe("📙 Holder Login + CRUD", () => {
   it("✅️ #2 Verifier Update", async () => {
     try {
       const result3 = await axios({
-        url: `http://localhost:9999/api/v1/user/verifier/${VerifierObj._id}`,
+        url: `http://localhost:9994/ver/api/v1/verifier/${VerifierObj._id}`,
         method: "PUT",
         headers: {
           Cookie: VerifierCookie,
@@ -133,7 +133,7 @@ describe("📙 Holder Login + CRUD", () => {
   // Get A Verifier
   it("✅️ #3 Get a Verifier", async () => {
     const result4 = await axios({
-      url: `http://localhost:9999/api/v1/user/verifier/${VerifierObj._id}`,
+      url: `http://localhost:9994/ver/api/v1/verifier/${VerifierObj._id}`,
       method: "GET",
       headers: {
         Cookie: VerifierCookie,
@@ -151,7 +151,7 @@ describe("📙 Issuer 인증서 발급 준비", () => {
   it("🚀 #1 Craete Issuer Verifiable Crential List", async () => {
     try {
       await axios({
-        url: `http://localhost:9999/api/v1/credential/verifiable-credential`,
+        url: `http://localhost:9992/iss/api/v1/verifiable-credential`,
         method: "POST",
         headers: {
           Cookie: IssuerCookie,
@@ -170,7 +170,7 @@ describe("📙 Issuer 인증서 발급 준비", () => {
 
   it("🚀 #2 Craete IssuerUserList", async () => {
     const result = await axios({
-      url: `http://localhost:9999/api/v1/user/issuer-user/${IssuerObj._id}`,
+      url: `http://localhost:9992/iss/api/v1/issuer-user/${IssuerObj._id}`,
       method: "POST",
       headers: {
         Cookie: IssuerCookie,
@@ -200,7 +200,7 @@ describe("📙 Holder Request Verifiable Credential To Issuer", () => {
   // request VC
   it("🚀 #1 request VC", async () => {
     const result = await axios({
-      url: `http://localhost:9999/api/v1/credential/request-vc/${IssuerObj._id}`,
+      url: `http://localhost:9993/hol/api/v1/verify/request/${IssuerObj._id}`,
       method: "POST",
       headers: {
         Cookie: HolderCookie,
@@ -218,7 +218,7 @@ describe("📙 Holder Request Verifiable Credential To Issuer", () => {
   // Check Holder's VC List
   it("🚀 #2 Check Holder's VC List", async () => {
     const result = await axios({
-      url: `http://localhost:9999/api/v1/credential/get-holder-vc-list/`,
+      url: `http://localhost:9993/hol/api/v1/verify/vc-list`,
       method: "GET",
       headers: {
         Cookie: HolderCookie,
@@ -232,7 +232,7 @@ describe("📙 Holder Request Verifiable Credential To Issuer", () => {
   // Request Verify VC To Verifier
   it("🚀 #3 Request Verify VC To Verifier", async () => {
     const result = await axios({
-      url: `http://localhost:9999/api/v1/credential/verifier/request-auth/${VerifierObj._id}`,
+      url: `http://localhost:9993/hol/api/v1/verify/request-auth/${VerifierObj._id}`,
       method: "POST",
       headers: {
         Cookie: HolderCookie,
@@ -251,7 +251,7 @@ describe("📙 Holder Request Verifiable Credential To Issuer", () => {
   // Verify List 확인
   it("✅️ #1 Verify List 확인", async () => {
     const result = await axios({
-      url: `http://localhost:9999/api/v1/credential/find/request-auths`,
+      url: `http://localhost:9994/ver/api/v1/verify/find/all`,
       method: "GET",
       headers: {
         Cookie: VerifierCookie,
@@ -265,7 +265,7 @@ describe("📙 Holder Request Verifiable Credential To Issuer", () => {
   // Close Verify Request
   it("✅️ #2 Close Verify Request", async () => {
     const result = await axios({
-      url: `http://localhost:9999/api/v1/credential/auth-vp/${VerifyRequestList[0]._id}`,
+      url: `http://localhost:9994/ver/api/v1/verify/close-vp/${VerifyRequestList[0]._id}`,
       method: "POST",
       headers: {
         Cookie: VerifierCookie,
@@ -280,7 +280,7 @@ describe("📙 Issuer + Holder + Verifier Delete 삭제", () => {
   // Issuer Delete
   it("🚀 #1 Issuer Delete", (done) => {
     axios({
-      url: `http://localhost:9999/api/v1/user/issuer/${IssuerObj._id}`,
+      url: `http://localhost:9992/iss/api/v1/issuer/${IssuerObj._id}`,
       method: "DELETE",
       headers: {
         Cookie: IssuerCookie,
@@ -299,7 +299,7 @@ describe("📙 Issuer + Holder + Verifier Delete 삭제", () => {
   // Holder Delete
   it("🚀 #2 Holder Delete", (done) => {
     axios({
-      url: `http://localhost:9999/api/v1/user/holder/${HolderObj._id}`,
+      url: `http://localhost:9993/hol/api/v1/holder/${HolderObj._id}`,
       method: "DELETE",
       headers: {
         Cookie: HolderCookie,
@@ -318,7 +318,7 @@ describe("📙 Issuer + Holder + Verifier Delete 삭제", () => {
   // Verifier Delete
   it("🚀 #3 Verifier Delete", (done) => {
     axios({
-      url: `http://localhost:9999/api/v1/user/verifier/${VerifierObj._id}`,
+      url: `http://localhost:9994/ver/api/v1/verifier/${VerifierObj._id}`,
       method: "DELETE",
       headers: {
         Cookie: VerifierCookie,
