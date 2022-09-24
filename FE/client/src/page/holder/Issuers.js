@@ -14,7 +14,7 @@ const Issuers = () => {
   // Issuer 정보 불러오기
   useEffect(() => {
     axios({
-      url: "http://localhost:9999/api/v1/auth/accesstoken",
+      url: "/api/v1/auth/accesstoken",
       method: "GET",
       withCredentials: true,
     })
@@ -30,14 +30,14 @@ const Issuers = () => {
     // 그 중 내 이메일과 일치하는 issueruserlist 를 찾는다.
     // 출력한다.
     axios({
-      url: "http://localhost:9999/api/v1/user/issuers",
+      url: "/api/v1/user/issuers",
       method: "GET",
       withCredentials: true,
     })
       .then((result) => {
         setIssuers(result.data);
         axios({
-          url: `http://localhost:9999/api/v1/user/issuer-users/${result.data._id}`,
+          url: `/api/v1/user/issuer-users/${result.data._id}`,
           method: "GET",
           withCredentials: true,
         });

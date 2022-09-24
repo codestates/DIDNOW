@@ -38,7 +38,7 @@ const SignIn = ({ type, setType, setUser }) => {
     try {
       // login
       let res = await axios({
-        url: `http://localhost:9999/api/v1/auth/login-${way}`,
+        url: `/api/v1/auth/login-${way}`,
         method: "POST",
         data: {
           email: signinObj.email,
@@ -47,7 +47,7 @@ const SignIn = ({ type, setType, setUser }) => {
         withCredentials: true,
       });
       let userObj = await axios({
-        url: `http://localhost:9999/api/v1/auth/accesstoken`,
+        url: `/api/v1/auth/accesstoken`,
         method: "GET",
         withCredentials: true,
       });
@@ -76,7 +76,7 @@ const SignIn = ({ type, setType, setUser }) => {
     if (e.keyCode === 13) {
       signin();
     }
-  }
+  };
   return (
     <div className="signin">
       <Row>

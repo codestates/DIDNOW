@@ -27,7 +27,7 @@ const IssuerSignUp = () => {
   const validate = async () => {
     if (isCorrect === true) {
       let res = await axios({
-        url: `http://localhost:9999/api/v1/auth/register-issuer`,
+        url: `/api/v1/auth/register-issuer`,
         method: "POST",
         data: {
           email: issuerInfo.email,

@@ -12,7 +12,7 @@ const IssuerIssue = ({ user, type }) => {
 
   const submitVc = () => {
     axios({
-      url: "http://localhost:9999/api/v1/credential/verifiable-credential",
+      url: "/api/v1/credential/verifiable-credential",
       method: "POST",
       data: {
         credentialTitle: vcTitle,
@@ -29,15 +29,7 @@ const IssuerIssue = ({ user, type }) => {
 
   const vcList = ["졸업증명서", "출입국증명서", "성인인증서", "수료증", "All"];
   useEffect(() => {});
-  useEffect(() => {
-    axios({
-      url: `http://localhost:9999/api/v1/user/issuer/63291d3cf29ec9b4eda306ab`,
-      method: "GET",
-      withCredentials: true,
-    }).then((data) => {
-      console.log(data);
-    });
-  }, []);
+  useEffect(() => {}, []);
   return (
     <div className="issuerissue">
       <Breadcrumb className="issuerissue--breadcrumb" separator=">">

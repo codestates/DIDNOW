@@ -18,7 +18,7 @@ const Verifiers = () => {
   // before-render
   useEffect(() => {
     axios({
-      url: "http://localhost:9999/api/v1/user/verifiers",
+      url: "/api/v1/user/verifiers",
       withCredentials: true,
     }).then((data) => {
       console.log(data.data);

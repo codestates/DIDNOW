@@ -11,7 +11,7 @@ const HolderSignUp = () => {
   useEffect(() => {});
   useEffect(() => {
     axios({
-      url: "http://localhost:9999/api/v1/user/issuers",
+      url: "/api/v1/user/issuers",
       method: "GET",
     }).then((data) => {
       setIssuers([...data.data]);
@@ -51,10 +51,9 @@ const HolderSignUp = () => {
       message.error("1개 이상의 기관을 선택해주세요.");
     } else if (userInfo.birth === "" || userInfo.birth === null) {
       message.error("생년월일을 입력해주세요.");
-    }
-     else {
+    } else {
       axios({
-        url: `http://localhost:9999/api/v1/auth/register-holder`,
+        url: `/api/v1/auth/register-holder`,
         method: "POST",
         data: {
           email: userInfo.email,
@@ -71,11 +70,10 @@ const HolderSignUp = () => {
         })
         .catch((error) => {
           if (error.response.status) {
-            message.error("이미 가입된 회원입니다.")
+            message.error("이미 가입된 회원입니다.");
           } else {
             message.error("회원 가입 실패.");
           }
-          
         });
     }
   };

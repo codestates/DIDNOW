@@ -14,7 +14,7 @@ const HolderSubmit = () => {
   const [password, setPassword] = useState("");
   const handleOk = () => {
     axios({
-      url: `http://localhost:9999/api/v1/credential/verifier/request-auth/${verifierId}`,
+      url: `/api/v1/credential/verifier/request-auth/${verifierId}`,
       method: "POST",
       data: {
         vc_list: [...selected.map((e) => e._id)],
@@ -29,7 +29,7 @@ const HolderSubmit = () => {
   };
   useEffect(() => {
     axios({
-      url: "http://localhost:9999/api/v1/user/verifiers",
+      url: "/api/v1/user/verifiers",
     }).then((data) => {
       setVerifiers([...data.data]);
     });
