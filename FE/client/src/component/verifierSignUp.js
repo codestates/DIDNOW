@@ -32,7 +32,7 @@ const VerifierSignUp = () => {
   const validate = async () => {
     if (isCorrect === true) {
       let res = await axios({
-        url: "/api/v1/auth/register-verifier",
+        url: `/aut/api/v1/register-verifier`,
         method: "POST",
         data: {
           email: verifierInfo.email,

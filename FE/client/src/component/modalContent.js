@@ -20,7 +20,7 @@ const ModalContent = ({
     setPassword("");
     if (title !== "" && password !== "") {
       axios({
-        url: `/api/v1/credential/request-vc/${issuer._id}`,
+        url: `/hol/api/v1/verify/request/${issuer._id}`,
         method: "POST",
         withCredentials: true,
         data: {

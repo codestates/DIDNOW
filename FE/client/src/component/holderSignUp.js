@@ -11,7 +11,7 @@ const HolderSignUp = () => {
   useEffect(() => {});
   useEffect(() => {
     axios({
-      url: "/api/v1/user/issuers",
+      url: "/iss/api/v1/issuer/find/all",
       method: "GET",
     }).then((data) => {
       setIssuers([...data.data]);
@@ -53,7 +53,7 @@ const HolderSignUp = () => {
       message.error("생년월일을 입력해주세요.");
     } else {
       axios({
-        url: `/api/v1/auth/register-holder`,
+        url: `/aut/api/v1/register-holder`,
         method: "POST",
         data: {
           email: userInfo.email,

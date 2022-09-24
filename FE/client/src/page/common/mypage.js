@@ -14,13 +14,13 @@ const Mypage = ({ type }) => {
 
   useEffect(() => {
     axios({
-      url: "/api/v1/auth/accesstoken",
+      url: "/aut/api/v1/accesstoken",
       method: "GET",
       withCredentials: true,
     })
       .then((data) => {
         axios({
-          url: "/api/v1/user/issuers",
+          url: "/iss/api/v1/issuer/find/all",
           method: "GET",
           withCredentials: true,
         }).then((result) => {
@@ -67,7 +67,7 @@ const Mypage = ({ type }) => {
         message.error("이름은 1글자이상 10글자 이하로 해주세요.");
       } else {
         axios({
-          url: `/api/v1/user/holder/${user._id}`,
+          url: `/hol/api/v1/holder/${user._id}`,
           method: "PUT",
           data: {
             username: user.username,
@@ -88,7 +88,7 @@ const Mypage = ({ type }) => {
         message.error("기관명은 1글자이상 20글자 이하로 해주세요.");
       } else {
         axios({
-          url: `/api/v1/user/${type}/${user._id}`,
+          url: `${type.slice(0, 3)}/api/v1/user/${type}${user._id}`,
           method: "PUT",
           data: {
             title: user.title,

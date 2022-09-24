@@ -1,10 +1,10 @@
 {
     "config": {
-        "target": "http://localhost:9999",
+        "target": "/",
         "phases": [
             {
                 "duration": 60,
-                "arrivalRate": 3,
+                "arrivalRate": 8,
                 "name": "Verifier Test"
             }
         ]
@@ -15,9 +15,9 @@
             "flow": [
                 {
                     "post": {
-                        "url": "/api/v1/auth/login-verifier",
+                        "url": "http://localhost:9991/aut/api/v1/login-verifier",
                         "json": {
-                            "email": "testVerifier301@gmail.com",
+                            "email": "testVerifier999@gmail.com",
                             "password": "1111"
                         }
                     }
@@ -27,7 +27,7 @@
                 },
                 {
                     "get": {
-                        "url": "/api/v1/credential/verifier/6326dcf09d3a060e8cf3669f",
+                        "url": "http://localhost:9994/ver/api/v1/verify/find/all",
                         "capture" : {
                             "json" : "$[0]._id",
                             "as" : "verifyListId"
@@ -39,7 +39,7 @@
                 },
                 {
                     "post": {
-                        "url": "/api/v1/credential/auth-vp/{{ verifyListId }}"
+                        "url": "http://localhost:9994/ver/api/v1/verify/close-vp/{{ verifyListId }}"
                     }
                 }
             ]

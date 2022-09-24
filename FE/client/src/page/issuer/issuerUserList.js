@@ -27,7 +27,7 @@ const IssuerUserList = () => {
   useEffect(() => {
     // User 정보를 받아온다.
     axios({
-      url: "/api/v1/auth/accesstoken",
+      url: "/aut/api/v1/accesstoken",
       method: "GET",
       withCredentials: true,
     })
@@ -46,7 +46,7 @@ const IssuerUserList = () => {
         setUser(data.data.user);
         // User 정보를 토대로 UserList를 받아온다.
         axios({
-          url: `/api/v1/user/issuer-users/${data.data.user._id}`,
+          url: `/iss/api/v1/issuer-user/${data.data.user._id}`,
           method: "GET",
           withCredentials: true,
         }).then((userListData) => {
@@ -58,7 +58,7 @@ const IssuerUserList = () => {
           setUserList([...arr]);
         });
         axios({
-          url: "/api/v1/user/holders",
+          url: "/hol/api/v1/holder/find/all",
           method: "GET",
           withCredentials: true,
         }).then((result) => {
@@ -105,7 +105,7 @@ const IssuerUserList = () => {
     setUserListObj(userListObj);
     console.log({ ...userListObj, organizationId: user._id });
     axios({
-      url: `/api/v1/user/issuer-user/${user._id}`,
+      url: `/iss/api/v1/issuer-user/${user._id}`,
       method: "POST",
       data: { ...userListObj, organizationId: user._id, holderId: holderId },
       withCredentials: true,

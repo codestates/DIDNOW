@@ -14,7 +14,7 @@ const VerifierVPList = () => {
   // before render
   useEffect(() => {
     axios({
-      url: "/api/v1/auth/accesstoken",
+      url: "/aut/api/v1/accesstoken",
       withCredentials: true,
     })
       .catch((error) => {
@@ -27,7 +27,7 @@ const VerifierVPList = () => {
         }
         setUser(data.data.user);
         axios({
-          url: "/api/v1/credential/find/request-auths",
+          url: "/ver/api/v1/verify/find/all",
           method: "GET",
           withCredentials: true,
         })
@@ -47,7 +47,7 @@ const VerifierVPList = () => {
 
   const verifyVP = (e) => {
     axios({
-      url: `/api/v1/credential/auth-vp/${e.target.id}`,
+      url: `/ver/api/v1/verify/close-vp/${e.target.id}`,
       method: "POST",
       withCredentials: true,
     }).then((data) => {

@@ -1,6 +1,6 @@
 {
     "config": {
-        "target": "http://localhost:9999",
+        "target" : "/",
         "phases": [
             {
                 "duration": 60,
@@ -15,9 +15,9 @@
             "flow": [
                 {
                     "post": {
-                        "url": "/api/v1/auth/login-holder",
+                        "url": "http://localhost:9991/aut/api/v1/login-holder",
                         "json": {
-                            "email": "testHolder301@gmail.com",
+                            "email": "testHolder999@gmail.com",
                             "password": "1111"
                         },
                         "capture" : {
@@ -31,7 +31,7 @@
                 },
                 {
                     "post": {
-                        "url": "/api/v1/credential/request-vc/63280c1fe88e1a7e7dc5de73",
+                        "url": "http://localhost:9993/hol/api/v1/verify/request/632d36ec7ee124723f7e6adc",
                         "json": {
                             "password": "1111",
                             "VC_title": "test VC"
@@ -46,10 +46,10 @@
                 },
                 {
                     "post": {
-                        "url": "/api/v1/credential/verifier/request-auth/:63280c23e88e1a7e7dc5de80",
+                        "url": "http://localhost:9993/hol/api/v1/verify/request-auth/632d37677ee124723f7e6aec",
                         "json": {
                             "password": "1111",
-                            "vc_list": "63280e427a12d2cde94101cd",
+                            "vc_list": "{{verifialbleCredentialId}}",
                             "completeAt": ""
                         }
                     }

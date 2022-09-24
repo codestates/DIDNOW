@@ -38,7 +38,8 @@ const SignIn = ({ type, setType, setUser }) => {
     try {
       // login
       let res = await axios({
-        url: `/api/v1/auth/login-${way}`,
+        url: `/aut/api/v1/login-${way}`,
+
         method: "POST",
         data: {
           email: signinObj.email,
@@ -47,7 +48,7 @@ const SignIn = ({ type, setType, setUser }) => {
         withCredentials: true,
       });
       let userObj = await axios({
-        url: `/api/v1/auth/accesstoken`,
+        url: `/aut/api/v1/accesstoken`,
         method: "GET",
         withCredentials: true,
       });

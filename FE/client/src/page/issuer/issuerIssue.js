@@ -12,7 +12,7 @@ const IssuerIssue = ({ user, type }) => {
 
   const submitVc = () => {
     axios({
-      url: "/api/v1/credential/verifiable-credential",
+      url: "/iss/api/v1/verifiable-credential",
       method: "POST",
       data: {
         credentialTitle: vcTitle,
