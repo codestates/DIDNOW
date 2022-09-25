@@ -65,6 +65,6 @@ services:
       dockerfile : Dockerfile
     image: proxy:1.0.0
     expose:
-      - 5777
+      - 80
     ports:
-      - 5777:80
+      - 80:80

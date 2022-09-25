@@ -20,13 +20,13 @@ const HolderManage = () => {
 
   useEffect(() => {
     axios({
-      url: "/hol/api/v1/verify/vc-list",
+      url: `${process.env.REACT_APP_HOLDER}/hol/api/v1/verify/vc-list`,
       method: "GET",
       withCredentials: true,
     }).then((vcListOfHolder) => {
       setVcList(vcListOfHolder.data.reverse());
       axios({
-        url: "/iss/api/v1/issuer/find/all",
+        url: `${process.env.REACT_APP_ISSUER}/iss/api/v1/issuer/find/all`,
         method: "GET",
         withCredentials: true,
       }).then((data) => {
@@ -36,7 +36,7 @@ const HolderManage = () => {
     });
 
     axios({
-      url: "/ver/api/v1/verifier/find/all",
+      url: `${process.env.REACT_APP_VERIFIER}/ver/api/v1/verifier/find/all`,
       withCredentials: true,
     }).then((data) => {
       setVerifiers([...data.data]);
@@ -73,7 +73,7 @@ const HolderManage = () => {
         .filter((e, idx) => idx in selected)
         .map((e, i) => e._id);
       axios({
-        url: `/hol/api/v1/verify/request-auth/${verifier}`,
+        url: `${process.env.REACT_APP_HOLDER}/hol/api/v1/verify/request-auth/${verifier}`,
         method: "POST",
         data: {
           password: password,

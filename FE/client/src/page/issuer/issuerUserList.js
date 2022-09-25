@@ -27,7 +27,7 @@ const IssuerUserList = () => {
   useEffect(() => {
     // User 정보를 받아온다.
     axios({
-      url: "/aut/api/v1/accesstoken",
+      url: `${process.env.REACT_APP_AUTH}/aut/api/v1/accesstoken`,
       method: "GET",
       withCredentials: true,
     })
@@ -46,7 +46,7 @@ const IssuerUserList = () => {
         setUser(data.data.user);
         // User 정보를 토대로 UserList를 받아온다.
         axios({
-          url: `/iss/api/v1/issuer-user/${data.data.user._id}`,
+          url: `${process.env.REACT_APP_ISSUER}/iss/api/v1/issuer-user/all/${data.data.user._id}`,
           method: "GET",
           withCredentials: true,
         }).then((userListData) => {
@@ -58,21 +58,18 @@ const IssuerUserList = () => {
           setUserList([...arr]);
         });
         axios({
-          url: "/hol/api/v1/holder/find/all",
+          url: `${process.env.REACT_APP_HOLDER}/hol/api/v1/holder/find/all`,
           method: "GET",
           withCredentials: true,
         }).then((result) => {
           const arr = result.data.filter((e) => {
             return e.IssuerList.indexOf(data.data.user._id) >= 0;
           });
+          console.log([...arr]);
           setHolderList([...arr]);
         });
       });
   }, [navigate]);
-  // Re-Render 를 위한 useEffect
-  useEffect(() => {
-    console.log(userListObj);
-  });
 
   // input을 관리하기 위한 상태
   const [userListObj, setUserListObj] = useState({
@@ -105,7 +102,7 @@ const IssuerUserList = () => {
     setUserListObj(userListObj);
     console.log({ ...userListObj, organizationId: user._id });
     axios({
-      url: `/iss/api/v1/issuer-user/${user._id}`,
+      url: `${process.env.REACT_APP_ISSUER}/iss/api/v1/issuer-user/${user._id}`,
       method: "POST",
       data: { ...userListObj, organizationId: user._id, holderId: holderId },
       withCredentials: true,
@@ -128,6 +125,7 @@ const IssuerUserList = () => {
           cr_address: "",
           cr_isAdult: false,
         });
+        window.location.replace('/issuer/userlist');
       });
   };
 
@@ -200,24 +198,32 @@ const IssuerUserList = () => {
             </div>
             <hr />
 
-            <Row>
+            <Row style={{ margin: "10px 0px" }}>
               <Col span={5}>이메일</Col>
               <Col span={12}>
                 <Select style={{ width: "90%" }} onChange={changeHolder}>
                   {holderList.map((e, idx) => {
-                    return <Option key={e.email}>{e.email}</Option>;
+                    if (
+                      userList.some((user) => {
+                        return user.cr_email === e.email;
+                      })
+                    ) {
+                      <Option key={e.email}>none</Option>;
+                    } else {
+                      return <Option key={e.email}>{e.email}</Option>;
+                    }
                   })}
                 </Select>
               </Col>
             </Row>
-            <Row>
+            <Row style={{ margin: "10px 0px" }}>
               <Col span={5}>이름 </Col>
               <Col span={12}>
                 <Row>{userListObj.cr_name}</Row>
               </Col>
               <Col span={3}></Col>
             </Row>
-            <Row>
+            <Row style={{ margin: "10px 0px" }}>
               <Col span={5}>인증서 이름</Col>
               <Col span={12}>
                 <input
@@ -230,7 +236,7 @@ const IssuerUserList = () => {
               </Col>
             </Row>
 
-            <Row>
+            <Row style={{ margin: "10px 0px" }}>
               <Col span={5}>인증서 타입</Col>
               <Col span={12}>
                 <input
@@ -242,7 +248,7 @@ const IssuerUserList = () => {
                 />
               </Col>
             </Row>
-            <Row>
+            <Row style={{ margin: "10px 0px" }}>
               <Col span={5}>국적</Col>
               <Col span={12}>
                 <Select
@@ -274,7 +280,7 @@ const IssuerUserList = () => {
               </Col>
             </Row> */}
 
-            <Row>
+            <Row style={{ margin: "10px 0px" }}>
               <Col span={5}>인증일자</Col>
               <Col span={12}>
                 <DatePicker
@@ -284,7 +290,7 @@ const IssuerUserList = () => {
               </Col>
             </Row>
 
-            <Row>
+            <Row style={{ margin: "10px 0px" }}>
               <Col span={5}>성인여부</Col>
               <Col span={12}>
                 <div
@@ -302,11 +308,6 @@ const IssuerUserList = () => {
                   />
                 </div>
               </Col>
-            </Row>
-
-            <Row>
-              <Col span={3}>이름</Col>
-              <Col span={9}>e</Col>
             </Row>
 
             <Row style={{ margin: "50px 0 ", justifyContent: "center" }}>

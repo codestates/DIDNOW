@@ -14,7 +14,7 @@ const HolderSubmit = () => {
   const [password, setPassword] = useState("");
   const handleOk = () => {
     axios({
-      url: `/hol/api/v1/verify/request-auth/${verifierId}`,
+      url: `${process.env.REACT_APP_HOLDER}/hol/api/v1/verify/request-auth/${verifierId}`,
       method: "POST",
       data: {
         vc_list: [...selected.map((e) => e._id)],
@@ -29,7 +29,7 @@ const HolderSubmit = () => {
   };
   useEffect(() => {
     axios({
-      url: "/iss/api/v1/issuer/find/all",
+      url: `${process.env.REACT_APP_ISSUER}/iss/api/v1/issuer/find/all`,
     }).then((data) => {
       setVerifiers([...data.data]);
     });

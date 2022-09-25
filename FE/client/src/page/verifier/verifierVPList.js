@@ -10,11 +10,11 @@ const VerifierVPList = () => {
   // state
   const [user, setUser] = useState({});
   const [vpList, setVpList] = useState([]);
-
+  
   // before render
   useEffect(() => {
     axios({
-      url: "/aut/api/v1/accesstoken",
+      url: `${process.env.REACT_APP_AUTH}/aut/api/v1/accesstoken`,
       withCredentials: true,
     })
       .catch((error) => {
@@ -27,7 +27,7 @@ const VerifierVPList = () => {
         }
         setUser(data.data.user);
         axios({
-          url: "/ver/api/v1/verify/find/all",
+          url: `${process.env.REACT_APP_VERIFIER}/ver/api/v1/verify/find/all`,
           method: "GET",
           withCredentials: true,
         })
@@ -47,10 +47,11 @@ const VerifierVPList = () => {
 
   const verifyVP = (e) => {
     axios({
-      url: `/ver/api/v1/verify/close-vp/${e.target.id}`,
+      url: `${process.env.REACT_APP_VERIFIER}/ver/api/v1/verify/close-vp/${e.target.id}`,
       method: "POST",
       withCredentials: true,
     }).then((data) => {
+      message.success("인증에 성공했습니다")
       console.log(data);
     });
   };

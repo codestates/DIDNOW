@@ -10,12 +10,10 @@ const Verifier = require("../models/Verifier");
 const updateVerifier = async (req, res, next) => {
   if (req.params.verifierId === req.user.id) {
     try {
-      const { verifyList, ...others } = req.body;
       const updatedVerifier = await Verifier.findByIdAndUpdate(
         req.params.verifierId,
         {
-          $addToSet: { verifyList: verifyList },
-          $set: others,
+          $set: req.body,
         },
         { new: true }
       );

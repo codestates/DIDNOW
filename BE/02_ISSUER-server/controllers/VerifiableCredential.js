@@ -93,7 +93,7 @@ const deleteVerifiableCredential = async (req, res, next) => {
 const getVerifiableCredential = async (req, res, next) => {
   if (req.user.type === "issuer") {
     try {
-      const vc = await VerifiableCredential.findById(req.params.vcId);
+      const vc = await VerifiableCredential.find({ownerId : req.user.id});
 
       if (vc.ownerId !== req.user.id) {
         next(createError(403, "인가되지 않은 접근입니다."));

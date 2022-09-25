@@ -42,7 +42,7 @@ function App() {
   const location = useLocation();
   const getUser = async () => {
     const userObj = await axios({
-      url: `/aut/api/v1/accesstoken`,
+      url: `${process.env.REACT_APP_AUTH}/aut/api/v1/accesstoken`,
       method: "GET",
       withCredentials: true,
     }).catch((error) => {});
@@ -63,7 +63,7 @@ function App() {
 
   const logout = () => {
     axios({
-      url: "/aut/api/v1/logout",
+      url: `${process.env.REACT_APP_AUTH}/aut/api/v1/logout`,
       method: "POST",
       withCredentials: true,
     })

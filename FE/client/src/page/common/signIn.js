@@ -38,7 +38,7 @@ const SignIn = ({ type, setType, setUser }) => {
     try {
       // login
       let res = await axios({
-        url: `/aut/api/v1/login-${way}`,
+        url: `${process.env.REACT_APP_AUTH}/aut/api/v1/login-${way}`,
 
         method: "POST",
         data: {
@@ -48,7 +48,7 @@ const SignIn = ({ type, setType, setUser }) => {
         withCredentials: true,
       });
       let userObj = await axios({
-        url: `/aut/api/v1/accesstoken`,
+        url: `${process.env.REACT_APP_AUTH}/aut/api/v1/accesstoken`,
         method: "GET",
         withCredentials: true,
       });
