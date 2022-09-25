@@ -1,7 +1,7 @@
 # Back End
 
 ## DB Schema
-![](./assets/DB_Schema.png)
+![](./assets/DB_Schema_Mongo.png)
 
-## API Document
-- 작업 중
+## Micro Service Architecture
+
