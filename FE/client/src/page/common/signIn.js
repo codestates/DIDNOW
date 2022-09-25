@@ -117,8 +117,8 @@ const SignIn = ({ type, setType, setUser }) => {
                 id="password"
                 onKeyDown={isEnter}
               />
-              <Row>
-                <Col span={6}>
+              <Row style={{margin:"10px 0px"}}>
+                <Col span={10} style={{fontWeight:700}}>
                   <Link to="/signup">회원이 아니신가요?</Link>
                 </Col>
               </Row>

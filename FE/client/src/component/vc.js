@@ -66,16 +66,16 @@ const Vc = ({ issuers, data, selectedHandle, idx }) => {
         )}
 
         <div className="vc--content">
-          <div>
-            제목 : {Object.keys(data.originalVC[0].vc.credentialSubject)[0]}
+          <div style={{marginBottom : "5px"}}>
+            제목 : <b>{Object.keys(data.originalVC[0].vc.credentialSubject)[0]}</b>
           </div>
-          <div>내용 : {vc.content}</div>
-          <div>타입 : {vc.type}</div>
+          <div style={{marginBottom : "5px"}}>내용 : <b>{vc.content}</b></div>
+          <div style={{marginBottom : "5px"}}>타입 : <b>{vc.type}</b></div>
         </div>
         <div className="vc--date">
-          <div>
+          <div >
             <span>등록 일자 : </span>
-            {vc.date}
+            <b>{vc.date}</b>
           </div>
         </div>
         <div className="vc--action">

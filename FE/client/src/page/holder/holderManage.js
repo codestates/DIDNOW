@@ -115,10 +115,10 @@ const HolderManage = () => {
             </div>
           </div>
           <Row className="holdermanage--total">
-            <Col span={6}>
+            <Col span={10}>
               <div className="holdermanage--total--label">{`블록체인에 등록된 인증서 ${vcList.length} 개`}</div>
             </Col>
-            <Col span={6}>
+            <Col span={10}>
               {selected.length >= 1 ? (
                 <>
                   <div
@@ -141,7 +141,7 @@ const HolderManage = () => {
                     <Spin size="large" tip="요청중..." spinning={submitLoading}>
                       <Row>
                         <Col span={12} offset={6}>
-                          <div style={{ height: "2rem" }}>
+                          <div style={{ height: "2rem", marginBottom : "20px"}}>
                             특정 기업에 제출하여 인증서를 검증받을 수 있습니다.
                           </div>
                           <div>
@@ -253,12 +253,12 @@ const HolderManage = () => {
               )}
             </Col>
           </Row>
-          <div className="holdermanage--vc">
+          <div className="holdermanage--vc" >
             <Row gutter={48}>
               {vcList.length > 0 ? (
                 vcList.map((e, i) => {
                   return (
-                    <Col key={i} span={6} style={{ margin: "0 0 30px 0" }}>
+                    <Col key={i} span={6} style={{margin: "0 0 30px 0" }}>
                       <Vc
                         data={e}
                         selected={selected}
@@ -286,7 +286,6 @@ const HolderManage = () => {
       ) : (
         "loading"
       )}
-      ;
     </div>
   );
 };

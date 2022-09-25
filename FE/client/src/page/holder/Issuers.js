@@ -63,7 +63,7 @@ const Issuers = () => {
               <Col span={2} offset={2}>
                 <span className="holderissuerlist--columns">번호</span>
               </Col>
-              <Col span={7}>
+              <Col span={7} >
                 <span className="holderissuerlist--columns">기관명</span>
               </Col>
               <Col span={8}>
@@ -87,9 +87,9 @@ const Issuers = () => {
             })}
           </Col>
         </Row>
-        <Row>
+        {/* <Row>
           <Col offset={11}>pagination 들어갈 자리</Col>
-        </Row>
+        </Row> */}
       </div>
     </div>
   );

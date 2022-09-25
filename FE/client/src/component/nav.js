@@ -14,6 +14,10 @@ import { useEffect } from "react";
 const Nav = ({ type, setType, user, setUser }) => {
   useEffect(() => {});
 
+  const handleClick = () => {
+    window.location.href = '/signin'
+  }
+
   return (
     <Row>
       <Col span={6}>
@@ -21,7 +25,7 @@ const Nav = ({ type, setType, user, setUser }) => {
           <img src={logo} alt="" style={{ height: "64px" }} />
         </Link>
       </Col>
-      <Col span={5} offset={12} style={{ textAlign: "right" }}>
+      <Col onClick={handleClick} span={5} offset={12} style={{ textAlign: "right", cursor : "pointer", fontWeight:700}}>
         <span className="ant-dropdown-link">
           <Avatar>
             <UserOutlined />

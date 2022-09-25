@@ -40,19 +40,19 @@ const VerifierVPList = () => {
           });
       });
   }, [navigate]);
-  // re-render
-  useEffect(() => {
-    console.log(vpList);
-  });
+  // // re-render
+  // useEffect(() => {
+  //   console.log(vpList);
+  // });
 
   const verifyVP = (e) => {
     axios({
       url: `${process.env.REACT_APP_VERIFIER}/ver/api/v1/verify/close-vp/${e.target.id}`,
       method: "POST",
       withCredentials: true,
-    }).then((data) => {
-      message.success("인증에 성공했습니다")
-      console.log(data);
+    }).then((result) => {
+      result.status===200 && message.success("인증에 성공했습니다")
+      window.location.replace('/verifier/vplist')
     });
   };
   return (
