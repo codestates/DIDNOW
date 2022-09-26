@@ -366,7 +366,7 @@ const IssuerUserList = () => {
                 </div>
               </Row>
               <hr />
-              <Row>
+              <Row style={{margin:"20px 0px", fontWeight:700}}>
                 <Col span={1}>번호</Col>
                 <Col span={3}>이름</Col>
                 <Col span={5}>이메일</Col>

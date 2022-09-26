@@ -97,10 +97,10 @@ const Mypage = ({ type }) => {
         message.error("기관명은 1글자이상 20글자 이하로 해주세요.");
       } else {
         axios({
-          url: `${process.env.REACT_APP_HOLDER}/${type.slice(
+          url: `${process.env.REACT_APP_ISSUER}/${type.slice(
             0,
             3
-          )}/api/v1/user/${type}${user._id}`,
+          )}/api/v1/${type}/${user._id}`,
           method: "PUT",
           data: {
             title: user.title,
@@ -121,10 +121,10 @@ const Mypage = ({ type }) => {
         message.error("기관명은 1글자이상 20글자 이하로 해주세요.");
       } else {
         axios({
-          url: `${process.env.REACT_APP_HOLDER}/${type.slice(
+          url: `${process.env.REACT_APP_VERIFIER}/${type.slice(
             0,
             3
-          )}/api/v1/user/${type}${user._id}`,
+          )}/api/v1/${type}/${user._id}`,
           method: "PUT",
           data: {
             title: user.title,

@@ -40,7 +40,7 @@
   width: 120px;
   height: 120px;
   object-fit: cover;
-  filter: grayscale(100%);
+  /* filter: grayscale(100%); */
 }
 
 .pdf--username {

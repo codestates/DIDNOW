@@ -3,10 +3,14 @@ import logo from "../img/didnow-icon.png";
 
 const Pdf = ({ title, content, type, getDate, user }) => {
   const changeFormat = (date) => {
-    const yyyy = date.slice(0, 4);
-    const mm = date.slice(5, 7);
-    const dd = date.slice(8, 10);
-    return `${yyyy}년 ${mm}월 ${dd}일`;
+    try {
+      const yyyy = date.slice(0, 4);
+      const mm = date.slice(5, 7);
+      const dd = date.slice(8, 10);
+      return `${yyyy}년 ${mm}월 ${dd}일`;
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

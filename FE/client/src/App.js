@@ -70,7 +70,7 @@ function App() {
         message.info("로그아웃 되었습니다.");
         setType("");
         setUser({});
-        navigate("/home");
+        navigate("/signin");
       })
       .catch(() => {
         message.error("로그아웃 실패");

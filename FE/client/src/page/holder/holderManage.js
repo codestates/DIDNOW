@@ -21,7 +21,7 @@ const HolderManage = () => {
 
   useEffect(() => {
     axios({
-      url: "http://localhost:9999/api/v1/auth/accesstoken",
+      url: `${process.env.REACT_APP_AUTH}/aut/api/v1/accesstoken`,
       method: "GET",
       withCredentials: true,
     }).then((data) => {
