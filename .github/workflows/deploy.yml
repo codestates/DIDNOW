@@ -143,14 +143,10 @@ jobs:
         run: |
           docker stop proxy && docker rm proxy && docker rmi jayoh712/proxy:latest
           docker stop client && docker rm client && docker rmi jayoh712/client:latest
-          docker stop auth-server0 && docker rm auth-server0
-          docker stop auth-server1 && docker rm auth-server1 && docker rmi jayoh712/auth-server:latest
-          docker stop issuer-server0 && docker rm issuer-server0
-          docker stop issuer-server1 && docker rm issuer-server1 && docker rmi jayoh712/issuer-server:latest
-          docker stop holder-server0 && docker rm holder-server0
-          docker stop holder-server1 && docker rm holder-server1 && docker rmi jayoh712/holder-server:latest
-          docker stop verifier-server0 && docker rm verifier-server0
-          docker stop verifier-server1 && docker rm verifier-server1 && docker rmi jayoh712/verifier-server:latest
+          docker stop auth-server && docker rm auth-server && docker rmi jayoh712/auth-server:latest
+          docker stop issuer-server && docker rm issuer-server && docker rmi jayoh712/issuer-server:latest
+          docker stop holder-server && docker rm holder-server && docker rmi jayoh712/holder-server:latest
+          docker stop verifier-server && docker rm verifier-server && docker rmi jayoh712/verifier-server:latest
 
           docker pull jayoh712/auth-server:latest
           docker pull jayoh712/issuer-server:latest
@@ -161,11 +157,7 @@ jobs:
 
           docker run -d -p 80:80 --name proxy jayoh712/proxy:latest
           docker run -d -p 3010:3000 --name client jayoh712/client:latest 
-          docker run -d -p 9000:9991 --name auth-server0 jayoh712/auth-server:latest 
-          docker run -d -p 9001:9991 --name auth-server1 jayoh712/auth-server:latest 
-          docker run -d -p 9100:9992 --name issuer-server0 jayoh712/issuer-server:latest 
-          docker run -d -p 9101:9992 --name issuer-server1 jayoh712/issuer-server:latest
-          docker run -d -p 9200:9993 --name holder-server0 jayoh712/holder-server:latest 
-          docker run -d -p 9201:9993 --name holder-server1 jayoh712/holder-server:latest
-          docker run -d -p 9300:9994 --name verifier-server0 jayoh712/verifier-server:latest 
-          docker run -d -p 9301:9994 --name verifier-server1 jayoh712/verifier-server:latest
+          docker run -d -p 9000:9991 --name auth-server jayoh712/auth-server:latest 
+          docker run -d -p 9100:9992 --name issuer-server jayoh712/issuer-server:latest 
+          docker run -d -p 9200:9993 --name holder-server jayoh712/holder-server:latest 
+          docker run -d -p 9300:9994 --name verifier-server jayoh712/verifier-server:latest
