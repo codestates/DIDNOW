@@ -164,16 +164,6 @@ const IssuerUserList = () => {
     });
   };
 
-  // 성인여부 변경
-  const isAdultChange = (e) => {
-    setUserListObj((prevUserListObj) => {
-      return {
-        ...prevUserListObj,
-        cr_isAdult: e.target.checked,
-      };
-    });
-  };
-
   // 국적 변경
   const countries = [
     { flag: "🇰🇷", value: "대한민국" },

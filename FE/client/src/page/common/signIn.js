@@ -39,7 +39,6 @@ const SignIn = ({ type, setType, setUser }) => {
       // login
       let res = await axios({
         url: `${process.env.REACT_APP_AUTH}/aut/api/v1/login-${way}`,
-
         method: "POST",
         data: {
           email: signinObj.email,
@@ -117,8 +116,8 @@ const SignIn = ({ type, setType, setUser }) => {
                 id="password"
                 onKeyDown={isEnter}
               />
-              <Row style={{margin:"10px 0px"}}>
-                <Col span={10} style={{fontWeight:700}}>
+              <Row style={{ margin: "10px 0px" }}>
+                <Col span={10} style={{ fontWeight: 700 }}>
                   <Link to="/signup">회원이 아니신가요?</Link>
                 </Col>
               </Row>

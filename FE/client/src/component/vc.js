@@ -1,11 +1,7 @@
 import "./style/vc.css";
 import logo from "../img/didnow-icon.png";
 import { Row, Col, Tooltip } from "antd";
-import {
-  SafetyOutlined,
-  FilePdfOutlined,
-  StopOutlined,
-} from "@ant-design/icons";
+import { SafetyOutlined, FilePdfOutlined } from "@ant-design/icons";
 import { useEffect, useState, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import Pdf from "../component/pdf";

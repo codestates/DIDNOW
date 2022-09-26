@@ -20,7 +20,6 @@ import HolderManage from "./page/holder/holderManage";
 import Issuers from "./page/holder/Issuers";
 
 // issuer
-import IssuerManage from "./page/issuer/issuerManage";
 import IssuerIssue from "./page/issuer/issuerIssue";
 import IssuerListModal from "./component/IssuerListModal";
 import IssuerUserList from "./page/issuer/issuerUserList";
@@ -122,7 +121,6 @@ function App() {
 
               {/* issuer Route */}
               <Route path="issuer">
-                <Route path="manage" element={<IssuerManage user={user} />} />
                 <Route
                   path="issue"
                   element={<IssuerIssue user={user} type={type} />}
