@@ -10,12 +10,11 @@ const VerifierVPList = () => {
   // state
   const [user, setUser] = useState({});
   const [vpList, setVpList] = useState([]);
-  const [holders, setHolders] = useState([]);
 
   // before render
   useEffect(() => {
     axios({
-      url: "http://localhost:9999/api/v1/auth/accesstoken",
+      url: "/aut/api/v1/accesstoken",
       withCredentials: true,
     })
       .catch((error) => {
@@ -28,7 +27,7 @@ const VerifierVPList = () => {
         }
         setUser(data.data.user);
         axios({
-          url: "http://localhost:9999/api/v1/credential/find/request-auths",
+          url: "/ver/api/v1/verify/find/all",
           method: "GET",
           withCredentials: true,
         })
@@ -36,16 +35,19 @@ const VerifierVPList = () => {
             console.log(error);
           })
           .then((data) => {
+            console.log(data.data);
             setVpList(data.data);
           });
       });
   }, [navigate]);
   // re-render
-  useEffect(() => {});
+  useEffect(() => {
+    console.log(vpList);
+  });
 
   const verifyVP = (e) => {
     axios({
-      url: `http://localhost:9999/api/v1/credential/auth-vp/${e.target.id}`,
+      url: `/ver/api/v1/verify/close-vp/${e.target.id}`,
       method: "POST",
       withCredentials: true,
     }).then((data) => {
@@ -71,17 +73,33 @@ const VerifierVPList = () => {
               [ {user.title || ""} ] Verifier Presentation 목록
             </div>
             <hr />
-            <Row>
-              <Col span={5}>요청인</Col>
-              <Col span={4}>인증서 제목</Col>
-              <Col span={8}>VP id</Col>
-              <Col span={5}>요청 날짜</Col>
-              <Col span={2}>상태</Col>
+            <Row className="holderissuerlist--row">
+              <Col span={2}>
+                <span className="holderissuerlist--columns">번호</span>
+              </Col>
+              <Col span={4}>
+                <span className="holderissuerlist--columns">요청인</span>
+              </Col>
+              <Col span={4}>
+                <span className="holderissuerlist--columns">인증서 제목</span>
+              </Col>
+              <Col span={7}>
+                <span className="holderissuerlist--columns">VP id</span>
+              </Col>
+              <Col span={5}>
+                <span className="holderissuerlist--columns">요청 날짜</span>
+              </Col>
+              <Col span={2}>
+                <span className="holderissuerlist--columns">상태</span>
+              </Col>
             </Row>
             {vpList.map((e, idx) => {
               return (
-                <Row key={idx}>
-                  <Col span={5}>
+                <Row className="issuerlist--row" key={idx}>
+                  <Col span={2}>
+                    <span style={{ margin: "0 0 0 10px" }}>{idx + 1}</span>
+                  </Col>
+                  <Col span={4}>
                     {
                       e.originalVP[0].vp.verifiableCredential[0].vc
                         .credentialSubject[
@@ -103,19 +121,21 @@ const VerifierVPList = () => {
                       ].name
                     }
                   </Col>
-                  <Col span={8}>{e._id}</Col>
+                  <Col span={7}>{e._id}</Col>
                   <Col span={5}>{e.updatedAt.slice(0, 10)}</Col>
                   <Col span={2}>
                     {e.status === "status" ? (
-                      <button onClick={verifyVP} id={e._id}>
+                      <button
+                        className="verifiervplist--pending"
+                        onClick={verifyVP}
+                        id={e._id}
+                      >
                         검증하기
                       </button>
-                    ) : e.status === "pending" ? (
-                      <div>pending</div>
                     ) : e.status === "success" ? (
-                      <div>success</div>
+                      <div className="verifiervplist--success">success</div>
                     ) : (
-                      <div>failed</div>
+                      <div className="verifiervplist--failed">failed</div>
                     )}
                   </Col>
                 </Row>

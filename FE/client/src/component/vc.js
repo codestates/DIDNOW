@@ -24,7 +24,7 @@ const Vc = ({ issuers, data, selectedHandle, idx }) => {
           data.originalVC[0].vc.credentialSubject[
             Object.keys(data.originalVC[0].vc.credentialSubject)[0]
           ].publisher || "",
-        title: Object.keys(data.originalVC[0].vc.credentialSubject)[0] || "",
+        title: data.title || "",
         content:
           data.originalVC[0].vc.credentialSubject[
             Object.keys(data.originalVC[0].vc.credentialSubject)[0]
@@ -53,9 +53,22 @@ const Vc = ({ issuers, data, selectedHandle, idx }) => {
 
         <div className="vc--title">{vc.title}</div>
         <img className="vc--logo" src={logo} alt="" />
-        <span className="vc--organization">{vc.organization}</span>
+
+        {vc.organization.length > 10 ? (
+          <Tooltip placement="bottom" title={vc.organization}>
+            <span className="vc--organization">{`${vc.organization.slice(
+              0,
+              10
+            )}...`}</span>
+          </Tooltip>
+        ) : (
+          <span className="vc--organization">{vc.organization}</span>
+        )}
+
         <div className="vc--content">
-          <div>제목 : {vc.title}</div>
+          <div>
+            제목 : {Object.keys(data.originalVC[0].vc.credentialSubject)[0]}
+          </div>
           <div>내용 : {vc.content}</div>
           <div>타입 : {vc.type}</div>
         </div>

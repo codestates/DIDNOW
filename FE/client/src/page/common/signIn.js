@@ -8,7 +8,7 @@ const SignIn = ({ type, setType, setUser }) => {
   const navigate = useNavigate();
   useEffect(() => {
     if (type !== "") {
-      navigate("/");
+      navigate("/home");
     }
   }, [navigate, type]);
 
@@ -38,7 +38,8 @@ const SignIn = ({ type, setType, setUser }) => {
     try {
       // login
       let res = await axios({
-        url: `http://localhost:9999/api/v1/auth/login-${way}`,
+        url: `/aut/api/v1/login-${way}`,
+
         method: "POST",
         data: {
           email: signinObj.email,
@@ -47,7 +48,7 @@ const SignIn = ({ type, setType, setUser }) => {
         withCredentials: true,
       });
       let userObj = await axios({
-        url: `http://localhost:9999/api/v1/auth/accesstoken`,
+        url: `/aut/api/v1/accesstoken`,
         method: "GET",
         withCredentials: true,
       });
@@ -65,10 +66,16 @@ const SignIn = ({ type, setType, setUser }) => {
         });
         setUser(JSON.parse(userData));
         setType(userObj.data.type);
-        navigate(-1);
+        navigate("/home");
       }
     } catch (error) {
       messageError("로그인 실패!!");
+    }
+  };
+
+  const isEnter = (e) => {
+    if (e.keyCode === 13) {
+      signin();
     }
   };
   return (
@@ -108,8 +115,13 @@ const SignIn = ({ type, setType, setUser }) => {
                 placeholder="PASSWORD"
                 onChange={onchange}
                 id="password"
+                onKeyDown={isEnter}
               />
-              <Link to="/signup">회원이 아니신가요?</Link>
+              <Row>
+                <Col span={6}>
+                  <Link to="/signup">회원이 아니신가요?</Link>
+                </Col>
+              </Row>
               <button className="signin--signinbtn" onClick={signin}>
                 로그인
               </button>

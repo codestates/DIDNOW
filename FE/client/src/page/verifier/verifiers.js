@@ -18,7 +18,7 @@ const Verifiers = () => {
   // before-render
   useEffect(() => {
     axios({
-      url: "http://localhost:9999/api/v1/user/verifiers",
+      url: "/ver/api/v1/verifier/find/all",
       withCredentials: true,
     }).then((data) => {
       console.log(data.data);
@@ -27,9 +27,6 @@ const Verifiers = () => {
   }, []);
   // re-render
   useEffect(() => {});
-
-  // request to verifier
-  const requestVP = (e) => {};
 
   const handleOk = (e) => {
     setPassword(e.target.value);

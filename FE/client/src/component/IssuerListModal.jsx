@@ -3,13 +3,13 @@ import { useState } from "react";
 import "./style/IssuerListModal.css";
 import axios from "axios";
 
-export default function IssuerListModal({ isSelect, setIsSelect, issuer}) {
+export default function IssuerListModal({ isSelect, setIsSelect, issuer }) {
   const [password, setPassword] = useState("");
   const [title, setTitle] = useState("");
 
   const requestVC = () => {
     axios({
-      url: `http://localhost:9999/api/v1/credential/request-vc/${issuer._id}`,
+      url: `/api/v1/credential/request-vc/${issuer._id}`,
       method: "POST",
       data: {
         password: password,

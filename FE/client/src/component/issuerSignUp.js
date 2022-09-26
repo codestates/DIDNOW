@@ -27,21 +27,21 @@ const IssuerSignUp = () => {
   const validate = async () => {
     if (isCorrect === true) {
       let res = await axios({
-        url: `http://localhost:9999/api/v1/auth/register-issuer`,
+        url: `/aut/api/v1/register-issuer`,
         method: "POST",
         data: {
           email: issuerInfo.email,
           password: issuerInfo.password,
           title: issuerInfo.title,
           requiredVC: [issuerInfo.requiredVC],
-          desc: issuerInfo.desc,
+          // desc: issuerInfo.desc,
         },
         withCredentials: true,
       });
 
       if (res.status === 200) {
         message.info(res.data);
-        navigate("/");
+        navigate("/home");
       }
     }
   };
@@ -63,7 +63,7 @@ const IssuerSignUp = () => {
         </div>
       </div>
 
-      <Row style={{ alignItems: "center" }}>
+      <Row className="issuersignup--row">
         <Col span={6} className="signup--col">
           이메일
         </Col>
@@ -73,10 +73,11 @@ const IssuerSignUp = () => {
             type="text"
             onChange={onchange}
             id="email"
+            placeholder="issuer@naver.com"
           />
         </Col>
       </Row>
-      <Row style={{ alignItems: "center" }}>
+      <Row className="issuersignup--row">
         <Col span={6} className="signup--col">
           비밀번호
         </Col>
@@ -89,7 +90,7 @@ const IssuerSignUp = () => {
           />
         </Col>
       </Row>
-      <Row style={{ alignItems: "center" }}>
+      <Row className="issuersignup--row">
         <Col span={6} className="signup--col">
           비밀번호 확인
         </Col>
@@ -105,7 +106,7 @@ const IssuerSignUp = () => {
           />
         </Col>
       </Row>
-      <Row style={{ alignItems: "center" }}>
+      <Row className="issuersignup--row">
         <Col span={6} className="signup--col">
           기관명
         </Col>
@@ -115,10 +116,11 @@ const IssuerSignUp = () => {
             type="text"
             onChange={onchange}
             id="title"
+            placeholder="코드스테이츠"
           />
         </Col>
       </Row>
-      <Row style={{ alignItems: "center" }}>
+      <Row className="issuersignup--row">
         <Col span={6} className="signup--col">
           필수 요구사항
         </Col>
@@ -132,7 +134,7 @@ const IssuerSignUp = () => {
               borderRight: "0",
               borderBottom: "1px solid black",
             }}
-            placeholder=""
+            placeholder="필수적으로 제공 받아야할 정보"
             onChange={changeRequiredVC}
           >
             {requiredVCList.map((e, idx) => {
@@ -141,7 +143,7 @@ const IssuerSignUp = () => {
           </Select>
         </Col>
       </Row>
-      <Row style={{ alignItems: "center" }}>
+      <Row className="issuersignup--row">
         <Col span={6} className="signup--col">
           기관소개
         </Col>
@@ -151,10 +153,11 @@ const IssuerSignUp = () => {
             type="text"
             onChange={onchange}
             id="desc"
+            placeholder="비전공자도 개발이 될 수 있습니다."
           />
         </Col>
       </Row>
-      <Row style={{ alignItems: "center" }}>
+      <Row className="issuersignup--row">
         <Col span={6} className="signup--col">
           지갑 주소
         </Col>
@@ -164,6 +167,7 @@ const IssuerSignUp = () => {
             type="text"
             onChange={onchange}
             id="walletAddress"
+            placeholder="klaytn 지갑 주소를 적어주세요."
           />
         </Col>
       </Row>

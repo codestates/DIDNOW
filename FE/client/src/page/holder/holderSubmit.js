@@ -1,6 +1,5 @@
-import { Row, Col, Breadcrumb, Radio, Select, Modal, message } from "antd";
+import { Row, Col, Breadcrumb, Select, Modal, message } from "antd";
 import { useLocation } from "react-router-dom";
-import { SafetyOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import "./style/holderSubmit.css";
 import { useEffect, useState } from "react";
@@ -15,7 +14,7 @@ const HolderSubmit = () => {
   const [password, setPassword] = useState("");
   const handleOk = () => {
     axios({
-      url: `http://localhost:9999/api/v1/credential/verifier/request-auth/${verifierId}`,
+      url: `/hol/api/v1/verify/request-auth/${verifierId}`,
       method: "POST",
       data: {
         vc_list: [...selected.map((e) => e._id)],
@@ -30,7 +29,7 @@ const HolderSubmit = () => {
   };
   useEffect(() => {
     axios({
-      url: "http://localhost:9999/api/v1/user/verifiers",
+      url: "/iss/api/v1/issuer/find/all",
     }).then((data) => {
       setVerifiers([...data.data]);
     });
@@ -74,7 +73,15 @@ const HolderSubmit = () => {
                 <Col span={18}>
                   <div className="holdersubmit--title">제출할 인증서 목록</div>
                 </Col>
-                <Col span={6}>총 {selected.length} 개</Col>
+                <Col span={6}>
+                  <Row>
+                    <Col span={12}>
+                      <div className="holdersubmit--total">
+                        총 {selected.length} 개
+                      </div>
+                    </Col>
+                  </Row>
+                </Col>
               </Row>
               <hr />
             </Col>
@@ -83,7 +90,6 @@ const HolderSubmit = () => {
             <Row>
               <Col span={2}>번호</Col>
               <Col span={5}>인증일자</Col>
-              <Col span={2}>인증여부</Col>
               <Col span={9}>내용</Col>
               <Col span={6}>인증기관</Col>
             </Row>
@@ -96,9 +102,6 @@ const HolderSubmit = () => {
                       {e.originalVC[0].vc.credentialSubject[
                         Object.keys(e.originalVC[0].vc.credentialSubject)[0]
                       ].typeDate.slice(0, 10)}
-                    </Col>
-                    <Col span={2}>
-                      <SafetyOutlined />
                     </Col>
                     <Col span={9}>
                       {`[${
@@ -132,24 +135,17 @@ const HolderSubmit = () => {
                 <div style={{ fontSize: "1.5rem" }}>
                   선택된 인증서가 없습니다.
                 </div>
-                <Link to="/holder/manage">
-                  <div style={{ fontSize: "1.5rem" }}>
-                    📝 인증서 고르러 가기
-                  </div>
-                </Link>
+                <Row>
+                  <Link to="/holder/manage">
+                    <div style={{ fontSize: "1.5rem" }}>
+                      📝 인증서 고르러 가기
+                    </div>
+                  </Link>
+                </Row>
               </>
             )}
             <hr />
-            <Row>
-              <Col span={3}>제출 타입</Col>
-              <Col span={12}>
-                <Radio.Group name="radiogroup" defaultValue={1}>
-                  <Radio value={1}>취업 서류</Radio>
-                  <Radio value={2}>증빙 서류</Radio>
-                  <Radio value={3}>기타</Radio>
-                </Radio.Group>
-              </Col>
-            </Row>
+
             <Row>
               <Col span={3}>제출할 기업</Col>
               <Col span={12}>

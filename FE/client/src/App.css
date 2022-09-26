@@ -9,3 +9,18 @@ main {
 .font--blue {
   color: rgba(13, 108, 201, 1);
 }
+
+.validate--label {
+  margin: 0 0 0 10px;
+  color: #777777;
+}
+
+html .ant-layout-header {
+  padding: 0 1%;
+}
+
+.sider--link {
+  display: flex;
+  align-items: center;
+  padding: 0 5%;
+}
