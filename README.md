@@ -41,13 +41,13 @@
 
 |                           NodeJS                           |                           CaverJS                           |                           NginX                           |                           MongoDB                           |                           Docker                           |                           AWS                           |
 | :--------------------------------------------------------: | :---------------------------------------------------------: | :-------------------------------------------------------: | :---------------------------------------------------------: | :--------------------------------------------------------: | :-----------------------------------------------------: |
-| <img src = "./Doc/img/stackIcon/nodejs.png" height = 60px> | <img src = "./Doc/img/stackIcon/CaverJS.png" height = 60px> | <img src = "./Doc/img/stackIcon/nginx.png" height = 65px> | <img src = "./Doc/img/stackIcon/mongoDB.png" height = 60px> | <img src = "./Doc/img/stackIcon/docker.png" height = 55px> | <img src = "./Doc/img/stackIcon/aws.png" height = 55px> |
+| <img src = "./Doc/img/stackIcon/nodejs.png" height = 60px> | <img src = "./Doc/img/stackIcon/caverjs.png" height = 60px> | <img src = "./Doc/img/stackIcon/nginx.png" height = 65px> | <img src = "./Doc/img/stackIcon/mongoDB.png" height = 60px> | <img src = "./Doc/img/stackIcon/docker.png" height = 55px> | <img src = "./Doc/img/stackIcon/aws.png" height = 55px> |
 
 ### Smart Contract
 
 |                           Solidity                           |                           Truffle                           |                           Ganache                           |                           Klaytn                           |                         KlipAPI                          |
 | :----------------------------------------------------------: | :---------------------------------------------------------: | :---------------------------------------------------------: | :--------------------------------------------------------: | :------------------------------------------------------: |
-| <img src = "./Doc/img/stackIcon/Solidity.png" height = 60px> | <img src = "./Doc/img/stackIcon/Truffle.png" height = 60px> | <img src = "./Doc/img/stackIcon/Ganache.png" height = 60px> | <img src = "./Doc/img/stackIcon/klaytn.png" height = 60px> | <img src = "./Doc/img/stackIcon/klip.png" height = 60px> |
+| <img src = "./Doc/img/stackIcon/Solidity.png" height = 60px> | <img src = "./Doc/img/stackIcon/Truffle.png" height = 60px> | <img src = "./Doc/img/stackIcon/ganache.png" height = 60px> | <img src = "./Doc/img/stackIcon/klaytn.png" height = 60px> | <img src = "./Doc/img/stackIcon/klip.png" height = 60px> |
 
 ## Architecture
 
