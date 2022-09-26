@@ -17,16 +17,24 @@ const HolderManage = () => {
   const [verifier, setVerifier] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
   const [password, setPassword] = useState("");
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     axios({
-      url: "/hol/api/v1/verify/vc-list",
+      url: `${process.env.REACT_APP_AUTH}/aut/api/v1/accesstoken`,
+      method: "GET",
+      withCredentials: true,
+    }).then((data) => {
+      setUser(data.data.user);
+    });
+    axios({
+      url: `${process.env.REACT_APP_HOLDER}/hol/api/v1/verify/vc-list`,
       method: "GET",
       withCredentials: true,
     }).then((vcListOfHolder) => {
       setVcList(vcListOfHolder.data.reverse());
       axios({
-        url: "/iss/api/v1/issuer/find/all",
+        url: `${process.env.REACT_APP_ISSUER}/iss/api/v1/issuer/find/all`,
         method: "GET",
         withCredentials: true,
       }).then((data) => {
@@ -36,7 +44,7 @@ const HolderManage = () => {
     });
 
     axios({
-      url: "/ver/api/v1/verifier/find/all",
+      url: `${process.env.REACT_APP_VERIFIER}/ver/api/v1/verifier/find/all`,
       withCredentials: true,
     }).then((data) => {
       setVerifiers([...data.data]);
@@ -73,7 +81,7 @@ const HolderManage = () => {
         .filter((e, idx) => idx in selected)
         .map((e, i) => e._id);
       axios({
-        url: `/hol/api/v1/verify/request-auth/${verifier}`,
+        url: `${process.env.REACT_APP_HOLDER}/hol/api/v1/verify/request-auth/${verifier}`,
         method: "POST",
         data: {
           password: password,
@@ -115,10 +123,10 @@ const HolderManage = () => {
             </div>
           </div>
           <Row className="holdermanage--total">
-            <Col span={6}>
+            <Col span={10}>
               <div className="holdermanage--total--label">{`블록체인에 등록된 인증서 ${vcList.length} 개`}</div>
             </Col>
-            <Col span={6}>
+            <Col span={10}>
               {selected.length >= 1 ? (
                 <>
                   <div
@@ -141,7 +149,7 @@ const HolderManage = () => {
                     <Spin size="large" tip="요청중..." spinning={submitLoading}>
                       <Row>
                         <Col span={12} offset={6}>
-                          <div style={{ height: "2rem" }}>
+                          <div style={{ height: "2rem", marginBottom: "20px" }}>
                             특정 기업에 제출하여 인증서를 검증받을 수 있습니다.
                           </div>
                           <div>
@@ -265,6 +273,7 @@ const HolderManage = () => {
                         selectedHandle={selectedHandle}
                         idx={i}
                         issuers={issuers}
+                        user={user}
                       />
                     </Col>
                   );
@@ -284,9 +293,14 @@ const HolderManage = () => {
           {/* pagination 은 따로 구현해야 할듯 쓸만한거 없음 */}
         </>
       ) : (
-        "loading"
+        <Row style={{ margin: "200px 0 0 400px" }}>
+          <Spin
+            spinning={isLoading}
+            tip="인증서 불러오는 중..."
+            size="large"
+          ></Spin>
+        </Row>
       )}
-      ;
     </div>
   );
 };

@@ -11,12 +11,10 @@ const createError = require("../utils/Error");
 const updateIssuer = async (req, res, next) => {
   if (req.params.issuerId === req.user.id) {
     try {
-      const { requiredVC, ...others } = req.body;
       const updatedIssuer = await Issuer.findByIdAndUpdate(
         req.params.issuerId,
         {
-          $addToSet: { requiredVC: requiredVC },
-          $set: others,
+          $set: req.body,
         },
         { new: true }
       );

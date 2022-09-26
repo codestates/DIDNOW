@@ -33,7 +33,7 @@ const IssuerSignUp = () => {
           email: issuerInfo.email,
           password: issuerInfo.password,
           title: issuerInfo.title,
-          requiredVC: [issuerInfo.requiredVC],
+          requiredVC: [...issuerInfo.requiredVC],
           // desc: issuerInfo.desc,
         },
         withCredentials: true,

@@ -66,3 +66,7 @@
   font-weight: 700;
   color: #999999;
 }
+
+.vc--pdf--container {
+  display: none;
+}

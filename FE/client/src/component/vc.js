@@ -4,12 +4,18 @@ import { Row, Col, Tooltip } from "antd";
 import {
   SafetyOutlined,
   FilePdfOutlined,
-  DownloadOutlined,
   StopOutlined,
 } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+import Pdf from "../component/pdf";
 
-const Vc = ({ issuers, data, selectedHandle, idx }) => {
+const Vc = ({ issuers, data, selectedHandle, idx, user }) => {
+  const componentRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
   const [vc, setVc] = useState({
     organization: "",
     title: "",
@@ -66,38 +72,49 @@ const Vc = ({ issuers, data, selectedHandle, idx }) => {
         )}
 
         <div className="vc--content">
-          <div>
-            제목 : {Object.keys(data.originalVC[0].vc.credentialSubject)[0]}
+          <div style={{ marginBottom: "5px" }}>
+            제목 :{" "}
+            <b>{Object.keys(data.originalVC[0].vc.credentialSubject)[0]}</b>
           </div>
-          <div>내용 : {vc.content}</div>
-          <div>타입 : {vc.type}</div>
+          <div style={{ marginBottom: "5px" }}>
+            내용 : <b>{vc.content}</b>
+          </div>
+          <div style={{ marginBottom: "5px" }}>
+            타입 : <b>{vc.type}</b>
+          </div>
         </div>
         <div className="vc--date">
           <div>
             <span>등록 일자 : </span>
-            {vc.date}
+            <b>{vc.date}</b>
           </div>
         </div>
         <div className="vc--action">
           <Row style={{ textAlign: "center" }}>
-            <Col span={8}>
+            <Col span={12}>
               <Tooltip placement="top" title={"미리보기"}>
                 <FilePdfOutlined />
               </Tooltip>
             </Col>
-            <Col span={8}>
+            <Col span={12}>
               <Tooltip placement="top" title={"PDF 다운로드"}>
-                <DownloadOutlined />
+                <FilePdfOutlined onClick={handlePrint} />
               </Tooltip>
             </Col>
-            <Tooltip placement="top" title={"삭제하기"}>
-              <Col span={8}>
-                <StopOutlined />
-              </Col>
-            </Tooltip>
           </Row>
         </div>
       </article>
+      <div className="vc--pdf--container">
+        <div ref={componentRef}>
+          <Pdf
+            title={Object.keys(data.originalVC[0].vc.credentialSubject)[0]}
+            content={vc.content}
+            type={vc.type}
+            getDate={vc.date}
+            user={user}
+          />
+        </div>
+      </div>
     </div>
   );
 };

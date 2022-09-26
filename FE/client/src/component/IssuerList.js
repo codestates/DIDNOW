@@ -22,7 +22,7 @@ export default function IssuerList({ issuer, idx }) {
         <span style={{ margin: "0 0 0 15%" }}>{idx + 1}</span>
       </Col>
       <Col span={7} className="issuerlist--col">
-        {issuer ? issuer.title : ""}
+        <b>{issuer ? issuer.title : ""}</b>
       </Col>
       <Col span={8} className="issuerlist--col">
         {issuer ? (issuer.requiredVC ? issuer.requiredVC.join(",") : "") : ""}

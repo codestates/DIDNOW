@@ -1,5 +1,20 @@
 # DIDNOW
 
+## Project Flow Chart
+![](./BE/assets/DIDNOW_flowchart.png)  
+
+## DB Schema
+![](./BE/assets/DB_Schema_Mongo.png)  
+
+## Deploy Stack
+![](./BE/assets/DIDNOW_deploy_bk.png)  
+![](./BE/assets/DIDNOW_deploy_wh.png)
+
+## Tech Stack
+  
+![](./BE/assets/DIDNOW_stack_bk.png)  
+![](./BE/assets/DIDNOW_stack_wh.png)  
+
  <p align="center">
 	<a href="https://github.com/codestates/BEB-05-DIDNOW/search?l=JavaScript&type=code"><img alt="GitHub language count" src="https://img.shields.io/github/languages/count/codestates/BEB-05-DIDNOW"></a>
 	<a href="https://github.com/codestates/BEB-05-DIDNOW/graphs/contributors"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/codestates/BEB-05-DIDNOW?color=success"></a>

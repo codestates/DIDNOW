@@ -12,11 +12,11 @@ const Wallet = require("../models/Wallet");
 const updateHolder = async (req, res, next) => {
   if (req.params.holderId === req.user.id) {
     try {
-      const { IssuerList, ...others } = req.body;
+      // const { IssuerList, ...others } = req.body;
 
       const updatedHolder = await Holder.findByIdAndUpdate(
         req.params.holderId,
-        { $addToSet: { IssuerList: IssuerList },  $set: others },
+        { $set: req.body },
         { new: true }
       );
       res.status(200).json({

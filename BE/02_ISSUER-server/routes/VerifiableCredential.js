@@ -36,7 +36,7 @@ router.delete('/:vcId', verifyToken, deleteVerifiableCredential)
     @ desc : Issuer는 발급할 VC를 출력 할 수 있습니다.
     @ subject : Issuer
 */
-router.get('/:vcId', verifyToken, getVerifiableCredential)
+router.get('/', verifyToken, getVerifiableCredential)
 
 
 module.exports = router;

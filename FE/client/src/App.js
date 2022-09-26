@@ -17,7 +17,6 @@ import SideMenu from "page/common/sideMenu";
 
 // holder
 import HolderManage from "./page/holder/holderManage";
-import HolderIssue from "./page/holder/holderIssue";
 import Issuers from "./page/holder/Issuers";
 
 // issuer
@@ -42,7 +41,7 @@ function App() {
   const location = useLocation();
   const getUser = async () => {
     const userObj = await axios({
-      url: `/aut/api/v1/accesstoken`,
+      url: `${process.env.REACT_APP_AUTH}/aut/api/v1/accesstoken`,
       method: "GET",
       withCredentials: true,
     }).catch((error) => {});
@@ -63,7 +62,7 @@ function App() {
 
   const logout = () => {
     axios({
-      url: "/aut/api/v1/logout",
+      url: `${process.env.REACT_APP_AUTH}/aut/api/v1/logout`,
       method: "POST",
       withCredentials: true,
     })
@@ -71,7 +70,7 @@ function App() {
         message.info("로그아웃 되었습니다.");
         setType("");
         setUser({});
-        navigate("/home");
+        navigate("/signin");
       })
       .catch(() => {
         message.error("로그아웃 실패");
@@ -113,7 +112,6 @@ function App() {
 
               {/* holder Route */}
               <Route path="/holder">
-                <Route path="issue" element={<HolderIssue />} />
                 <Route path="manage" element={<HolderManage />} />
                 <Route path="issuerlist" element={<Issuers user={user} />} />
                 <Route path="modal" element={<IssuerListModal user={user} />} />

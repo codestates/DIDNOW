@@ -10,22 +10,32 @@ const Mypage = ({ type }) => {
   const [user, setUser] = useState({});
   const [issuers, setIssuers] = useState([]);
   const [pageTitle, setPageTitle] = useState("");
+  const [requiredVC, setRequiredVC] = useState([]);
   const navigate = useNavigate();
+  const requiredVCList = ["이름", "이메일", "생년월일", "전화번호", "주소"];
 
   useEffect(() => {
     axios({
-      url: "/aut/api/v1/accesstoken",
+      url: `${process.env.REACT_APP_AUTH}/aut/api/v1/accesstoken`,
       method: "GET",
       withCredentials: true,
     })
       .then((data) => {
-        axios({
-          url: "/iss/api/v1/issuer/find/all",
-          method: "GET",
-          withCredentials: true,
-        }).then((result) => {
-          return setIssuers([...result.data]);
-        });
+        if (data.data.type === "holder") {
+          axios({
+            url: `${process.env.REACT_APP_ISSUER}/iss/api/v1/issuer/find/all`,
+            method: "GET",
+            withCredentials: true,
+          }).then((result) => {
+            return setIssuers([...result.data]);
+          });
+        }
+
+        if (data.data.type === "issuer") {
+          console.log(data.data.user);
+          setRequiredVC(data.data.user.requiredVC);
+        }
+
         data.data.type === "holder"
           ? setPageTitle(data.data.user.username)
           : setPageTitle(data.data.user.title);
@@ -67,11 +77,34 @@ const Mypage = ({ type }) => {
         message.error("이름은 1글자이상 10글자 이하로 해주세요.");
       } else {
         axios({
-          url: `/hol/api/v1/holder/${user._id}`,
+          url: `${process.env.REACT_APP_HOLDER}/hol/api/v1/holder/${user._id}`,
           method: "PUT",
           data: {
             username: user.username,
             IssuerList: user.IssuerList,
+          },
+          withCredentials: true,
+        }).then(() => {
+          message.success("정보 수정 완료!");
+          navigate("/home");
+          navigate(0);
+        });
+      }
+    } else if (type === "issuer") {
+      if (!userTitleRegex.test(user.title)) {
+        message.error("기관명은 한글, 영어, 숫자로만 입력해주세요.");
+      } else if (user.title.length < 1 || user.title.length > 20) {
+        message.error("기관명은 1글자이상 20글자 이하로 해주세요.");
+      } else {
+        axios({
+          url: `${process.env.REACT_APP_ISSUER}/${type.slice(
+            0,
+            3
+          )}/api/v1/${type}/${user._id}`,
+          method: "PUT",
+          data: {
+            title: user.title,
+            requiredVC: requiredVC,
           },
           withCredentials: true,
         }).then(() => {
@@ -88,7 +121,10 @@ const Mypage = ({ type }) => {
         message.error("기관명은 1글자이상 20글자 이하로 해주세요.");
       } else {
         axios({
-          url: `${type.slice(0, 3)}/api/v1/user/${type}${user._id}`,
+          url: `${process.env.REACT_APP_VERIFIER}/${type.slice(
+            0,
+            3
+          )}/api/v1/${type}/${user._id}`,
           method: "PUT",
           data: {
             title: user.title,
@@ -146,35 +182,23 @@ const Mypage = ({ type }) => {
       </div>
     </>
   );
-  const descriptionDOM = (
-    <>
-      <div className="mypage--DOM--title">기관 소개</div>
-      <input
-        className="mypage--input disabled"
-        type="text"
-        id="description"
-        onChange={onchange}
-        value={user.desc}
-        disabled
-      />
-    </>
-  );
 
-  /*
   const requiredVCDOM = (
     <>
       <div className="mypage--DOM--title">필수 요구사항</div>
-      <input
-        className="mypage--input disabled"
-        type="text"
-        id="requiredVC"
-        onChange={onchange}
-        value={user.walletAddress}
-        disabled
-      />
+      <Select
+        style={{ width: "100%", borderRadius: "5px" }}
+        mode="tags"
+        defaultValue={requiredVC}
+        onChange={setRequiredVC}
+        value={requiredVC}
+      >
+        {requiredVCList.map((e) => {
+          return <Option key={e}>{e}</Option>;
+        })}
+      </Select>
     </>
   );
-  */
 
   // 수정
   const walletAddressDOM = (
@@ -224,7 +248,7 @@ const Mypage = ({ type }) => {
   );
 
   const holderDOM = [nameDOM, emailDOM, walletAddressDOM, issuerListDOM];
-  const issuerDOM = [titleDOM, emailDOM, descriptionDOM];
+  const issuerDOM = [titleDOM, emailDOM, requiredVCDOM];
   const verifierDOM = [titleDOM, emailDOM];
 
   return (
