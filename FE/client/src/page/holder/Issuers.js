@@ -12,6 +12,7 @@ const Issuers = () => {
   const [issuers, setIssuers] = useState([]);
   const [holder, setHolder] = useState({});
   // Issuer 정보 불러오기
+  useEffect(() => {});
   useEffect(() => {
     axios({
       url: `${process.env.REACT_APP_AUTH}/aut/api/v1/accesstoken`,
@@ -24,26 +25,28 @@ const Issuers = () => {
           message.error("접근 권한이 없습니다!!");
         }
         setHolder(data.data.user);
-      });
-    // 모든 issuer 목록을 가져온다.
-    // 가져온 issuer 의 id를 이용해서 모든 issueruserList 를 가져온다.
-    // 그 중 내 이메일과 일치하는 issueruserlist 를 찾는다.
-    // 출력한다.
-    axios({
-      url: `${process.env.REACT_APP_ISSUER}/iss/api/v1/issuer/find/all`,
-      method: "GET",
-      withCredentials: true,
-    })
-      .then((result) => {
-        setIssuers(result.data);
+
         axios({
-          url: `${process.env.REACT_APP_ISSUER}/iss/api/v1/issuer-user/all/${result.data._id}`,
+          url: `${process.env.REACT_APP_ISSUER}/iss/api/v1/issuer/find/all`,
           method: "GET",
           withCredentials: true,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
+        })
+          .then((result) => {
+            const arr = result.data.filter((e) => {
+              const exist =
+                data.data.user.IssuerList.indexOf(e._id) >= 0 ? true : false;
+              return exist;
+            });
+            setIssuers(arr);
+            axios({
+              url: `${process.env.REACT_APP_ISSUER}/iss/api/v1/issuer-user/all/${result.data._id}`,
+              method: "GET",
+              withCredentials: true,
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
   }, []);
 
@@ -63,7 +66,7 @@ const Issuers = () => {
               <Col span={2} offset={2}>
                 <span className="holderissuerlist--columns">번호</span>
               </Col>
-              <Col span={7} >
+              <Col span={7}>
                 <span className="holderissuerlist--columns">기관명</span>
               </Col>
               <Col span={8}>

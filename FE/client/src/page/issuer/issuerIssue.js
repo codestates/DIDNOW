@@ -35,10 +35,9 @@ const IssuerIssue = ({ user, type }) => {
       method: "GET",
       withCredentials: true,
     }).then((result) => {
-      
       setVcInfo(result.data);
     });
-  },[]);
+  }, []);
   useEffect(() => {}, []);
   return (
     <div className="issuerissue">

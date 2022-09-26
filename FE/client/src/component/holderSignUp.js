@@ -40,7 +40,7 @@ const HolderSignUp = () => {
     ) {
       message.error("비밀번호를 형식에 맞춰 정확히 입력해주세요.");
     } else if (
-      !/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/.test(
+      !/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/.test(
         userInfo.email
       )
     ) {

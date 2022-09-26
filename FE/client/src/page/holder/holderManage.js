@@ -17,8 +17,16 @@ const HolderManage = () => {
   const [verifier, setVerifier] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
   const [password, setPassword] = useState("");
+  const [user, setUser] = useState({});
 
   useEffect(() => {
+    axios({
+      url: "http://localhost:9999/api/v1/auth/accesstoken",
+      method: "GET",
+      withCredentials: true,
+    }).then((data) => {
+      setUser(data.data.user);
+    });
     axios({
       url: `${process.env.REACT_APP_HOLDER}/hol/api/v1/verify/vc-list`,
       method: "GET",
@@ -141,7 +149,7 @@ const HolderManage = () => {
                     <Spin size="large" tip="요청중..." spinning={submitLoading}>
                       <Row>
                         <Col span={12} offset={6}>
-                          <div style={{ height: "2rem", marginBottom : "20px"}}>
+                          <div style={{ height: "2rem", marginBottom: "20px" }}>
                             특정 기업에 제출하여 인증서를 검증받을 수 있습니다.
                           </div>
                           <div>
@@ -253,18 +261,19 @@ const HolderManage = () => {
               )}
             </Col>
           </Row>
-          <div className="holdermanage--vc" >
+          <div className="holdermanage--vc">
             <Row gutter={48}>
               {vcList.length > 0 ? (
                 vcList.map((e, i) => {
                   return (
-                    <Col key={i} span={6} style={{margin: "0 0 30px 0" }}>
+                    <Col key={i} span={6} style={{ margin: "0 0 30px 0" }}>
                       <Vc
                         data={e}
                         selected={selected}
                         selectedHandle={selectedHandle}
                         idx={i}
                         issuers={issuers}
+                        user={user}
                       />
                     </Col>
                   );
@@ -284,7 +293,13 @@ const HolderManage = () => {
           {/* pagination 은 따로 구현해야 할듯 쓸만한거 없음 */}
         </>
       ) : (
-        "loading"
+        <Row style={{ margin: "200px 0 0 400px" }}>
+          <Spin
+            spinning={isLoading}
+            tip="인증서 불러오는 중..."
+            size="large"
+          ></Spin>
+        </Row>
       )}
     </div>
   );

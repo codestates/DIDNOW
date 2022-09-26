@@ -17,7 +17,6 @@ import SideMenu from "page/common/sideMenu";
 
 // holder
 import HolderManage from "./page/holder/holderManage";
-import HolderIssue from "./page/holder/holderIssue";
 import Issuers from "./page/holder/Issuers";
 
 // issuer
@@ -113,7 +112,6 @@ function App() {
 
               {/* holder Route */}
               <Route path="/holder">
-                <Route path="issue" element={<HolderIssue />} />
                 <Route path="manage" element={<HolderManage />} />
                 <Route path="issuerlist" element={<Issuers user={user} />} />
                 <Route path="modal" element={<IssuerListModal user={user} />} />
