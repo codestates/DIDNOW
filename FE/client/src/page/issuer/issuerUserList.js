@@ -37,6 +37,7 @@ const IssuerUserList = () => {
       withCredentials: true,
     })
       .catch(() => {
+        console.log("issueruserlist");
         message.error("로그인 후 이용 가능합니다.");
         navigate("/signin");
         navigate(0);
@@ -71,7 +72,7 @@ const IssuerUserList = () => {
           const arr = result.data.filter((e) => {
             return e.IssuerList.indexOf(data.data.user._id) >= 0;
           });
-          console.log([...arr]);
+
           setHolderList([...arr]);
         });
       });
@@ -149,7 +150,6 @@ const IssuerUserList = () => {
           setHolderId("");
           setIsLoading(false);
           message.success("유저 목록이 작성되었습니다.");
-          window.location.replace("/issuer/userlist");
         });
     }
   };
@@ -356,7 +356,7 @@ const IssuerUserList = () => {
                 </div>
               </Row>
               <hr />
-              <Row>
+              <Row style={{ margin: "20px 0px", fontWeight: 700 }}>
                 <Col span={1}>번호</Col>
                 <Col span={3}>이름</Col>
                 <Col span={5}>이메일</Col>
@@ -375,7 +375,9 @@ const IssuerUserList = () => {
                     <Col span={5}>{el.cr_email || "null"}</Col>
                     <Col span={4}>{el.cr_certificateName || "null"}</Col>
                     <Col span={4}>{el.cr_certificateType || "null"}</Col>
-                    <Col span={4}>{el.cr_certificateDate || "null"}</Col>
+                    <Col span={4}>
+                      {el.cr_certificateDate.slice(2, 10) || "null"}
+                    </Col>
                     <Col span={2}>{el.cr_isAdult === true ? "O" : "X"}</Col>
                   </Row>
                 );

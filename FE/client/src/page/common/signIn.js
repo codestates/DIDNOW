@@ -34,42 +34,42 @@ const SignIn = ({ type, setType, setUser }) => {
     message.error(msg);
   };
 
-  const signin = async () => {
-    try {
-      // login
-      let res = await axios({
-        url: `${process.env.REACT_APP_AUTH}/aut/api/v1/login-${way}`,
-        method: "POST",
-        data: {
-          email: signinObj.email,
-          password: signinObj.password,
-        },
-        withCredentials: true,
-      });
-      let userObj = await axios({
+  const signin = () => {
+    // login
+    axios({
+      url: `${process.env.REACT_APP_AUTH}/aut/api/v1/login-${way}`,
+      method: "POST",
+      data: {
+        email: signinObj.email,
+        password: signinObj.password,
+      },
+      withCredentials: true,
+    }).then((data) => {
+      console.log(data);
+      axios({
         url: `${process.env.REACT_APP_AUTH}/aut/api/v1/accesstoken`,
         method: "GET",
         withCredentials: true,
-      });
-
-      if (res.status === 200) {
-        messageInfo("로그인 성공!");
-        const userData = JSON.stringify({
-          _id: userObj.data.user._id,
-          email: userObj.data.user.email,
-          username: userObj.data.user.username,
-          walletAddress: userObj.data.user.walletAddress,
-          title: userObj.data.user.title,
-          desc: userObj.data.user.desc,
-          type: userObj.data.type,
+      })
+        .then((userObj) => {
+          const userData = JSON.stringify({
+            _id: userObj.data.user._id,
+            email: userObj.data.user.email,
+            username: userObj.data.user.username,
+            walletAddress: userObj.data.user.walletAddress,
+            title: userObj.data.user.title,
+            desc: userObj.data.user.desc,
+            type: userObj.data.type,
+          });
+          setUser(JSON.parse(userData));
+          setType(userObj.data.type);
+          navigate("/home");
+          messageInfo("로그인 성공!");
+        })
+        .catch((error) => {
+          messageError("로그인 실패!!");
         });
-        setUser(JSON.parse(userData));
-        setType(userObj.data.type);
-        navigate("/home");
-      }
-    } catch (error) {
-      messageError("로그인 실패!!");
-    }
+    });
   };
 
   const isEnter = (e) => {

@@ -1,5 +1,6 @@
 import { Breadcrumb, Row, Col, message, Select } from "antd";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./style/issuerissue.css";
 
@@ -7,6 +8,7 @@ const { Option } = Select;
 const IssuerIssue = ({ user, type }) => {
   const [vcInfo, setVcInfo] = useState({});
   const [vcTitle, setVcTitle] = useState("");
+  const navigate = useNavigate();
   const onchange = (e) => {
     setVcTitle(e);
   };
@@ -22,6 +24,7 @@ const IssuerIssue = ({ user, type }) => {
     })
       .then(() => {
         message.success("인증서 등록 성공!!");
+        navigate(0);
       })
       .catch(() => {
         message.error("인증서 등록 실패!!");
@@ -61,7 +64,10 @@ const IssuerIssue = ({ user, type }) => {
                 </div>
               </Col>
               <Col span={16}>
-                <span className="issuerissue--issuer">
+                <span
+                  className="issuerissue--issuer"
+                  style={{ fontSize: "1.5rem", color: "black" }}
+                >
                   {type === "holder" ? user.username : user.title || ""}
                 </span>
               </Col>
@@ -74,7 +80,10 @@ const IssuerIssue = ({ user, type }) => {
                   <span className="issuerissue--sub--title">인증서 제목</span>
                 </Col>
                 <Col span={16}>
-                  <span className="issuerissue--issuer">
+                  <span
+                    className="issuerissue--issuer"
+                    style={{ fontSize: "1.5rem", color: "black" }}
+                  >
                     {vcInfo[0]?.credentialTitle}
                   </span>
                 </Col>

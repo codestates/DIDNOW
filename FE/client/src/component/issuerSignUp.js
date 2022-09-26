@@ -3,10 +3,16 @@ import { Row, Col, message, Select } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { WalletFilled } from "@ant-design/icons";
+import QrCodeModal from "./qrCodeModal";
+import * as KlipAPI from "../component/UseKlip";
 
 const { Option } = Select;
 
 const IssuerSignUp = () => {
+  const [qrvalue, setQrvalue] = useState("DEFAULT");
+  const [myAddress, setMyAddress] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
   useEffect(() => {});
   useEffect(() => {}, []);
   const requiredVCList = ["이름", "이메일", "생년월일", "전화번호", "주소"];
@@ -27,7 +33,7 @@ const IssuerSignUp = () => {
   const validate = async () => {
     if (isCorrect === true) {
       let res = await axios({
-        url: `/aut/api/v1/register-issuer`,
+        url: `${process.env.REACT_APP_AUTH}/aut/api/v1/register-issuer`,
         method: "POST",
         data: {
           email: issuerInfo.email,
@@ -44,6 +50,14 @@ const IssuerSignUp = () => {
         navigate("/home");
       }
     }
+  };
+
+  const qrModalOpen = () => {
+    setModalOpen(true);
+    KlipAPI.getAddress(setQrvalue, async (address) => {
+      setMyAddress(address);
+      setModalOpen(false);
+    });
   };
 
   // requiredVC 변경
@@ -157,18 +171,41 @@ const IssuerSignUp = () => {
           />
         </Col>
       </Row>
-      <Row className="issuersignup--row">
-        <Col span={6} className="signup--col">
-          지갑 주소
+      <Row className="holdersignup--row">
+        <Col span={6} style={{ display: "flex" }}>
+          <span className="signup--label">KLIP 연결</span>
         </Col>
         <Col span={18}>
-          <input
-            className="issuersignup--input"
-            type="text"
-            onChange={onchange}
-            id="walletAddress"
-            placeholder="klaytn 지갑 주소를 적어주세요."
+          <button
+            onClick={() => {
+              qrModalOpen();
+            }}
+            className="signup--klip--btn"
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <WalletFilled /> {"\u00A0"}KLIP 지갑 연결
+            </div>
+          </button>
+          <QrCodeModal
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+            qrvalue={qrvalue}
+            setQrvalue={setQrvalue}
           />
+        </Col>
+      </Row>
+      <Row className="holdersignup--row">
+        <Col span={6} style={{ display: "flex" }}>
+          <span className="signup--label">지갑주소</span>
+        </Col>
+        <Col span={18}>
+          <div>{myAddress}</div>
         </Col>
       </Row>
       <Row>

@@ -18,7 +18,9 @@ const VerifierVPList = () => {
       url: `${process.env.REACT_APP_AUTH}/aut/api/v1/accesstoken`,
       withCredentials: true,
     })
-      .catch((error) => {})
+      .catch((error) => {
+        console.log("verifierVPList");
+      })
       .then((data) => {
         if (data.data.type !== "verifier") {
           message.error("접근 권한이 없습니다!");
@@ -38,19 +40,26 @@ const VerifierVPList = () => {
       });
   }, [navigate]);
   // // re-render
-  // useEffect(() => {
-  //   console.log(vpList);
-  // });
+  useEffect(() => {});
 
   const verifyVP = (e) => {
     axios({
       url: `${process.env.REACT_APP_VERIFIER}/ver/api/v1/verify/close-vp/${e.target.id}`,
       method: "POST",
       withCredentials: true,
-    }).then((result) => {
-      result.status === 200 && message.success("인증에 성공했습니다");
-      window.location.replace("/verifier/vplist");
-    });
+    })
+      .then((result) => {
+        console.log(result);
+        result.status === 200 && message.success("인증에 성공했습니다");
+        vpList[e.target.name].status = "success";
+        setVpList([...vpList]);
+      })
+      .catch((error) => {
+        console.log(error);
+        message.error("인증 과정에 문제가 발생했습니다.");
+        vpList[e.target.name].status = "failed";
+        setVpList([...vpList]);
+      });
   };
   return (
     <div className="verifiervplist">
@@ -128,6 +137,7 @@ const VerifierVPList = () => {
                           className="verifiervplist--pending"
                           onClick={verifyVP}
                           id={e._id}
+                          name={idx}
                         >
                           검증하기
                         </button>

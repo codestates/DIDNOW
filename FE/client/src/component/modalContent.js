@@ -56,6 +56,11 @@ const ModalContent = ({
     setPassword("");
   };
 
+  const isEnter = (e) => {
+    if (e.keyCode === 13) {
+      handleOk();
+    }
+  };
   return (
     <>
       <div className="issuerList--form">
@@ -94,6 +99,7 @@ const ModalContent = ({
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
+              onKeyDown={isEnter}
               value={password}
             ></input>
           </div>

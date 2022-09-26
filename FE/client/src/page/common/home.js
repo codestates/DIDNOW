@@ -25,9 +25,12 @@ const Home = () => {
             <li className="main--sub--title">
               잘못 발급된 증명, 인증서도 삭제가 가능합니다.
             </li>
-            <li className="main--sub--title" style={{marginTop : "20px", fontWeight:700}}>
+            <li
+              className="main--sub--title"
+              style={{ marginTop: "20px", fontWeight: 700 }}
+            >
               <Link
-                style={{ color: "black", textDecoration: "underline"}}
+                style={{ color: "black", textDecoration: "underline" }}
                 to="/signin"
               >
                 {"📝 Get Started DID NOW!"}

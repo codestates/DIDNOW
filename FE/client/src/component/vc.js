@@ -1,14 +1,17 @@
 import "./style/vc.css";
 import logo from "../img/didnow-icon.png";
 import { Row, Col, Tooltip } from "antd";
-import { SafetyOutlined, FilePdfOutlined } from "@ant-design/icons";
+import {
+  SafetyOutlined,
+  FilePdfOutlined,
+  StopOutlined,
+} from "@ant-design/icons";
 import { useEffect, useState, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import Pdf from "../component/pdf";
 
 const Vc = ({ issuers, data, selectedHandle, idx, user }) => {
   const componentRef = useRef();
-
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
@@ -88,15 +91,15 @@ const Vc = ({ issuers, data, selectedHandle, idx, user }) => {
         <div className="vc--action">
           <Row style={{ textAlign: "center" }}>
             <Col span={12}>
-              <Tooltip placement="top" title={"미리보기"}>
-                <FilePdfOutlined />
-              </Tooltip>
-            </Col>
-            <Col span={12}>
               <Tooltip placement="top" title={"PDF 다운로드"}>
                 <FilePdfOutlined onClick={handlePrint} />
               </Tooltip>
             </Col>
+            <Tooltip placement="top" title={"삭제하기"}>
+              <Col span={12}>
+                <StopOutlined />
+              </Col>
+            </Tooltip>
           </Row>
         </div>
       </article>
