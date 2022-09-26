@@ -1,9 +1,16 @@
-# BEB-05-final-02
-BEB-05-final-02
+# DIDNOW
 
 ## Project Flow Chart
+![](./BE/assets/DIDNOW_flowchart.png)  
 
-![](./BE/assets/Holder_FLOW_CHART.png)
-![](./BE/assets/Verifier_FLOW_CHART.png)
-![](./BE/assets/Issuer_FLOW_CHART.png)
-dev-BE-logic2
+## DB Schema
+![](./BE/assets/DB_Schema_Mongo.png)  
+
+## Deploy Stack
+![](./BE/assets/DIDNOW_deploy_bk.png)  
+![](./BE/assets/DIDNOW_deploy_wh.png)
+
+## Tech Stack
+  
+![](./BE/assets/DIDNOW_stack_bk.png)  
+![](./BE/assets/DIDNOW_stack_wh.png)  
