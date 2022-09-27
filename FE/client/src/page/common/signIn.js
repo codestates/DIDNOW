@@ -8,9 +8,8 @@ const SignIn = ({ type, setType, setUser }) => {
   const navigate = useNavigate();
   useEffect(() => {
     if (type !== "") {
-      setIsLoading(false, () => {
-        navigate("/home");
-      });
+      setIsLoading(false);
+      navigate("/home");
     } else {
       setIsLoading(false);
     }
