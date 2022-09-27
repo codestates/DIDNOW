@@ -6,8 +6,8 @@ import "../style/style.css";
 
 const Analytics = () => {
   return (
-    <div className="w-full bg-white py-24  px-4">
-      <div className="max-w-[1000px] mx-auto grid md:grid-cols-2 landing-cards">
+    <div className="w-full bg-white py-24  px-4" style={{backgroundColor:"#EEE"}}>
+      <div className="max-w-[1000px] mx-auto grid md:grid-cols-2 landing-cards" >
         <img className="w-[400px] px-2 mx-auto my-4" src={Laptop} alt="/" style={{borderRadius:"30px"}}/>
         <div className="w-[400px] flex flex-col justify-center">
           <h1 className="md:text-3xl sm:text-2xl text-1xl font-bold py-2 mb-7">
@@ -28,7 +28,7 @@ const Analytics = () => {
           </p>
           <br />
           <p className="md:text-xl sm:text-lg text-md">
-            간단한 절차로 사용자에게 100% 신뢰할 수 있는 인증서를 발급해 줄 수 있습니다.
+            간단한 절차로 사용자에게 <b>100% 신뢰할 수 있는 인증서</b>를 발급해 줄 수 있습니다.
           </p>
           
         </div>
