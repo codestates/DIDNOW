@@ -1,8 +1,7 @@
 # DIDNOW
 
-![](./Doc/img/logo/didnow.png)
-
  <p align="center">
+ 	<img alt="GitHub language count" src="./Doc/img/logo/didnow.png">
 	<a href="https://github.com/codestates/BEB-05-DIDNOW/search?l=JavaScript&type=code"><img alt="GitHub language count" src="https://img.shields.io/github/languages/count/codestates/BEB-05-DIDNOW"></a>
 	<a href="https://github.com/codestates/BEB-05-DIDNOW/graphs/contributors"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/codestates/BEB-05-DIDNOW?color=success"></a>
 	<a href="https://github.com/codestates/BEB-05-DIDNOW/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/codestates/BEB-05-DIDNOW"></a>
@@ -29,29 +28,47 @@
 
 # :wrench: 사용 기술 (Technique)
 
-## 기술 스택 (Technique Used)
+## :hammer:기술 스택 (Technique Used)
 
 ![](./Doc/img/draw/stack.png)
 
 ### FrontEnd
 
-|                           React                           |                           antd                           |
-| :-------------------------------------------------------: | :------------------------------------------------------: |
-| <img src = "./Doc/img/stackIcon/react.png" height = 60px> | <img src = "./Doc/img/stackIcon/antd.png" height = 60px> |
+|                             Icon                             |  Stack   | Description |
+| :----------------------------------------------------------: | :------: | ----------- |
+|  <img src = "./Doc/img/stackIcon/react.png" height = 25px>   |  REACT   |             |
+|   <img src = "./Doc/img/stackIcon/antd.png" height = 25px>   |   ANTD   |             |
+| <img src = "./Doc/img/stackIcon/tailwind.png" height = 20px> | TAILWIND |             |
+| <img src = "./Doc/img/stackIcon/threejs.png" height = 25px>  | THREEJS  |             |
 
-### BackEnd & Server
+### BackEnd
 
-|                           NodeJS                           |                           CaverJS                           |                           NginX                           |                           MongoDB                           |                           Docker                           |                           AWS                           |
-| :--------------------------------------------------------: | :---------------------------------------------------------: | :-------------------------------------------------------: | :---------------------------------------------------------: | :--------------------------------------------------------: | :-----------------------------------------------------: |
-| <img src = "./Doc/img/stackIcon/nodejs.png" height = 60px> | <img src = "./Doc/img/stackIcon/caverjs.png" height = 60px> | <img src = "./Doc/img/stackIcon/nginx.png" height = 65px> | <img src = "./Doc/img/stackIcon/mongoDB.png" height = 60px> | <img src = "./Doc/img/stackIcon/docker.png" height = 55px> | <img src = "./Doc/img/stackIcon/aws.png" height = 55px> |
+|                            Icon                             |  Stack  | Description |
+| :---------------------------------------------------------: | :-----: | ----------- |
+| <img src = "./Doc/img/stackIcon/nodejs.png" height = 25px>  | NODEJS  |             |
+| <img src = "./Doc/img/stackIcon/mongodb.png" height = 25px> | MONGODB |             |
+|  <img src = "./Doc/img/stackIcon/nginx.png" height = 27px>  |  NGINX  |             |
 
 ### Smart Contract
 
-|                           Solidity                           |                           Truffle                           |                           Ganache                           |                           Klaytn                           |                         KlipAPI                          |
-| :----------------------------------------------------------: | :---------------------------------------------------------: | :---------------------------------------------------------: | :--------------------------------------------------------: | :------------------------------------------------------: |
-| <img src = "./Doc/img/stackIcon/Solidity.png" height = 60px> | <img src = "./Doc/img/stackIcon/Truffle.png" height = 60px> | <img src = "./Doc/img/stackIcon/ganache.png" height = 60px> | <img src = "./Doc/img/stackIcon/klaytn.png" height = 60px> | <img src = "./Doc/img/stackIcon/klip.png" height = 60px> |
+|                             Icon                             |  Stack   | Description |
+| :----------------------------------------------------------: | :------: | ----------- |
+| <img src = "./Doc/img/stackIcon/solidity.png" height = 25px> | SOLIDITY |             |
+| <img src = "./Doc/img/stackIcon/truffle.png" height = 25px>  | TRUFFLE  |             |
+|  <img src = "./Doc/img/stackIcon/klaytn.png" height = 25px>  |  KLAYTN  |             |
+|   <img src = "./Doc/img/stackIcon/klip.png" height = 25px>   |   KLIP   |             |
+| <img src = "./Doc/img/stackIcon/ganache.png" height = 25px>  | GANACHE  |             |
 
-## Architecture
+### Deploy
+
+|                            Icon                             |        Stack        | Description |
+| :---------------------------------------------------------: | :-----------------: | ----------- |
+| <img src = "./Doc/img/stackIcon/docker.png" height = 25px>  |       DOCKER        |             |
+|   <img src = "./Doc/img/stackIcon/ec2.png" height = 30px>   |         EC2         |             |
+| <img src = "./Doc/img/stackIcon/route53.png" height = 30px> |      ROUTE 53       |             |
+|   <img src = "./Doc/img/stackIcon/acm.png" height = 30px>   | CERTIFICATE MANAGER |             |
+
+## :construction:Architecture
 
 ![](./Doc/img/draw/architecture.png)
 
@@ -59,11 +76,11 @@
 2. Proxy를 구성하고 있는 NginX는 URL로 접속한 유저를 Front로 링크해주고 Front에서 발생한 API Request를 적절한 Back 서버 중 트래픽이 가장 적은 서버로 연결시킨다.
 3. Back 서버는 요청에 따라 Klaytn 네트워크와 MongoDB를 호출하여 기능을 실행한다.
 
-## Network
+## :earth_asia:Network
 
 ![](./Doc/img/draw/deploy.png)
 
-### Deploy
+### Deploy :rocket:
 
 1. 개발자가 지정된 Repository의 지정된 Branch에 Push하면 GuthubAction이 실행되어 Docker파일로 빌드하고 DockerHub에 Push한다.
 2. 그 후 GithubAction은 EC2에서 실행중인 Runner를 호출해 DockerHub에서 이미지를 Pull하고 실행한다.
