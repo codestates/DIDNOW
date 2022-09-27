@@ -330,6 +330,7 @@ const getAccessToken = async (req, res, next) => {
 
       default:
         return next(createError(403, "User Not Found"));
+        
     }
   } catch (error) {
     next(error);

@@ -11,17 +11,6 @@ services:
       - 9000:9991
     container_name: auth-server0
 
-  auth-server1: 
-    build: 
-      context: ./BE/01_AUTH-server
-      dockerfile : Dockerfile
-    image: auth-server:1.0.0
-    expose:
-      - 9001
-    ports:
-      - 9001:9991
-    container_name: auth-server1
-
   issuer-server0: 
     build: 
       context: ./BE/02_ISSUER-server
@@ -32,17 +21,6 @@ services:
     ports:
       - 9100:9992
     container_name: issuer-server0
-
-  issuer-server1: 
-    build: 
-      context: ./BE/02_ISSUER-server
-      dockerfile : Dockerfile
-    image: issuer-server:1.0.0
-    expose:
-      - 9101
-    ports:
-      - 9101:9992
-    container_name: issuer-server1
 
   holder-server0:
     build: 
@@ -55,17 +33,6 @@ services:
       - 9200:9993
     container_name: holder-server0
 
-  holder-server1:
-    build: 
-      context: ./BE/03_HOLDER-server
-      dockerfile : Dockerfile
-    image: holder-server:1.0.0 
-    expose:
-      - 9201
-    ports:
-      - 9201:9993
-    container_name: holder-server1
-
   verifier-server0:
     build: 
       context: ./BE/04_VERIFIER-server
@@ -76,17 +43,6 @@ services:
     ports:
       - 9300:9994
     container_name: verifier-server0
-
-  verifier-server1:
-    build: 
-      context: ./BE/04_VERIFIER-server
-      dockerfile : Dockerfile 
-    image: verifier-server:1.0.0
-    expose:
-      - 9301
-    ports:
-      - 9301:9994
-    container_name: verifier-server1
 
   react-nginx-app:
     stdin_open: true

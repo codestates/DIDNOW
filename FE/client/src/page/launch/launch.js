@@ -10,7 +10,6 @@ const Launch = ({ setIsLanding }) => {
     <div className="black">
       <Three setLanding={setIsLanding} />
       <Cards />
-      <RegisterEmail />
       <Analytics />
     </div>
   );
