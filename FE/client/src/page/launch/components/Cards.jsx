@@ -9,14 +9,14 @@ const Cards = () => {
   }
 
   return (
-    <div className="w-full py-[5rem] px-4 bg-white">
+    <div className="w-full py-[10rem] px-4 bg-white">
       <h1 className="flex justify-center md:text-xl text-lg text-black mb-5" style={{fontSize:"30px"}}>
         <span style={{fontWeight:700}}>DIDNOW</span>는 블록체인 기반의
       </h1>
       <h1 className="flex justify-center md:text-xl text-lg text-black mb-10" style={{fontSize:"30px"}}>
         비정부기관 증명 인증서 중개 플랫폼 입니다.
       </h1>
-      <h1 className="flex justify-center md:text-xl text-lg text-black mb-20" style={{fontSize:"30px", fontWeight:"700"}}>
+      <h1 className="flex justify-center md:text-xl text-lg text-black mb-40" style={{fontSize:"30px", fontWeight:"700"}}>
       🚀️ 신뢰할 수 있는 인증을 경험하세요.
       </h1>
       <div className="max-w-[1240px] mx-auto flex gap-8">
