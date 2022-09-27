@@ -21,7 +21,6 @@ const Verifiers = () => {
       url: "/ver/api/v1/verifier/find/all",
       withCredentials: true,
     }).then((data) => {
-      console.log(data.data);
       setVerifierList(data.data);
     });
   }, []);

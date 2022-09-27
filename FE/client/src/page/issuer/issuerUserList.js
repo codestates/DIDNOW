@@ -7,6 +7,7 @@ import {
   message,
   Select,
   Spin,
+  Pagination,
 } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -28,6 +29,8 @@ const IssuerUserList = () => {
   const [holder, setHolder] = useState({});
   // 로딩화면
   const [isLoading, setIsLoading] = useState(true);
+  // 페이징
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     // User 정보를 받아온다.
@@ -37,7 +40,6 @@ const IssuerUserList = () => {
       withCredentials: true,
     })
       .catch(() => {
-        console.log("issueruserlist");
         message.error("로그인 후 이용 가능합니다.");
         navigate("/signin");
         navigate(0);
@@ -127,7 +129,6 @@ const IssuerUserList = () => {
         withCredentials: true,
       })
         .catch((error) => {
-          console.log(error);
           message.error("유저 목록을 작성하던중 오류가 발생했습니다.");
           setIsLoading(false);
         })
@@ -212,7 +213,7 @@ const IssuerUserList = () => {
       </Breadcrumb>
       <div className="issueruserlist--description">{`issuer가 관리중인 userList를 관리합니다.`}</div>
       <div className="issueruserlist--form">
-        <Spin tip="인증서 목록 작성중" size="large" spinning={isLoading}>
+        <Spin tip="로딩중..." size="large" spinning={isLoading}>
           <Row>
             <Col span={20} offset={2}>
               <div className="issueruserlist--title">
@@ -365,23 +366,40 @@ const IssuerUserList = () => {
                 <Col span={4}>인증 일자</Col>
                 <Col span={2}>성인</Col>
               </Row>
-              {userList.map((el, idx) => {
-                return (
-                  <Row key={idx}>
-                    <Col span={1} style={{ padding: "0 0 0 1%" }}>
-                      {idx + 1}
-                    </Col>
-                    <Col span={3}>{el.cr_name || "null"}</Col>
-                    <Col span={5}>{el.cr_email || "null"}</Col>
-                    <Col span={4}>{el.cr_certificateName || "null"}</Col>
-                    <Col span={4}>{el.cr_certificateType || "null"}</Col>
-                    <Col span={4}>
-                      {el.cr_certificateDate.slice(2, 10) || "null"}
-                    </Col>
-                    <Col span={2}>{el.cr_isAdult === true ? "O" : "X"}</Col>
-                  </Row>
-                );
-              })}
+              {userList
+                .filter((e, idx) => {
+                  return idx < page * 10 && idx >= (page - 1) * 10;
+                })
+                .map((el, idx) => {
+                  return (
+                    <Row key={idx}>
+                      <Col span={1} style={{ padding: "0 0 0 1%" }}>
+                        {idx + 1}
+                      </Col>
+                      <Col span={3}>{el.cr_name || "null"}</Col>
+                      <Col span={5}>{el.cr_email || "null"}</Col>
+                      <Col span={4}>{el.cr_certificateName || "null"}</Col>
+                      <Col span={4}>{el.cr_certificateType || "null"}</Col>
+                      <Col span={4}>
+                        {el.cr_certificateDate.slice(2, 10) || "null"}
+                      </Col>
+                      <Col span={2}>{el.cr_isAdult === true ? "O" : "X"}</Col>
+                    </Row>
+                  );
+                })}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  margin: "5% 0 ",
+                }}
+              >
+                <Pagination
+                  defaultCurrent={page}
+                  total={userList.length}
+                  onChange={(e) => setPage(e)}
+                />
+              </div>
               <hr />
             </Col>
           </Row>

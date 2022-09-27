@@ -1,4 +1,13 @@
-import { Breadcrumb, Row, Col, Modal, Select, message, Spin } from "antd";
+import {
+  Breadcrumb,
+  Row,
+  Col,
+  Modal,
+  Select,
+  message,
+  Spin,
+  Pagination,
+} from "antd";
 import "./style/holderManage.css";
 import Vc from "../../component/vc";
 import { useEffect, useState } from "react";
@@ -18,6 +27,7 @@ const HolderManage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [password, setPassword] = useState("");
   const [user, setUser] = useState({});
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     axios({
@@ -58,10 +68,10 @@ const HolderManage = () => {
   const selectedHandle = (e) => {
     if (selected.indexOf(e.currentTarget.id) >= 0) {
       // 만약 있으면 뺀다.
-      e.currentTarget.classList.remove("vc--selected");
+      e.currentTarget.parentNode.classList.remove("vc--selected");
       setSelected(selected.filter((el) => el !== e.currentTarget.id));
     } else {
-      e.currentTarget.classList.add("vc--selected");
+      e.currentTarget.parentNode.classList.add("vc--selected");
       setSelected([e.currentTarget.id, ...selected]);
     }
   };
@@ -195,7 +205,7 @@ const HolderManage = () => {
                                       })
                                     ].verifyList.map((e, idx) => {
                                       return (
-                                        <>
+                                        <div key={idx}>
                                           <Row style={{ margin: "10px 0" }}>
                                             <Col span={21}>{`${
                                               idx + 1
@@ -205,7 +215,7 @@ const HolderManage = () => {
                                             </Col>
                                           </Row>
                                           <hr />
-                                        </>
+                                        </div>
                                       );
                                     })
                                   : "" || ""}
@@ -272,20 +282,27 @@ const HolderManage = () => {
           <div className="holdermanage--vc">
             <Row gutter={48}>
               {vcList.length > 0 ? (
-                vcList.map((e, i) => {
-                  return (
-                    <Col key={i} span={6} style={{ margin: "0 0 30px 0" }}>
-                      <Vc
-                        data={e}
-                        selected={selected}
-                        selectedHandle={selectedHandle}
-                        idx={i}
-                        issuers={issuers}
-                        user={user}
-                      />
-                    </Col>
-                  );
-                })
+                vcList
+                  .filter((e, idx) => {
+                    return idx < page * 8 && idx >= (page - 1) * 8;
+                  })
+                  .map((e, i) => {
+                    return (
+                      <Col key={i} span={6} style={{ margin: "0 0 30px 0" }}>
+                        <Vc
+                          data={e}
+                          selected={selected}
+                          selectedHandle={selectedHandle}
+                          idx={i}
+                          issuers={issuers}
+                          user={user}
+                          setVcList={setVcList}
+                          vcList={vcList}
+                          setSelected={setSelected}
+                        />
+                      </Col>
+                    );
+                  })
               ) : (
                 <>
                   <div style={{ fontSize: "1.5rem" }}>
@@ -298,7 +315,13 @@ const HolderManage = () => {
               )}
             </Row>
           </div>
-          {/* pagination 은 따로 구현해야 할듯 쓸만한거 없음 */}
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Pagination
+              defaultCurrent={page}
+              total={vcList.length}
+              onChange={(e) => setPage(e)}
+            />
+          </div>
         </>
       ) : (
         <Row style={{ margin: "25% 45%" }}>

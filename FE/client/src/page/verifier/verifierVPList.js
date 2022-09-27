@@ -1,5 +1,5 @@
 import "./style/verifiervplist.css";
-import { Row, Col, Breadcrumb, message, Spin } from "antd";
+import { Row, Col, Breadcrumb, message, Spin, Pagination } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -11,6 +11,7 @@ const VerifierVPList = () => {
   const [user, setUser] = useState({});
   const [vpList, setVpList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
 
   // before render
   useEffect(() => {
@@ -18,9 +19,6 @@ const VerifierVPList = () => {
       url: `${process.env.REACT_APP_AUTH}/aut/api/v1/accesstoken`,
       withCredentials: true,
     })
-      .catch((error) => {
-        console.log("verifierVPList");
-      })
       .then((data) => {
         if (data.data.type !== "verifier") {
           message.error("접근 권한이 없습니다!");
@@ -32,33 +30,38 @@ const VerifierVPList = () => {
           method: "GET",
           withCredentials: true,
         })
-          .catch((error) => {})
           .then((data) => {
             setVpList(data.data);
             setIsLoading(false);
-          });
+          })
+          .catch(() => {});
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsLoading(false);
       });
   }, [navigate]);
   // // re-render
   useEffect(() => {});
 
   const verifyVP = (e) => {
+    setIsLoading(true);
     axios({
       url: `${process.env.REACT_APP_VERIFIER}/ver/api/v1/verify/close-vp/${e.target.id}`,
       method: "POST",
       withCredentials: true,
     })
       .then((result) => {
-        console.log(result);
         result.status === 200 && message.success("인증에 성공했습니다");
         vpList[e.target.name].status = "success";
         setVpList([...vpList]);
+        setIsLoading(false);
       })
       .catch((error) => {
-        console.log(error);
         message.error("인증 과정에 문제가 발생했습니다.");
         vpList[e.target.name].status = "failed";
         setVpList([...vpList]);
+        setIsLoading(false);
       });
   };
   return (
@@ -150,6 +153,14 @@ const VerifierVPList = () => {
                   </Row>
                 );
               })}
+
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <Pagination
+                  defaultCurrent={page}
+                  total={vpList.length}
+                  onChange={(e) => setPage(e)}
+                />
+              </div>
             </Col>
           </Row>
         </div>
