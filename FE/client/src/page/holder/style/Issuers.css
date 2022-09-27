@@ -1,0 +1,48 @@
+.title {
+  display: flex;
+  font-size: 20px;
+  font-weight: 300;
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.holderissuerlist--row {
+  height: 3rem;
+}
+
+.holderissuerlist--columns {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content:first baseline;
+  height: 100%;
+  font-weight: 600;
+}
+
+.verifiervplist--failed {
+  background-color: red;
+  color: white;
+  text-align: center;
+  height: 100%;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.verifiervplist--success {
+  background-color: green;
+  color: white;
+  text-align: center;
+  height: 100%;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.verifiervplist--pending {
+  background-color: #000630;
+  color: white;
+  text-align: center;
+  height: 100%;
+  border-radius: 5px;
+  width: 100%;
+}

@@ -1,0 +1,28 @@
+.home {
+  padding: 10%;
+  margin: 0 0 20vh 0;
+  height: 100vh;
+}
+.home ul,
+.home li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.main--title {
+  font-size: 3rem;
+  font-weight: 900;
+  margin: 0 0 10px 0;
+}
+
+.main--sub--title {
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.main--picture {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px #777777;
+}

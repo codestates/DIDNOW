@@ -1,0 +1,163 @@
+name: CICD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Make Proxy
+        run: |
+          cd ./Proxy
+          echo url=$IP | cat - githubaction > githubaction.sh
+          chmod 777 githubaction.sh
+          ./githubaction.sh
+          cd ..
+        env:
+          IP: ${{ secrets.IP }}
+      - name: Proxy Build And Push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./Proxy
+          file: ./Proxy/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: jayoh712/proxy
+      - name: Client Build And Push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./FE/client
+          file: ./FE/client/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: jayoh712/client
+      - name: Generate auth/.env
+        run: |
+          echo "MONGO_URL=$MONGO_URL" >> ./BE/01_AUTH-server/.env
+          echo "PORT=$PORT" >> ./BE/01_AUTH-server/.env
+          echo "JWT_SECRET=$JWT_SECRET" >> ./BE/01_AUTH-server/.env
+          echo "DIDCONTRACT_ADDRESS=$DIDCONTRACT_ADDRESS" >> ./BE/01_AUTH-server/.env
+          echo "PRIVATE_KEY_KAIKAS=$PRIVATE_KEY_KAIKAS" >> ./BE/01_AUTH-server/.env
+        env:
+          MONGO_URL: ${{ secrets.MONGO_URL }}
+          PORT: 9991
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          DIDCONTRACT_ADDRESS: ${{ secrets.DIDCONTRACT_ADDRESS }}
+          PRIVATE_KEY_KAIKAS: ${{ secrets.PRIVATE_KEY_KAIKAS }}
+      - name: Auth-Server Build And Push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./BE/01_AUTH-server
+          file: ./BE/01_AUTH-server//Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: jayoh712/auth-server
+      - name: Generate issuer/.env
+        run: |
+          echo "MONGO_URL=$MONGO_URL" >> ./BE/02_ISSUER-server/.env
+          echo "PORT=$PORT" >> ./BE/02_ISSUER-server/.env
+          echo "JWT_SECRET=$JWT_SECRET" >> ./BE/02_ISSUER-server/.env
+          echo "DIDCONTRACT_ADDRESS=$DIDCONTRACT_ADDRESS" >> ./BE/02_ISSUER-server/.env
+          echo "PRIVATE_KEY_KAIKAS=$PRIVATE_KEY_KAIKAS" >> ./BE/02_ISSUER-server/.env
+        env:
+          MONGO_URL: ${{ secrets.MONGO_URL }}
+          PORT: 9992
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          DIDCONTRACT_ADDRESS: ${{ secrets.DIDCONTRACT_ADDRESS }}
+          PRIVATE_KEY_KAIKAS: ${{ secrets.PRIVATE_KEY_KAIKAS }}
+      - name: Issuer-Server Build And Push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./BE/02_ISSUER-server
+          file: ./BE/02_ISSUER-server//Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: jayoh712/issuer-server
+      - name: Generate holder/.env
+        run: |
+          echo "MONGO_URL=$MONGO_URL" >> ./BE/03_HOLDER-server/.env
+          echo "PORT=$PORT" >> ./BE/03_HOLDER-server/.env
+          echo "JWT_SECRET=$JWT_SECRET" >> ./BE/03_HOLDER-server/.env
+          echo "DIDCONTRACT_ADDRESS=$DIDCONTRACT_ADDRESS" >> ./BE/03_HOLDER-server/.env
+          echo "PRIVATE_KEY_KAIKAS=$PRIVATE_KEY_KAIKAS" >> ./BE/03_HOLDER-server/.env
+        env:
+          MONGO_URL: ${{ secrets.MONGO_URL }}
+          PORT: 9993
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          DIDCONTRACT_ADDRESS: ${{ secrets.DIDCONTRACT_ADDRESS }}
+          PRIVATE_KEY_KAIKAS: ${{ secrets.PRIVATE_KEY_KAIKAS }}
+      - name: Holder-Server Build And Push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./BE/03_HOLDER-server
+          file: ./BE/03_HOLDER-server//Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: jayoh712/holder-server
+      - name: Generate verifier/.env
+        run: |
+          echo "MONGO_URL=$MONGO_URL" >> ./BE/04_VERIFIER-server/.env
+          echo "PORT=$PORT" >> ./BE/04_VERIFIER-server/.env
+          echo "JWT_SECRET=$JWT_SECRET" >> ./BE/04_VERIFIER-server/.env
+          echo "DIDCONTRACT_ADDRESS=$DIDCONTRACT_ADDRESS" >> ./BE/04_VERIFIER-server/.env
+          echo "PRIVATE_KEY_KAIKAS=$PRIVATE_KEY_KAIKAS" >> ./BE/04_VERIFIER-server/.env
+        env:
+          MONGO_URL: ${{ secrets.MONGO_URL }}
+          PORT: 9994
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          DIDCONTRACT_ADDRESS: ${{ secrets.DIDCONTRACT_ADDRESS }}
+          PRIVATE_KEY_KAIKAS: ${{ secrets.PRIVATE_KEY_KAIKAS }}
+      - name: Verifier-Server Build And Push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./BE/04_VERIFIER-server
+          file: ./BE/04_VERIFIER-server//Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: jayoh712/verifier-server
+  # 배포 Job
+  deploy:
+    needs: build # build 후에 실행되도록 정의
+    name: Deploy
+    runs-on: [self-hosted, label-go] # AWS ./configure에서 사용할 label명
+    steps:
+      - name: Login to ghcr
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+      # 3000 -> 80 포트로 수행하도록 지정
+      - name: Docker run
+        run: |
+          docker stop proxy && docker rm proxy && docker rmi jayoh712/proxy:latest
+          docker stop client && docker rm client && docker rmi jayoh712/client:latest
+          docker stop auth-server && docker rm auth-server && docker rmi jayoh712/auth-server:latest
+          docker stop issuer-server && docker rm issuer-server && docker rmi jayoh712/issuer-server:latest
+          docker stop holder-server && docker rm holder-server && docker rmi jayoh712/holder-server:latest
+          docker stop verifier-server && docker rm verifier-server && docker rmi jayoh712/verifier-server:latest
+
+          docker pull jayoh712/auth-server:latest
+          docker pull jayoh712/issuer-server:latest
+          docker pull jayoh712/holder-server:latest
+          docker pull jayoh712/verifier-server:latest
+          docker pull jayoh712/client:latest
+          docker pull jayoh712/proxy:latest
+
+          docker run -d -p 80:80 --name proxy jayoh712/proxy:latest
+          docker run -d -p 3010:3000 --name client jayoh712/client:latest 
+          docker run -d -p 9000:9991 --name auth-server jayoh712/auth-server:latest 
+          docker run -d -p 9100:9992 --name issuer-server jayoh712/issuer-server:latest 
+          docker run -d -p 9200:9993 --name holder-server jayoh712/holder-server:latest 
+          docker run -d -p 9300:9994 --name verifier-server jayoh712/verifier-server:latest

@@ -1,0 +1,18 @@
+server {
+
+    location / {
+        proxy_pass http://client/;
+    }
+    location /aut/api/ {
+        proxy_pass http://auth-server;
+    }
+    location /iss/api/ {
+        proxy_pass http://issuer-server;
+    }
+    location /hol/api/ {
+        proxy_pass http://holder-server;
+    }
+    location /ver/api/ {
+        proxy_pass http://verifier-server;
+    }
+}

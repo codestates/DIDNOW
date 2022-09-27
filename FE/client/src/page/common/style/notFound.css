@@ -1,0 +1,50 @@
+.notfound {
+  min-height: 100vh;
+  margin: 0 0 20vh 0;
+}
+
+.notfound--image {
+  height: 80%;
+}
+
+.notfound--image--container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.notfound--errorcode {
+  width: 85%;
+  margin: 0 0 0 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-size: 3rem;
+  font-weight: 400;
+  position: absolute;
+}
+
+.notfound--desc {
+  margin: 25% 0 0 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+.notfound--subdesc {
+  font-size: 0.8rem;
+}
+
+.notfound--desc--btn {
+  margin: 1% 0 0 0;
+  background-color: rgb(48, 162, 38);
+  border-radius: 10px;
+  font-size: 1.2rem;
+  width: 10%;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: 700;
+}

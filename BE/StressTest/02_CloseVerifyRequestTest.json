@@ -1,0 +1,48 @@
+{
+    "config": {
+        "target": "/",
+        "phases": [
+            {
+                "duration": 60,
+                "arrivalRate": 8,
+                "name": "Verifier Test"
+            }
+        ]
+    },
+    "scenarios": [
+        {
+            "name": "Verifier Close Request",
+            "flow": [
+                {
+                    "post": {
+                        "url": "http://localhost:9991/aut/api/v1/login-verifier",
+                        "json": {
+                            "email": "testVerifier999@gmail.com",
+                            "password": "1111"
+                        }
+                    }
+                },
+                {
+                    "think": 5
+                },
+                {
+                    "get": {
+                        "url": "http://localhost:9994/ver/api/v1/verify/find/all",
+                        "capture" : {
+                            "json" : "$[0]._id",
+                            "as" : "verifyListId"
+                        }
+                    }
+                },
+                {
+                    "think": 5
+                },
+                {
+                    "post": {
+                        "url": "http://localhost:9994/ver/api/v1/verify/close-vp/{{ verifyListId }}"
+                    }
+                }
+            ]
+        }
+    ]
+}
