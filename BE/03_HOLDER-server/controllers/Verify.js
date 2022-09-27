@@ -288,11 +288,30 @@ const deleteVerifyRequest = async (req, res, next) => {
   }
 };
 
+/*
+      @ dev : Get Requested Authentication Request
+      @ desc : 모든 Holder로 부터의 전체 인증 요청 목록을 출력합니다.
+      @ subject : Verifer
+  */
+      const getAllVerifyRequest = async (req, res, next) => {
+        if (req.user.type === "holder") {
+          try {
+            const verifyLists = await VerifyList.find({ requestOwner: req.user.id });
+            res.status(200).json(verifyLists);
+          } catch (error) {
+            next(error);
+          }
+        } else {
+          next(createError(403, "인가되지 않은 접근입니다."));
+        }
+      };
+
 
 module.exports = {
   getHolderVCList,
   deleteHolderVCList,
   requestVC,
   createVerifyRequest,
-  deleteVerifyRequest
+  deleteVerifyRequest,
+  getAllVerifyRequest
 };

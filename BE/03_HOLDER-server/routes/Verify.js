@@ -6,7 +6,8 @@ const {
   deleteHolderVCList,
   requestVC,
   createVerifyRequest,
-  deleteVerifyRequest
+  deleteVerifyRequest,
+  getAllVerifyRequest
 } = require("../controllers/Verify");
 
 /*
@@ -61,5 +62,13 @@ router.delete(
   passwordCheck,
   deleteVerifyRequest
 );
+
+/*
+    @ dev : Get Requested Authentication Request
+    @ desc : 모든 Holder로 부터의 전체 인증 요청 목록을 출력합니다.
+    @ subject : Verifer
+*/
+router.get("/find/all", verifyToken, getAllVerifyRequest);
+
 
 module.exports = router;

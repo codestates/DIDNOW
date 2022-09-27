@@ -329,7 +329,8 @@ const getAccessToken = async (req, res, next) => {
         return res.status(200).json({type:req.user.type, user:verifier});
 
       default:
-        return next(createError(403, "User Not Found"));
+        return next(createError(313, "User Not Found"));
+        
     }
   } catch (error) {
     next(error);

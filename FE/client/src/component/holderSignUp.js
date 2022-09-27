@@ -140,8 +140,14 @@ const HolderSignUp = () => {
             onChange={onchange}
             id="email"
             className="holdersignup--input"
-            placeholder="holdername@naver.com"
           />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={18} offset={6}>
+          <div className="validate--label">
+            이메일 형식으로 입력해주세요. ex{")"}abc123@didnow.com
+          </div>
         </Col>
       </Row>
       <Row className="holdersignup--row">
@@ -180,6 +186,13 @@ const HolderSignUp = () => {
           />
         </Col>
       </Row>
+      <Row>
+        <Col span={18} offset={6}>
+          <div className="validate--label">
+            비밀번호를 동일하게 다시 입력해주세요.
+          </div>
+        </Col>
+      </Row>
 
       <Row className="holdersignup--row">
         <Col span={6} style={{ display: "flex" }}>
@@ -215,9 +228,14 @@ const HolderSignUp = () => {
               borderLeft: "0",
               borderRight: "0",
             }}
-            placeholder="날짜를 선택해주세요."
+            placeholder=""
             onChange={changeDate}
           />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={18} offset={6}>
+          <div className="validate--label">날짜를 선택해주세요.</div>
         </Col>
       </Row>
 
@@ -230,12 +248,18 @@ const HolderSignUp = () => {
             mode="tags"
             style={{ width: "100%", borderBottom: "1px solid black" }}
             onChange={changeIssuerList}
-            placeholder="인증서를 발급 받을 기관을 선택해주세요."
           >
             {issuers.map((e, idx) => {
               return <Option key={e.title}>{e.title}</Option>;
             })}
           </Select>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={18} offset={6}>
+          <div className="validate--label">
+            인증서를 발급받을 기관을 한개이상 선택해주세요.
+          </div>
         </Col>
       </Row>
       <Row className="holdersignup--row">

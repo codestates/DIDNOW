@@ -1,7 +1,12 @@
 import logo from "../img/didnow.png";
 import { Link } from "react-router-dom";
 import { Row, Col, Avatar } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import {
+  BankOutlined,
+  SmileFilled,
+  UserOutlined,
+  WindowsFilled,
+} from "@ant-design/icons";
 import "./style/nav.css";
 import { useEffect } from "react";
 
@@ -15,8 +20,8 @@ const Nav = ({ type, setType, user, setUser }) => {
   useEffect(() => {});
 
   const handleClick = () => {
-    window.location.href = '/signin'
-  }
+    window.location.href = "/signin";
+  };
 
   return (
     <Row>
@@ -25,17 +30,36 @@ const Nav = ({ type, setType, user, setUser }) => {
           <img src={logo} alt="" style={{ height: "64px" }} />
         </Link>
       </Col>
-      <Col onClick={handleClick} span={5} offset={12} style={{ textAlign: "right", cursor : "pointer", fontWeight:700}}>
+      <Col
+        onClick={handleClick}
+        span={5}
+        offset={12}
+        style={{ textAlign: "right", cursor: "pointer", fontWeight: 700 }}
+      >
         <span className="ant-dropdown-link">
-          <Avatar>
-            <UserOutlined />
-          </Avatar>
+          {type === "" ? (
+            <Avatar>
+              <UserOutlined />
+            </Avatar>
+          ) : type === "holder" ? (
+            <Avatar style={{ backgroundColor: "green" }}>
+              <SmileFilled style={{ fontSize: "20px" }} />
+            </Avatar>
+          ) : type === "issuer" ? (
+            <Avatar style={{ backgroundColor: "black" }}>
+              <BankOutlined style={{ fontSize: "18px" }} />
+            </Avatar>
+          ) : (
+            <Avatar style={{ backgroundColor: "rgb(11,91,201)" }}>
+              <WindowsFilled style={{ fontSize: "20px" }} />
+            </Avatar>
+          )}
           <span style={{ margin: "0 0 0 5px" }}>
             {type === ""
               ? "Guest"
               : type === "holder"
-              ? user.username
-              : user.title}
+              ? user?.username
+              : user?.title}
           </span>
         </span>
       </Col>

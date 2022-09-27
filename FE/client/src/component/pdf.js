@@ -1,7 +1,7 @@
 import "./style/pdf.css";
 import logo from "../img/didnow-icon.png";
 
-const Pdf = ({ title, content, type, getDate, user }) => {
+const Pdf = ({ title, content, type, getDate, user, organization }) => {
   const changeFormat = (date) => {
     try {
       const yyyy = date.slice(0, 4);
@@ -26,8 +26,9 @@ const Pdf = ({ title, content, type, getDate, user }) => {
             )}`}</div>
           </div>
           <div className="pdf--content">
-            <div>{`내\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0용 : ${content}`}</div>
-            <div>{`타\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0입 : ${type}`}</div>
+            <div>{`내\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0용 : ${content}`}</div>
+            <div>{`타\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0입 : ${type}`}</div>
+            <div>{`기\u00A0 관\u00A0 명 : ${organization}`}</div>
             <div>{`인증일자 : ${changeFormat(getDate)}`}</div>
           </div>
           <div className="pdf--proof">위와 같은 사실을 증명합니다.</div>
