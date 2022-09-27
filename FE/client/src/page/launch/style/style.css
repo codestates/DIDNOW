@@ -64,3 +64,8 @@ canvas {
     50%{background-position:100% 53%}
     100%{background-position:0% 48%}
 }
+
+.landing-cards:hover{
+  transform: scale(1.1); /*  default */
+  transition: 0.2s;
+}

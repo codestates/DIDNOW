@@ -8,6 +8,7 @@
 }
 
 .vc:hover {
+  cursor : pointer;
   border: 2px solid transparent;
   background: linear-gradient(#fff, #fff) padding-box,
     linear-gradient(90deg, rgba(13, 108, 201, 1) 0%, rgba(22, 178, 166, 1) 100%)
