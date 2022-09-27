@@ -7,9 +7,7 @@ import axios from "axios";
 const { Option } = Select;
 
 const VerifierSignUp = () => {
-  useEffect(() => {
-    console.log(verifierInfo);
-  });
+  useEffect(() => {});
   useEffect(() => {}, []);
   const navigate = useNavigate();
   const requiredVerifyList = [
@@ -30,7 +28,29 @@ const VerifierSignUp = () => {
     setVerifierInfo(verifierInfo);
   };
   const validate = async () => {
-    if (isCorrect === true) {
+    if (verifierInfo.email === "") {
+      message.error("이메일을 입력해주세요.");
+    } else if (
+      !/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/.test(
+        verifierInfo.email
+      )
+    ) {
+      message.error("이메일을 주소 형식을 확인해주세요.");
+    } else if (verifierInfo.password === "") {
+      message.error("비밀번호를 입력해주세요.");
+    } else if (
+      !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(
+        verifierInfo.password
+      )
+    ) {
+      message.error("비밀번호를 형식에 맞춰 정확히 입력해주세요.");
+    } else if (!isCorrect) {
+      message.error("비밀번호 확인이 일치하지 않습니다");
+    } else if (!/^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9| |]+$/.test(verifierInfo.title)) {
+      message.error("기관명을 정확히 입력해주세요.");
+    } else if (verifierInfo.verifyList.length < 1) {
+      message.error("1개 이상의 인증 요구사항을 선택해주세요.");
+    } else {
       let res = await axios({
         url: `${process.env.REACT_APP_AUTH}/aut/api/v1/register-verifier`,
         method: "POST",
@@ -44,7 +64,7 @@ const VerifierSignUp = () => {
       });
 
       if (res.status === 200) {
-        message.info(res.data);
+        message.success(res.data);
         navigate("/home");
       }
     }
@@ -127,7 +147,7 @@ const VerifierSignUp = () => {
       </Row>
       <Row className="verifiersignup--row">
         <Col span={6}>
-          <span className="signup--label">필수 요구사항</span>
+          <span className="signup--label">필수 인증내용</span>
         </Col>
         <Col span={18}>
           <Select

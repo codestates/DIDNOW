@@ -37,26 +37,32 @@ const HolderSignUp = () => {
   };
   const [modalOpen, setModalOpen] = useState(false);
   const validate = () => {
-    if (!isCorrect) {
-      message.error("비밀번호 확인이 일치하지 않습니다");
-    } else if (
-      !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(
-        userInfo.password
-      )
-    ) {
-      message.error("비밀번호를 형식에 맞춰 정확히 입력해주세요.");
+    if (userInfo.email === "") {
+      message.error("이메일을 입력해주세요.");
     } else if (
       !/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/.test(
         userInfo.email
       )
     ) {
       message.error("이메일을 주소 형식을 확인해주세요.");
+    } else if (userInfo.password === "") {
+      message.error("비밀번호를 입력해주세요.");
+    } else if (
+      !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(
+        userInfo.password
+      )
+    ) {
+      message.error("비밀번호를 형식에 맞춰 정확히 입력해주세요.");
+    } else if (!isCorrect) {
+      message.error("비밀번호 확인이 일치하지 않습니다");
     } else if (!/^[ㄱ-ㅎ|가-힣|a-z|A-Z|]+$/.test(userInfo.username)) {
       message.error("이름을 정확히 입력해주세요.");
+    } else if (userInfo.birth === "" || userInfo.birth === null) {
+      message.error("생년월일을 선택해주세요.");
     } else if (userInfo.IssuerList.length < 1) {
       message.error("1개 이상의 기관을 선택해주세요.");
-    } else if (userInfo.birth === "" || userInfo.birth === null) {
-      message.error("생년월일을 입력해주세요.");
+    } else if (myAddress === "") {
+      message.error("KLIP 지갑을 연동해주세요.");
     } else {
       axios({
         url: `${process.env.REACT_APP_AUTH}/aut/api/v1/register-holder`,
@@ -71,7 +77,7 @@ const HolderSignUp = () => {
         withCredentials: true,
       })
         .then((data) => {
-          message.info("회원 가입 완료.");
+          message.success("회원 가입 완료.");
           navigate("/home");
         })
         .catch((error) => {

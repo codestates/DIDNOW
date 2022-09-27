@@ -1,4 +1,4 @@
-import { Breadcrumb, Row, Col, message, Select } from "antd";
+import { Breadcrumb, Row, Col, message, Select, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -12,6 +12,7 @@ const Mypage = ({ type }) => {
   const [pageTitle, setPageTitle] = useState("");
   const [requiredVC, setRequiredVC] = useState([]);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   const requiredVCList = ["이름", "이메일", "생년월일", "전화번호", "주소"];
   const requiredVerifyList = [
     "졸업증명서",
@@ -47,8 +48,11 @@ const Mypage = ({ type }) => {
           ...data.data.user,
           password: "",
         });
+        setIsLoading(false);
       })
-      .catch(() => {});
+      .catch(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   const onchange = (e) => {
@@ -108,6 +112,8 @@ const Mypage = ({ type }) => {
         message.error("기관명은 한글, 영어, 숫자로만 입력해주세요.");
       } else if (user.title.length < 1 || user.title.length > 20) {
         message.error("기관명은 1글자이상 20글자 이하로 해주세요.");
+      } else if (requiredVC.length < 1) {
+        message.error("필수 요구사항을 한가지 이상 선택해주세요.");
       } else {
         axios({
           url: `${process.env.REACT_APP_ISSUER}/${type.slice(
@@ -130,7 +136,6 @@ const Mypage = ({ type }) => {
       if (!userTitleRegex.test(user.title)) {
         message.error("기관명은 한글, 영어, 숫자로만 입력해주세요.");
       } else if (user.title.length < 1 || user.title.length > 20) {
-        console.log(user.title);
         message.error("기관명은 1글자이상 20글자 이하로 해주세요.");
       } else {
         axios({
@@ -204,7 +209,9 @@ const Mypage = ({ type }) => {
         style={{ width: "100%", borderRadius: "5px" }}
         mode="tags"
         defaultValue={requiredVC}
-        onChange={setRequiredVC}
+        onChange={(e) => {
+          return setRequiredVC(e);
+        }}
         value={requiredVC}
       >
         {requiredVCList.map((e) => {
@@ -291,54 +298,56 @@ const Mypage = ({ type }) => {
       <div className="mypage--description">{type}의 정보를 수정합니다.</div>
 
       <div className="mypage--form">
-        <Row className="mypage--row">
-          <Col span={20} offset={2}>
-            <Row>
-              <Col span={12} offset={6}>
-                <div className="mypage--title">
-                  {pageTitle}
-                  정보 수정
-                </div>
-                <hr />
-                {type === ""
-                  ? ""
-                  : type === "holder"
-                  ? holderDOM.map((e, idx) => {
-                      return (
-                        <Row className="mypage--row" key={idx}>
-                          {e}
-                        </Row>
-                      );
-                    })
-                  : type === "issuer"
-                  ? issuerDOM.map((e, idx) => {
-                      return (
-                        <Row className="mypage--row" key={idx}>
-                          {e}
-                        </Row>
-                      );
-                    })
-                  : type === "verifier"
-                  ? verifierDOM.map((e, idx) => {
-                      return (
-                        <Row className="mypage--row" key={idx}>
-                          {e}
-                        </Row>
-                      );
-                    })
-                  : ""}
-                <hr style={{ margin: "30px 0 " }} />
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={6} offset={9}>
-            <button className="mypage--submit" onClick={updateInfo}>
-              정보 수정
-            </button>
-          </Col>
-        </Row>
+        <Spin spinning={isLoading} tip="로딩중..." size="large">
+          <Row className="mypage--row">
+            <Col span={20} offset={2}>
+              <Row>
+                <Col span={12} offset={6}>
+                  <div className="mypage--title">
+                    {pageTitle}
+                    정보 수정
+                  </div>
+                  <hr />
+                  {type === ""
+                    ? ""
+                    : type === "holder"
+                    ? holderDOM.map((e, idx) => {
+                        return (
+                          <Row className="mypage--row" key={idx}>
+                            {e}
+                          </Row>
+                        );
+                      })
+                    : type === "issuer"
+                    ? issuerDOM.map((e, idx) => {
+                        return (
+                          <Row className="mypage--row" key={idx}>
+                            {e}
+                          </Row>
+                        );
+                      })
+                    : type === "verifier"
+                    ? verifierDOM.map((e, idx) => {
+                        return (
+                          <Row className="mypage--row" key={idx}>
+                            {e}
+                          </Row>
+                        );
+                      })
+                    : ""}
+                  <hr style={{ margin: "30px 0 " }} />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} offset={9}>
+              <button className="mypage--submit" onClick={updateInfo}>
+                정보 수정
+              </button>
+            </Col>
+          </Row>
+        </Spin>
       </div>
     </div>
   );
