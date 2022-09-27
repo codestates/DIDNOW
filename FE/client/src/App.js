@@ -49,7 +49,7 @@ function App() {
       withCredentials: true,
     })
       .then((data) => {
-        setType(data.data.type);
+        setType(data.data.type || "");
         setUser(data.data.user);
         setIsLoading(false);
       })

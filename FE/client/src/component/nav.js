@@ -34,8 +34,8 @@ const Nav = ({ type, setType, user, setUser }) => {
             {type === ""
               ? "Guest"
               : type === "holder"
-              ? user.username
-              : user.title}
+              ? user?.username
+              : user?.title}
           </span>
         </span>
       </Col>
