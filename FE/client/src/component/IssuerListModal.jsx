@@ -16,9 +16,7 @@ export default function IssuerListModal({ isSelect, setIsSelect, issuer }) {
         VC_title: title,
       },
       withCredentials: true,
-    }).then((result) => {
-      console.log(result);
-    });
+    }).then((result) => {});
   };
 
   return (

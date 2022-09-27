@@ -31,7 +31,31 @@ const IssuerSignUp = () => {
     setIssuerInfo(issuerInfo);
   };
   const validate = async () => {
-    if (isCorrect === true) {
+    if (issuerInfo.email === "") {
+      message.error("이메일을 입력해주세요.");
+    } else if (
+      !/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/.test(
+        issuerInfo.email
+      )
+    ) {
+      message.error("이메일을 주소 형식을 확인해주세요.");
+    } else if (issuerInfo.password === "") {
+      message.error("비밀번호를 입력해주세요.");
+    } else if (
+      !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(
+        issuerInfo.password
+      )
+    ) {
+      message.error("비밀번호를 형식에 맞춰 정확히 입력해주세요.");
+    } else if (!isCorrect) {
+      message.error("비밀번호 확인이 일치하지 않습니다");
+    } else if (!/^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9| |]+$/.test(issuerInfo.title)) {
+      message.error("기관명을 정확히 입력해주세요.");
+    } else if (issuerInfo.requiredVC.length < 1) {
+      message.error("1개 이상의 요구사항을 선택해주세요.");
+    } else if (myAddress === "") {
+      message.error("KLIP 지갑을 연동해주세요.");
+    } else {
       let res = await axios({
         url: `${process.env.REACT_APP_AUTH}/aut/api/v1/register-issuer`,
         method: "POST",
@@ -167,7 +191,7 @@ const IssuerSignUp = () => {
             type="text"
             onChange={onchange}
             id="desc"
-            placeholder="비전공자도 개발이 될 수 있습니다."
+            placeholder="선택사항"
           />
         </Col>
       </Row>

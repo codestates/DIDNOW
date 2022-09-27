@@ -40,7 +40,6 @@ export const getAddress = (setQrvalue, callback) => {
           )
           .then((res) => {
             if (res.data.result) {
-              console.log(`[Result] ${JSON.stringify(res.data.result)}`);
               callback(res.data.result.klaytn_address);
               clearInterval(timerId);
               setQrvalue("DEFAULT");

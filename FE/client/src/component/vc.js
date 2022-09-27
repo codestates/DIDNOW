@@ -1,6 +1,6 @@
 import "./style/vc.css";
 import logo from "../img/didnow-icon.png";
-import { Row, Col, Tooltip } from "antd";
+import { Row, Col, Tooltip, message } from "antd";
 import {
   SafetyOutlined,
   FilePdfOutlined,
@@ -9,8 +9,18 @@ import {
 import { useEffect, useState, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import Pdf from "../component/pdf";
+import axios from "axios";
 
-const Vc = ({ issuers, data, selectedHandle, idx, user }) => {
+const Vc = ({
+  issuers,
+  data,
+  selectedHandle,
+  idx,
+  user,
+  setVcList,
+  vcList,
+  setSelected,
+}) => {
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -21,7 +31,9 @@ const Vc = ({ issuers, data, selectedHandle, idx, user }) => {
     content: "",
     type: "",
     date: "",
+    _id: "",
   });
+  useEffect(() => {});
   useEffect(() => {
     setVc(() => {
       return {
@@ -39,12 +51,36 @@ const Vc = ({ issuers, data, selectedHandle, idx, user }) => {
             Object.keys(data.originalVC[0].vc.credentialSubject)[0]
           ].type || "",
         date: data.createdAt.slice(0, 10) || "",
+        _id: data._id || "",
       };
     });
   }, [data, issuers, vc.createdAt, vc.originalVC]);
-
+  const deleteVC = (e) => {
+    axios({
+      url: `${process.env.REACT_APP_HOLDER}/hol/api/v1/verify/vc-list/${e.currentTarget.id}`,
+      method: "DELETE",
+      withCredentials: true,
+    })
+      .then((data) => {
+        message.success("삭제 성공");
+      })
+      .catch(() => {
+        message.error("삭제 도중 문제가 발생했습니다.");
+      });
+    setVcList([
+      ...vcList.filter((el, i) => {
+        return i.toString() !== e.currentTarget.getAttribute("name");
+      }),
+    ]);
+    setSelected([]);
+  };
   return (
-    <div className="vc" onClick={(e) => selectedHandle(e)} id={idx}>
+    <div className="vc">
+      <div
+        className="vc--invisible"
+        onClick={(e) => selectedHandle(e)}
+        id={idx}
+      ></div>
       <article>
         {data.status === 1 ? (
           <div className="vc--check font--blue">
@@ -97,7 +133,7 @@ const Vc = ({ issuers, data, selectedHandle, idx, user }) => {
             </Col>
             <Tooltip placement="top" title={"삭제하기"}>
               <Col span={12}>
-                <StopOutlined />
+                <StopOutlined name={idx} id={vc._id} onClick={deleteVC} />
               </Col>
             </Tooltip>
           </Row>
