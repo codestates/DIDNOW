@@ -21,6 +21,7 @@ const IssuerSignUp = () => {
     email: "",
     password: "",
     title: "",
+    registNumber: "",
     requiredVC: "",
     desc: "",
     walletAddress: "",
@@ -51,6 +52,8 @@ const IssuerSignUp = () => {
       message.error("비밀번호 확인이 일치하지 않습니다");
     } else if (!/^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9| |]+$/.test(issuerInfo.title)) {
       message.error("기관명을 정확히 입력해주세요.");
+    } else if (issuerInfo.registNumber === "") {
+      message.error("사업자 등록번호를 입력해주세요.");
     } else if (issuerInfo.requiredVC.length < 1) {
       message.error("1개 이상의 요구사항을 선택해주세요.");
     } else if (myAddress === "") {
@@ -111,8 +114,14 @@ const IssuerSignUp = () => {
             type="text"
             onChange={onchange}
             id="email"
-            placeholder="issuer@naver.com"
           />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={18} offset={6}>
+          <div className="validate--label">
+            이메일 형식으로 입력해주세요. ex{")"}abc123@didnow.com
+          </div>
         </Col>
       </Row>
       <Row className="issuersignup--row">
@@ -126,6 +135,13 @@ const IssuerSignUp = () => {
             onChange={onchange}
             id="password"
           />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={18} offset={6}>
+          <div className="validate--label">
+            8-20글자의 영어, 숫자, 특수문자 {"(~!@#$%^&*+)"}를 사용하여야합니다.
+          </div>
         </Col>
       </Row>
       <Row className="issuersignup--row">
@@ -144,6 +160,13 @@ const IssuerSignUp = () => {
           />
         </Col>
       </Row>
+      <Row>
+        <Col span={18} offset={6}>
+          <div className="validate--label">
+            비밀번호를 동일하게 다시 입력해주세요.
+          </div>
+        </Col>
+      </Row>
       <Row className="issuersignup--row">
         <Col span={6} className="signup--col">
           기관명
@@ -154,8 +177,32 @@ const IssuerSignUp = () => {
             type="text"
             onChange={onchange}
             id="title"
-            placeholder="코드스테이츠"
           />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={18} offset={6}>
+          <div className="validate--label">
+            한글 ,영어, 숫자를 사용해주세요.
+          </div>
+        </Col>
+      </Row>
+      <Row className="issuersignup--row">
+        <Col span={6} className="signup--col">
+          사업자 등록번호
+        </Col>
+        <Col span={18}>
+          <input
+            className="issuersignup--input"
+            type="text"
+            onChange={onchange}
+            id="registNumber"
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={18} offset={6}>
+          <div className="validate--label">사업자 등록번호를 입력해주세요.</div>
         </Col>
       </Row>
       <Row className="issuersignup--row">
@@ -172,13 +219,19 @@ const IssuerSignUp = () => {
               borderRight: "0",
               borderBottom: "1px solid black",
             }}
-            placeholder="필수적으로 제공 받아야할 정보"
             onChange={changeRequiredVC}
           >
             {requiredVCList.map((e, idx) => {
               return <Option key={e}>{e}</Option>;
             })}
           </Select>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={18} offset={6}>
+          <div className="validate--label">
+            필수적으로 제공 받아야할 정보를 선택해주세요.
+          </div>
         </Col>
       </Row>
       <Row className="issuersignup--row">
@@ -191,8 +244,12 @@ const IssuerSignUp = () => {
             type="text"
             onChange={onchange}
             id="desc"
-            placeholder="선택사항"
           />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={18} offset={6}>
+          <div className="validate--label">기관을 소개해주세요.</div>
         </Col>
       </Row>
       <Row className="holdersignup--row">

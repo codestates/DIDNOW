@@ -31,7 +31,7 @@ const VerifierVPList = () => {
           withCredentials: true,
         })
           .then((data) => {
-            setVpList(data.data);
+            setVpList(data.data.reverse());
             setIsLoading(false);
           })
           .catch(() => {});
@@ -42,7 +42,9 @@ const VerifierVPList = () => {
       });
   }, [navigate]);
   // // re-render
-  useEffect(() => {});
+  useEffect(() => {
+    console.log(vpList);
+  });
 
   const verifyVP = (e) => {
     setIsLoading(true);
@@ -52,9 +54,17 @@ const VerifierVPList = () => {
       withCredentials: true,
     })
       .then((result) => {
-        result.status === 200 && message.success("인증에 성공했습니다");
-        vpList[e.target.name].status = "success";
-        setVpList([...vpList]);
+        console.log(result);
+        if (result.data === "success") {
+          message.success("인증에 성공했습니다.");
+          vpList[e.target.name].status = "success";
+          setVpList([...vpList]);
+        } else {
+          message.error("인증에 실패했습니다.");
+          vpList[e.target.name].status = "failed";
+          setVpList([...vpList]);
+          setIsLoading(false);
+        }
         setIsLoading(false);
       })
       .catch((error) => {
@@ -104,55 +114,59 @@ const VerifierVPList = () => {
                   <span className="holderissuerlist--columns">상태</span>
                 </Col>
               </Row>
-              {vpList.map((e, idx) => {
-                return (
-                  <Row className="issuerlist--row" key={idx}>
-                    <Col span={2}>
-                      <span style={{ margin: "0 0 0 10px" }}>{idx + 1}</span>
-                    </Col>
-                    <Col span={4}>
-                      {
-                        e.originalVP[0].vp.verifiableCredential[0].vc
-                          .credentialSubject[
-                          Object.keys(
-                            e.originalVP[0].vp.verifiableCredential[0].vc
-                              .credentialSubject
-                          )[0]
-                        ].userName
-                      }
-                    </Col>
-                    <Col span={4}>
-                      {
-                        e.originalVP[0].vp.verifiableCredential[0].vc
-                          .credentialSubject[
-                          Object.keys(
-                            e.originalVP[0].vp.verifiableCredential[0].vc
-                              .credentialSubject
-                          )[0]
-                        ].name
-                      }
-                    </Col>
-                    <Col span={7}>{e._id}</Col>
-                    <Col span={5}>{e.updatedAt.slice(0, 10)}</Col>
-                    <Col span={2}>
-                      {e.status === "status" ? (
-                        <button
-                          className="verifiervplist--pending"
-                          onClick={verifyVP}
-                          id={e._id}
-                          name={idx}
-                        >
-                          검증하기
-                        </button>
-                      ) : e.status === "success" ? (
-                        <div className="verifiervplist--success">success</div>
-                      ) : (
-                        <div className="verifiervplist--failed">failed</div>
-                      )}
-                    </Col>
-                  </Row>
-                );
-              })}
+              {vpList
+                .filter((e, idx) => {
+                  return idx < page * 10 && idx >= (page - 1) * 10;
+                })
+                .map((e, idx) => {
+                  return (
+                    <Row className="issuerlist--row" key={idx}>
+                      <Col span={2}>
+                        <span style={{ margin: "0 0 0 10px" }}>{idx + 1}</span>
+                      </Col>
+                      <Col span={4}>
+                        {
+                          e.originalVP[0].vp.verifiableCredential[0].vc
+                            .credentialSubject[
+                            Object.keys(
+                              e.originalVP[0].vp.verifiableCredential[0].vc
+                                .credentialSubject
+                            )[0]
+                          ].userName
+                        }
+                      </Col>
+                      <Col span={4}>
+                        {
+                          e.originalVP[0].vp.verifiableCredential[0].vc
+                            .credentialSubject[
+                            Object.keys(
+                              e.originalVP[0].vp.verifiableCredential[0].vc
+                                .credentialSubject
+                            )[0]
+                          ].name
+                        }
+                      </Col>
+                      <Col span={7}>{e._id}</Col>
+                      <Col span={5}>{e.updatedAt.slice(0, 10)}</Col>
+                      <Col span={2}>
+                        {e.status === "status" ? (
+                          <button
+                            className="verifiervplist--pending"
+                            onClick={verifyVP}
+                            id={e._id}
+                            name={idx}
+                          >
+                            검증하기
+                          </button>
+                        ) : e.status === "success" ? (
+                          <div className="verifiervplist--success">success</div>
+                        ) : (
+                          <div className="verifiervplist--failed">failed</div>
+                        )}
+                      </Col>
+                    </Row>
+                  );
+                })}
 
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <Pagination

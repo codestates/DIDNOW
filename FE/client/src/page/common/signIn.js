@@ -45,6 +45,7 @@ const SignIn = ({ type, setType, setUser }) => {
       message.error("비밀번호를 입력해주세요.");
     } else {
       // login
+      setIsLoading(true);
       axios({
         url: `${process.env.REACT_APP_AUTH}/aut/api/v1/login-${way}`,
         method: "POST",
@@ -74,13 +75,16 @@ const SignIn = ({ type, setType, setUser }) => {
               setType(userObj.data.type);
               navigate("/home");
               messageInfo("로그인 성공!");
+              setIsLoading(false);
             })
             .catch(() => {
               messageError("로그인 실패!!");
+              setIsLoading(false);
             });
         })
         .catch(() => {
           message.error("가입정보가 틀립니다.");
+          setIsLoading(false);
         });
     }
   };

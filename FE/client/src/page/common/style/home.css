@@ -1,8 +1,8 @@
 .home {
   padding: 10%;
-  margin: 0 0 20vh 0;
-  height: 100vh;
+  height: calc(100vh - 174px);
 }
+
 .home ul,
 .home li {
   list-style: none;

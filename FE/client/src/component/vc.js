@@ -147,6 +147,7 @@ const Vc = ({
             type={vc.type}
             getDate={vc.date}
             user={user}
+            organization={vc.organization}
           />
         </div>
       </div>
