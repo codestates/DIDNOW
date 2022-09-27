@@ -6,10 +6,10 @@ import Three from "./components/three";
 import RegisterEmail from "./components/RegisterEmail";
 import "./style/style.css";
 
-const Launch = ({ setIsLanding }) => {
+const Launch = () => {
   return (
     <div className="black">
-      <Three setLanding={setIsLanding} />
+      <Three />
       <Cards />
       <RegisterEmail />
       <Analytics />

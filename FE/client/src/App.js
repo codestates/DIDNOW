@@ -25,10 +25,12 @@ import IssuerManage from "./page/issuer/issuerManage";
 import IssuerIssue from "./page/issuer/issuerIssue";
 import IssuerListModal from "./component/IssuerListModal";
 import IssuerUserList from "./page/issuer/issuerUserList";
+import IssuerChart from "./page/chart/issuerChart";
 
 // verifier
 import Verifiers from "./page/verifier/verifiers";
 import VerifierVPList from "./page/verifier/verifierVPList";
+import VerifierChart from "./page/chart/verifierChart";
 
 // launch page
 import Launch from "./page/launch/launch";
@@ -113,6 +115,7 @@ function App() {
                   element={<IssuerIssue user={user} type={type} />}
                 />
                 <Route path="userlist" element={<IssuerUserList />} />
+                <Route path="chart" element={<IssuerChart />} />
                 {/* Not Found */}
                 <Route path={"*"} element={<div>not found</div>} />
                 <Route path="" element={<div>not found</div>} />
@@ -120,6 +123,7 @@ function App() {
 
               {/* verifier Route */}
               <Route path="verifier">
+                <Route path="chart" element={<VerifierChart />} />
                 <Route path="vplist" element={<VerifierVPList />} />
               </Route>
             </Routes>
