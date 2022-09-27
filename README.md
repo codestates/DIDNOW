@@ -46,15 +46,15 @@
 |                            Icon                             |  Stack  | Description |
 | :---------------------------------------------------------: | :-----: | ----------- |
 | <img src = "./Doc/img/stackIcon/nodejs.png" height = 25px>  | NODEJS  |             |
-| <img src = "./Doc/img/stackIcon/mongodb.png" height = 25px> | MONGODB |             |
+| <img src = "./Doc/img/stackIcon/mongoDB.png" height = 25px> | MONGODB |             |
 |  <img src = "./Doc/img/stackIcon/nginx.png" height = 27px>  |  NGINX  |             |
 
 ### Smart Contract
 
 |                             Icon                             |  Stack   | Description |
 | :----------------------------------------------------------: | :------: | ----------- |
-| <img src = "./Doc/img/stackIcon/solidity.png" height = 25px> | SOLIDITY |             |
-| <img src = "./Doc/img/stackIcon/truffle.png" height = 25px>  | TRUFFLE  |             |
+| <img src = "./Doc/img/stackIcon/Solidity.png" height = 25px> | SOLIDITY |             |
+| <img src = "./Doc/img/stackIcon/Truffle.png" height = 25px>  | TRUFFLE  |             |
 |  <img src = "./Doc/img/stackIcon/klaytn.png" height = 25px>  |  KLAYTN  |             |
 |   <img src = "./Doc/img/stackIcon/klip.png" height = 25px>   |   KLIP   |             |
 | <img src = "./Doc/img/stackIcon/ganache.png" height = 25px>  | GANACHE  |             |
