@@ -3,6 +3,7 @@ import Analytics from "./components/Analytics";
 import Cards from "./components/Cards";
 import Three from "./components/three";
 import RegisterEmail from "./components/RegisterEmail";
+import Footer from './components/Footer'
 import "./style/style.css";
 
 const Launch = ({ setIsLanding }) => {
@@ -24,6 +25,7 @@ const Launch = ({ setIsLanding }) => {
         <div style={{position:"absolute", top : "-40px"}}>Power of DIDNOW</div>
       </div>
       <Analytics />
+      <Footer />
     </div>
   );
 };
