@@ -30,6 +30,7 @@ import VerifierVPList from "./page/verifier/verifierVPList";
 
 // launch page
 import Launch from "./page/launch/launch";
+import HolderVPList from "page/holder/holderVpList";
 
 // config
 const { Header, Content, Footer, Sider } = Layout;
@@ -121,6 +122,7 @@ function App() {
                     path="modal"
                     element={<IssuerListModal user={user} />}
                   />
+                  <Route path="vplist" element={<HolderVPList />} />
                   {/* Not Found */}
                   <Route path={"*"} element={<NotFound />} />
                   <Route path="" element={<NotFound />} />
