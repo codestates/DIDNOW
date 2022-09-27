@@ -43,11 +43,14 @@
 
 ### BackEnd
 
-|                            Icon                             |  Stack  | Description |
-| :---------------------------------------------------------: | :-----: | ----------- |
-| <img src = "./Doc/img/stackIcon/nodejs.png" height = 25px>  | NODEJS  |             |
-| <img src = "./Doc/img/stackIcon/mongoDB.png" height = 25px> | MONGODB |             |
-|  <img src = "./Doc/img/stackIcon/nginx.png" height = 27px>  |  NGINX  |             |
+|                             Icon                              |   Stack   | Description |
+| :-----------------------------------------------------------: | :-------: | ----------- |
+|  <img src = "./Doc/img/stackIcon/nodejs.png" height = 25px>   |  NODEJS   |             |
+|  <img src = "./Doc/img/stackIcon/mongoDB.png" height = 25px>  |  MONGODB  |             |
+|   <img src = "./Doc/img/stackIcon/nginx.png" height = 27px>   |   NGINX   |             |
+| <img src = "./Doc/img/stackIcon/artillery.png" height = 27px> | ARTILLERY |             |
+|   <img src = "./Doc/img/stackIcon/mocha.png" height = 27px>   |   MOCHA   |             |
+|   <img src = "./Doc/img/stackIcon/chai.png" height = 27px>    |   CHAI    |             |
 
 ### Smart Contract
 
@@ -61,12 +64,13 @@
 
 ### Deploy
 
-|                            Icon                             |        Stack        | Description |
-| :---------------------------------------------------------: | :-----------------: | ----------- |
-| <img src = "./Doc/img/stackIcon/docker.png" height = 25px>  |       DOCKER        |             |
-|   <img src = "./Doc/img/stackIcon/ec2.png" height = 30px>   |         EC2         |             |
-| <img src = "./Doc/img/stackIcon/route53.png" height = 30px> |      ROUTE 53       |             |
-|   <img src = "./Doc/img/stackIcon/acm.png" height = 30px>   | CERTIFICATE MANAGER |             |
+|                               Icon                                |        Stack        | Description |
+| :---------------------------------------------------------------: | :-----------------: | ----------- |
+|    <img src = "./Doc/img/stackIcon/docker.png" height = 25px>     |       DOCKER        |             |
+|      <img src = "./Doc/img/stackIcon/ec2.png" height = 30px>      |         EC2         |             |
+|    <img src = "./Doc/img/stackIcon/route53.png" height = 30px>    |      ROUTE 53       |             |
+|      <img src = "./Doc/img/stackIcon/acm.png" height = 30px>      | CERTIFICATE MANAGER |             |
+| <img src = "./Doc/img/stackIcon/githubactions.png" height = 25px> |   GITHUB ACTIONS    |             |
 
 ## :construction:Architecture
 
