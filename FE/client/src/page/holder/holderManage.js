@@ -92,28 +92,31 @@ const HolderManage = () => {
       const arr = vcList
         .filter((e, idx) => idx in selected)
         .map((e, i) => e._id);
-      axios({
-        url: `${process.env.REACT_APP_HOLDER}/hol/api/v1/verify/request-auth/${verifier}`,
-        method: "POST",
-        data: {
-          password: password,
-          vc_list: [...arr],
-        },
-        withCredentials: true,
-      })
-        .then((data) => {
-          setVerifier({});
-          setPassword("");
-          setSubmitLoading(false);
-          setModalOpen(false);
-          message.success("인증서 제출 성공.");
+
+      arr.map((el, i) => {
+        return axios({
+          url: `${process.env.REACT_APP_HOLDER}/hol/api/v1/verify/request-auth/${verifier}`,
+          method: "POST",
+          data: {
+            password: password,
+            vc_list: el,
+          },
+          withCredentials: true,
         })
-        .catch((error) => {
-          if (error.response.data.status === 400) {
-            message.error("비밀번호를 틀렸습니다.");
+          .then((data) => {
+            setVerifier({});
+            setPassword("");
             setSubmitLoading(false);
-          }
-        });
+            setModalOpen(false);
+            message.success("인증서 제출 성공.");
+          })
+          .catch((error) => {
+            if (error.response.data.status === 400) {
+              message.error("비밀번호를 틀렸습니다.");
+              setSubmitLoading(false);
+            }
+          });
+      });
     }
   };
 

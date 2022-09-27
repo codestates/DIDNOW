@@ -96,8 +96,14 @@ const VerifierSignUp = () => {
             type="text"
             onChange={onchange}
             id="email"
-            placeholder="verifier@didnow.com"
           />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={18} offset={6}>
+          <div className="validate--label">
+            이메일 형식으로 입력해주세요. ex{")"}abc123@didnow.com
+          </div>
         </Col>
       </Row>
 
@@ -112,6 +118,13 @@ const VerifierSignUp = () => {
             onChange={onchange}
             id="password"
           />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={18} offset={6}>
+          <div className="validate--label">
+            8-20글자의 영어, 숫자, 특수문자 {"(~!@#$%^&*+)"}를 사용하여야합니다.
+          </div>
         </Col>
       </Row>
 
@@ -131,6 +144,13 @@ const VerifierSignUp = () => {
           />
         </Col>
       </Row>
+      <Row>
+        <Col span={18} offset={6}>
+          <div className="validate--label">
+            비밀번호를 동일하게 다시 입력해주세요.
+          </div>
+        </Col>
+      </Row>
       <Row className="verifiersignup--row">
         <Col span={6}>
           <span className="signup--label">기관명</span>
@@ -141,8 +161,13 @@ const VerifierSignUp = () => {
             type="text"
             onChange={onchange}
             id="title"
-            placeholder="DIDNOW"
           />
+        </Col>
+      </Row>
+
+      <Row>
+        <Col span={18} offset={6}>
+          <div className="validate--label">한글, 영어를 사용해주세요.</div>
         </Col>
       </Row>
       <Row className="verifiersignup--row">
@@ -159,13 +184,19 @@ const VerifierSignUp = () => {
               borderRight: "0",
               borderBottom: "1px solid black",
             }}
-            placeholder="필요한 인증 사항"
             onChange={changeRequiredVC}
           >
             {requiredVerifyList.map((e, idx) => {
               return <Option key={e}>{e}</Option>;
             })}
           </Select>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={18} offset={6}>
+          <div className="validate--label">
+            필요한 인증사항을 한개 이상 선택해주세요.
+          </div>
         </Col>
       </Row>
       <Row className="verifiersignup--row">

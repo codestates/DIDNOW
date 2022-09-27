@@ -36,7 +36,7 @@ const SignUp = ({ user }) => {
     <div className="signup">
       <div className="signup--form">
         <Row style={{ height: "inherit" }}>
-          <Col span={12} offset={7}>
+          <Col span={16} offset={6}>
             <div className="signup--right">
               <div className="signup--canvas">
                 {/* first choice holder or company(issuer or verifier) */}

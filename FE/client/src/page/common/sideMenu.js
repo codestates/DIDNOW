@@ -5,6 +5,7 @@ import {
   HomeOutlined,
   LoginOutlined,
   LogoutOutlined,
+  SafetyOutlined,
   SettingOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
@@ -71,7 +72,7 @@ const SideMenu = ({ type, logout }) => {
     {
       label: (
         <Link to="/holder/issuerlist" className="sider--link">
-          <FileDoneOutlined />
+          <SafetyOutlined />
           {`\u00A0 인증서 발급`}
         </Link>
       ),
@@ -85,6 +86,15 @@ const SideMenu = ({ type, logout }) => {
         </Link>
       ),
       key: "holdermanage",
+    },
+    {
+      label: (
+        <Link to="/holder/vplist" className="sider--link">
+          <FileDoneOutlined />
+          {`\u00A0 제출한 인증서`}
+        </Link>
+      ),
+      key: "holdervplist",
     },
   ];
   const issuerItems = [
@@ -129,7 +139,9 @@ const SideMenu = ({ type, logout }) => {
       : type === "verifier"
       ? [...homeItem, ...verifierItems, ...commonItems]
       : "";
-  return <Menu style={{ height: "100%" }} items={items} />;
+  return (
+    <Menu style={{ height: "100%", padding: "20% 0 0 0" }} items={items} />
+  );
 };
 
 export default SideMenu;
