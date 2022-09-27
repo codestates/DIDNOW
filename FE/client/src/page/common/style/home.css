@@ -1,5 +1,5 @@
 .home {
-  padding: 10%;
+  padding: 5% 10%;
   height: calc(100vh - 174px);
 }
 
@@ -7,13 +7,12 @@
 .home li {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
 .main--title {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 900;
-  margin: 0 0 10px 0;
+  margin: 0 0 30px 0;
 }
 
 .main--sub--title {

@@ -50,8 +50,8 @@ function App() {
       withCredentials: true,
     })
       .then((data) => {
-        setType(data.data.type);
-        setUser(data.data.user);
+        setType(data.data.type || "");
+        setUser(data.data.user || {});
         setIsLoading(false);
       })
       .catch(() => {
@@ -101,7 +101,10 @@ function App() {
                 {/* common Route */}
                 <Route path="/">
                   <Route path="" element={<Launch />} />
-                  <Route path="home" element={<Home isLoading={isLoading} />} />
+                  <Route
+                    path="home"
+                    element={<Home isLoading={isLoading} type={type} />}
+                  />
                   <Route
                     path="signin"
                     element={

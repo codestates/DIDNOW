@@ -63,11 +63,11 @@ const FooterBar = () => {
       </Col>
       <Col span={4}>
         <div className="footer--subtitle">TERMS</div>
-        <div className="footer--menu">NOT YET</div>
       </Col>
       <Col span={4}>
         <div className="footer--subtitle">SERVICE</div>
-        <div className="footer--menu">NOT YET</div>
+        <div className="footer--menu">APIs</div>
+        <div className="footer--menu">DATA</div>
       </Col>
       <Col span={4}></Col>
       <Col span={4}>
