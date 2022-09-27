@@ -34,7 +34,9 @@ const Pdf = ({ title, content, type, getDate, user }) => {
           </div>
           <div className="pdf--proof">위와 같은 사실을 증명합니다.</div>
           <div className="pdf--date">
-            {`${new Date().getFullYear()} 년 ${new Date().getMonth()} 월 ${new Date().getDate()} 일`}
+            {`${new Date().getFullYear()} 년 ${
+              new Date().getMonth() + 1
+            } 월 ${new Date().getDate()} 일`}
           </div>
           <div className="pdf--company">{"D I D N O W"}</div>
         </div>

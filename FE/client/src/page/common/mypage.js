@@ -13,6 +13,12 @@ const Mypage = ({ type }) => {
   const [requiredVC, setRequiredVC] = useState([]);
   const navigate = useNavigate();
   const requiredVCList = ["이름", "이메일", "생년월일", "전화번호", "주소"];
+  const requiredVerifyList = [
+    "졸업증명서",
+    "출입국증명서",
+    "성인인증서",
+    "수료증",
+  ];
 
   useEffect(() => {
     axios({
@@ -22,6 +28,7 @@ const Mypage = ({ type }) => {
     })
       .then((data) => {
         if (data.data.type === "holder") {
+          setPageTitle(data.data.user.username);
           axios({
             url: `${process.env.REACT_APP_ISSUER}/iss/api/v1/issuer/find/all`,
             method: "GET",
@@ -29,16 +36,13 @@ const Mypage = ({ type }) => {
           }).then((result) => {
             return setIssuers([...result.data]);
           });
-        }
-
-        if (data.data.type === "issuer") {
-          console.log(data.data.user);
+        } else if (data.data.type === "issuer") {
           setRequiredVC(data.data.user.requiredVC);
+          setPageTitle(data.data.user.title);
+        } else if (data.data.type === "verifier") {
+          setPageTitle(data.data.user.title);
         }
 
-        data.data.type === "holder"
-          ? setPageTitle(data.data.user.username)
-          : setPageTitle(data.data.user.title);
         setUser({
           ...data.data.user,
           password: "",
@@ -61,6 +65,15 @@ const Mypage = ({ type }) => {
       return {
         ...prev,
         IssuerList: e,
+      };
+    });
+  };
+
+  const verifyListChange = (e) => {
+    setUser((prev) => {
+      return {
+        ...prev,
+        verifyList: e,
       };
     });
   };
@@ -128,6 +141,7 @@ const Mypage = ({ type }) => {
           method: "PUT",
           data: {
             title: user.title,
+            verifyList: user.verifyList,
           },
           withCredentials: true,
         }).then(() => {
@@ -247,9 +261,26 @@ const Mypage = ({ type }) => {
     </>
   );
 
+  const verifyListDOM = (
+    <>
+      <div className="mypage--DOM--title">인증 요구 사항</div>
+      <Select
+        style={{ width: "100%", borderRadius: "5px" }}
+        mode="tags"
+        defaultValue={user.verifyList}
+        onChange={verifyListChange}
+        value={user.verifyList}
+      >
+        {requiredVerifyList.map((e, idx) => {
+          return <Option key={e}>{e.title}</Option>;
+        })}
+      </Select>
+    </>
+  );
+
   const holderDOM = [nameDOM, emailDOM, walletAddressDOM, issuerListDOM];
   const issuerDOM = [titleDOM, emailDOM, requiredVCDOM];
-  const verifierDOM = [titleDOM, emailDOM];
+  const verifierDOM = [titleDOM, emailDOM, verifyListDOM];
 
   return (
     <div className="mypage">

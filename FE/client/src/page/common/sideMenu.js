@@ -1,9 +1,12 @@
 import {
+  AuditOutlined,
+  FileDoneOutlined,
+  FolderOutlined,
   HomeOutlined,
   LoginOutlined,
   LogoutOutlined,
+  SettingOutlined,
   UserAddOutlined,
-  UserSwitchOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
@@ -14,7 +17,7 @@ const SideMenu = ({ type, logout }) => {
       ? {
           label: (
             <Link className="sider--link" to="/mypage">
-              <UserSwitchOutlined />
+              <SettingOutlined />
               {`\u00A0 정보수정`}
             </Link>
           ),
@@ -68,7 +71,7 @@ const SideMenu = ({ type, logout }) => {
     {
       label: (
         <Link to="/holder/issuerlist" className="sider--link">
-          <HomeOutlined />
+          <FileDoneOutlined />
           {`\u00A0 인증서 발급`}
         </Link>
       ),
@@ -77,7 +80,7 @@ const SideMenu = ({ type, logout }) => {
     {
       label: (
         <Link to="/holder/manage" className="sider--link">
-          <HomeOutlined />
+          <FolderOutlined />
           {`\u00A0 인증서 관리`}
         </Link>
       ),
@@ -108,7 +111,7 @@ const SideMenu = ({ type, logout }) => {
     {
       label: (
         <Link to="/verifier/vplist" className="sider--link">
-          <HomeOutlined />
+          <AuditOutlined />
           {`\u00A0 제출된 인증서 검증`}
         </Link>
       ),

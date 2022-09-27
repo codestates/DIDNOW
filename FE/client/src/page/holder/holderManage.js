@@ -24,9 +24,11 @@ const HolderManage = () => {
       url: `${process.env.REACT_APP_AUTH}/aut/api/v1/accesstoken`,
       method: "GET",
       withCredentials: true,
-    }).then((data) => {
-      setUser(data.data.user);
-    });
+    })
+      .then((data) => {
+        setUser(data.data.user);
+      })
+      .catch((error) => {});
     axios({
       url: `${process.env.REACT_APP_HOLDER}/hol/api/v1/verify/vc-list`,
       method: "GET",
@@ -105,6 +107,11 @@ const HolderManage = () => {
     }
   };
 
+  const isEnter = (e) => {
+    if (e.keyCode === 13) {
+      handleOk();
+    }
+  };
   return (
     <div className="holdermanage">
       <Breadcrumb className="holdermanage--breadcrumb" separator=">">
@@ -219,6 +226,7 @@ const HolderManage = () => {
                                 onChange={(e) => {
                                   setPassword(e.target.value);
                                 }}
+                                onKeyDown={isEnter}
                                 value={password}
                               ></input>
                             </div>
@@ -293,7 +301,7 @@ const HolderManage = () => {
           {/* pagination 은 따로 구현해야 할듯 쓸만한거 없음 */}
         </>
       ) : (
-        <Row style={{ margin: "200px 0 0 400px" }}>
+        <Row style={{ margin: "25% 45%" }}>
           <Spin
             spinning={isLoading}
             tip="인증서 불러오는 중..."

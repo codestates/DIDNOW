@@ -12,7 +12,6 @@ import Pdf from "../component/pdf";
 
 const Vc = ({ issuers, data, selectedHandle, idx, user }) => {
   const componentRef = useRef();
-
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
@@ -92,15 +91,15 @@ const Vc = ({ issuers, data, selectedHandle, idx, user }) => {
         <div className="vc--action">
           <Row style={{ textAlign: "center" }}>
             <Col span={12}>
-              <Tooltip placement="top" title={"미리보기"}>
-                <FilePdfOutlined />
-              </Tooltip>
-            </Col>
-            <Col span={12}>
               <Tooltip placement="top" title={"PDF 다운로드"}>
                 <FilePdfOutlined onClick={handlePrint} />
               </Tooltip>
             </Col>
+            <Tooltip placement="top" title={"삭제하기"}>
+              <Col span={12}>
+                <StopOutlined />
+              </Col>
+            </Tooltip>
           </Row>
         </div>
       </article>

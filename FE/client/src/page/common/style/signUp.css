@@ -108,3 +108,20 @@
   color: white;
   cursor: pointer;
 }
+
+.signup--klip--btn {
+  font-size: 1rem;
+  background-color: white;
+  width: 100%;
+  color: black;
+  height: 2.3rem;
+  border-radius: 10px;
+  border: 1px solid #777777;
+  box-shadow: 1px 1px 1px #999999;
+}
+
+.signup--klip--btn:hover {
+  background-color: rgba(39, 73, 255, 0.9);
+
+  color: white;
+}

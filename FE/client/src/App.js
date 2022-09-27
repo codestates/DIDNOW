@@ -14,13 +14,13 @@ import SignUp from "./page/common/signUp";
 import FooterBar from "./component/footerBar";
 import Mypage from "./page/common/mypage";
 import SideMenu from "page/common/sideMenu";
+import NotFound from "./page/common/notFound";
 
 // holder
 import HolderManage from "./page/holder/holderManage";
 import Issuers from "./page/holder/Issuers";
 
 // issuer
-import IssuerManage from "./page/issuer/issuerManage";
 import IssuerIssue from "./page/issuer/issuerIssue";
 import IssuerListModal from "./component/IssuerListModal";
 import IssuerUserList from "./page/issuer/issuerUserList";
@@ -39,24 +39,19 @@ function App() {
   const [user, setUser] = useState({});
   const [type, setType] = useState("");
   const location = useLocation();
-  const getUser = async () => {
-    const userObj = await axios({
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    axios({
       url: `${process.env.REACT_APP_AUTH}/aut/api/v1/accesstoken`,
       method: "GET",
       withCredentials: true,
-    }).catch((error) => {});
-    return userObj;
-  };
-  const navigate = useNavigate();
-  useEffect(() => {
-    try {
-      getUser()
-        .then((data) => {
-          setType(data.data.type);
-          setUser(data.data.user);
-        })
-        .catch(() => {});
-    } catch (error) {}
+    })
+      .then((data) => {
+        setType(data.data.type);
+        setUser(data.data.user);
+      })
+      .catch(() => {});
   }, []);
   useEffect(() => {});
 
@@ -107,7 +102,7 @@ function App() {
                 <Route path="signup" element={<SignUp user={user} />} />
                 <Route path="/mypage" element={<Mypage type={type} />} />
                 {/* Not Found */}
-                <Route path={"*"} element={<div>not found</div>} />
+                <Route path={"*"} element={<NotFound />} />
               </Route>
 
               {/* holder Route */}
@@ -116,21 +111,20 @@ function App() {
                 <Route path="issuerlist" element={<Issuers user={user} />} />
                 <Route path="modal" element={<IssuerListModal user={user} />} />
                 {/* Not Found */}
-                <Route path={"*"} element={<div>not found</div>} />
-                <Route path="" element={<div>not found</div>} />
+                <Route path={"*"} element={<NotFound />} />
+                <Route path="" element={<NotFound />} />
               </Route>
 
               {/* issuer Route */}
               <Route path="issuer">
-                <Route path="manage" element={<IssuerManage user={user} />} />
                 <Route
                   path="issue"
                   element={<IssuerIssue user={user} type={type} />}
                 />
                 <Route path="userlist" element={<IssuerUserList />} />
                 {/* Not Found */}
-                <Route path={"*"} element={<div>not found</div>} />
-                <Route path="" element={<div>not found</div>} />
+                <Route path={"*"} element={<NotFound />} />
+                <Route path="" element={<NotFound />} />
               </Route>
 
               {/* verifier Route */}

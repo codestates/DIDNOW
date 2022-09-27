@@ -32,7 +32,7 @@ const VerifierSignUp = () => {
   const validate = async () => {
     if (isCorrect === true) {
       let res = await axios({
-        url: `/aut/api/v1/register-verifier`,
+        url: `${process.env.REACT_APP_AUTH}/aut/api/v1/register-verifier`,
         method: "POST",
         data: {
           email: verifierInfo.email,
@@ -51,7 +51,6 @@ const VerifierSignUp = () => {
   };
 
   const changeRequiredVC = (e) => {
-    console.log(e);
     setVerifierInfo((prev) => {
       return {
         ...prev,
