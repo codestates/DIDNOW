@@ -1,19 +1,6 @@
 # DIDNOW
 
-## Project Flow Chart
-![](./BE/assets/DIDNOW_flowchart.png)  
-
-## DB Schema
-![](./BE/assets/DB_Schema_Mongo.png)  
-
-## Deploy Stack
-![](./BE/assets/DIDNOW_deploy_bk.png)  
-![](./BE/assets/DIDNOW_deploy_wh.png)
-
-## Tech Stack
-  
-![](./BE/assets/DIDNOW_stack_bk.png)  
-![](./BE/assets/DIDNOW_stack_wh.png)  
+![](./Doc/img/logo/didnow.png)
 
  <p align="center">
 	<a href="https://github.com/codestates/BEB-05-DIDNOW/search?l=JavaScript&type=code"><img alt="GitHub language count" src="https://img.shields.io/github/languages/count/codestates/BEB-05-DIDNOW"></a>
@@ -109,6 +96,7 @@ cd Proxy
 echo url=$IP | cat - githubaction > githubaction.sh
 chmod 777 githubaction.sh
 ./githubaction.sh
+rm ./githubaction.sh
 cd ..
 ```
 
@@ -123,28 +111,6 @@ docker-compose up -d
 # :computer: 제공 기능 (Service)
 
 - 작성 예정
-
-# :octocat: GitHub 폴더 내용
-
-## BE
-
-NodeJS를 활용한 MSA구조의 백엔드
-
-## FE
-
-React와 antd를 활용한 Web 프론트엔드
-
-## Proxy
-
-NginX를 활용하여 Load Balancing 기능을 포함하는 Proxy 서버
-
-## SC
-
-스마트 컨트렉트를 배포/업그레이드하는 Truffle 코드
-
-## Doc
-
-문서
 
 # :family: 팀 정보 (Team Information)
 
