@@ -241,7 +241,10 @@ const IssuerUserList = () => {
                     placeholder="사용자를 선택해주세요."
                   >
                     {holderList.map((e, idx) => {
-                      return <Option key={e.email}>{e.email}</Option>;
+                      return (
+                        userList.filter((u) => u.cr_email !== e.email).length >
+                          0 && <Option key={idx}>{e.email}</Option>
+                      );
                     })}
                   </Select>
                 </Col>
