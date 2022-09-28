@@ -9,6 +9,33 @@
 	<a href="https://github.com/codestates/BEB-05-DIDNOW/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/codestates/BEB-05-DIDNOW"></a>
   </p>
 
+# :books: 목차
+
+- [:book: 프로젝트 소개](#book-프로젝트-소개)
+  - [프로젝트 개요](#프로젝트-개요)
+  - [프로젝트 요약](#프로젝트-요약)
+- [:electric_plug: 컴퓨터 구성 / 필수 조건 안내 (Prerequisites)](#electric_plug-컴퓨터-구성--필수-조건-안내-prerequisites)
+- [:wrench: 사용 기술 (Technique)](#wrench-사용-기술-technique)
+
+  - [:hammer:기술 스택 (Technique Used)](#기술-스택-technique-used)
+    - [**FrontEnd**](#frontend)
+    - [**BackEnd**](#backend)
+    - [**Smart Contract**](#smart-contract)
+    - [**Deploy**](#deploy)
+  - [:construction:Architecture](#construction-architecture)
+  - [:earth_asia:Network](#earth_asia-networ)
+
+    - [Deploy :rocket:](#deploy-rocket)
+    - [Connect](#connect)
+
+  - [퍼블릭 블록체인을 활용한 DID](#퍼블릭-블록체인을-활용한-did)
+    - [DID란?](#did란)
+    - [퍼블릭 블록체인?](#퍼블릭-블록체인)
+
+- [floppy_disk: 설치 & 시작 안내 (Installation Process & Getting Start)](#floppydisk-설치--시작-안내-installation-process--getting-start)
+- [:computer: 제공 기능 (Service)](#computer-제공-기능-service)
+- [:family: 팀 정보 (Team Information)](#family-팀-정보-team-information)
+
 # :book: 프로젝트 소개
 
 ## 프로젝트 개요
@@ -21,11 +48,6 @@
 - 위,변조 불가능한 인증서
 - 인증서 통합 관리 서비스
 
-# :electric_plug: 컴퓨터 구성 / 필수 조건 안내 (Prerequisites)
-
-- ECMAScript 6 지원 브라우저 사용
-- 권장: Google Chrome 버젼 77 이상
-
 # :wrench: 사용 기술 (Technique)
 
 ## :hammer:기술 스택 (Technique Used)
@@ -37,10 +59,10 @@
 
 |                             Icon                             |  Stack   | Description |
 | :----------------------------------------------------------: | :------: | ----------- |
-|  <img src = "./Doc/img/stackIcon/react.png" height = 25px>   |  REACT   |             |
-|   <img src = "./Doc/img/stackIcon/antd.png" height = 25px>   |   ANTD   |             |
-| <img src = "./Doc/img/stackIcon/tailwind.png" height = 20px> | TAILWIND |             |
-| <img src = "./Doc/img/stackIcon/threejs.png" height = 25px>  | THREEJS  |             |
+|  <img src = "./Doc/img/stackIcon/react.png" height = 25px>   |  REACT   | 프론트앤드 구성 |
+|   <img src = "./Doc/img/stackIcon/antd.png" height = 25px>   |   ANTD   | 컴포넌트 UI |
+| <img src = "./Doc/img/stackIcon/tailwind.png" height = 20px> | TAILWIND | 컴포넌트 UI |
+| <img src = "./Doc/img/stackIcon/threejs.png" height = 25px>  | THREEJS  | 런칭 페이지 |
 
 ### BackEnd
 
@@ -55,23 +77,24 @@
 
 ### Smart Contract
 
-|                             Icon                             |  Stack   | Description |
-| :----------------------------------------------------------: | :------: | ----------- |
-| <img src = "./Doc/img/stackIcon/Solidity.png" height = 25px> | SOLIDITY |             |
-| <img src = "./Doc/img/stackIcon/Truffle.png" height = 25px>  | TRUFFLE  |             |
-|  <img src = "./Doc/img/stackIcon/klaytn.png" height = 25px>  |  KLAYTN  |             |
-|   <img src = "./Doc/img/stackIcon/klip.png" height = 25px>   |   KLIP   |             |
-| <img src = "./Doc/img/stackIcon/ganache.png" height = 25px>  | GANACHE  |             |
+|                             Icon                             |  Stack   | Description          |
+| :----------------------------------------------------------: | :------: | -------------------- |
+| <img src = "./Doc/img/stackIcon/Solidity.png" height = 25px> | SOLIDITY | 스마트 컨트랙트 작성 |
+| <img src = "./Doc/img/stackIcon/Truffle.png" height = 25px>  | TRUFFLE  | 스마트 컨트랙트 배포 |
+|  <img src = "./Doc/img/stackIcon/klaytn.png" height = 25px>  |  KLAYTN  | 블록체인 네트워크    |
+|   <img src = "./Doc/img/stackIcon/klip.png" height = 25px>   |   KLIP   | 지갑 연동            |
+| <img src = "./Doc/img/stackIcon/ganache.png" height = 25px>  | GANACHE  | 로컬에서 테스트      |
 
 ### Deploy
 
-|                               Icon                                |        Stack        | Description |
-| :---------------------------------------------------------------: | :-----------------: | ----------- |
-|    <img src = "./Doc/img/stackIcon/docker.png" height = 25px>     |       DOCKER        | FE, BE 컨테이너화 |
-|      <img src = "./Doc/img/stackIcon/ec2.png" height = 30px>      |         EC2         | 배포 서버 사용 |
-|    <img src = "./Doc/img/stackIcon/route53.png" height = 30px>    |      ROUTE 53       | HTTPS 프로토콜 적용 |
-|      <img src = "./Doc/img/stackIcon/acm.png" height = 30px>      | CERTIFICATE MANAGER | HTTPS 프로토콜 적용 |
-| <img src = "./Doc/img/stackIcon/githubactions.png" height = 25px> |   GITHUB ACTIONS    | CI/CI 배포 자동화 사용 |
+|                               Icon                                |        Stack        | Description                        |
+| :---------------------------------------------------------------: | :-----------------: | ---------------------------------- |
+|    <img src = "./Doc/img/stackIcon/docker.png" height = 25px>     |       DOCKER        | 컨테이너 생성, 배포 시 이미지 생성 |
+|      <img src = "./Doc/img/stackIcon/ec2.png" height = 30px>      |         EC2         | 배포 서버                          |
+|    <img src = "./Doc/img/stackIcon/route53.png" height = 30px>    |      ROUTE 53       | DNS와 EC2서버 연결                 |
+|      <img src = "./Doc/img/stackIcon/acm.png" height = 30px>      | CERTIFICATE MANAGER | SSL 인증서 생성                    |
+| <img src = "./Doc/img/stackIcon/githubactions.png" height = 25px> |   GITHUB ACTIONS    | CI/CI 배포 자동화 사용                     |
+
 
 ## :construction:Architecture
 
@@ -99,7 +122,7 @@
 
 ### DID란?
 
-### 왜 DID인가?
+![](./Doc/img/flowchart/did.png)
 
 ### 퍼블릭 블록체인?
 
@@ -146,7 +169,17 @@ docker-compose up -d
 
 # :computer: 제공 기능 (Service)
 
-- 작성 예정
+## 개인
+
+| 인증서 발급 | 인증서 다운로드 | 인증서 제출 |
+| :---------: | :-------------: | :---------: |
+|             |                 |             |
+
+## 기업
+
+| 인증서 생성 | 인증서 발급 | 인증서 검증 |
+| :---------: | :---------: | :---------: |
+|             |             |             |
 
 # :family: 팀 정보 (Team Information)
 
