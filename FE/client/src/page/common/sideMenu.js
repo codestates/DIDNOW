@@ -1,4 +1,5 @@
 import {
+  AreaChartOutlined,
   AuditOutlined,
   FileDoneOutlined,
   FolderOutlined,
@@ -8,6 +9,7 @@ import {
   SafetyOutlined,
   SettingOutlined,
   UserAddOutlined,
+  UsergroupAddOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
@@ -101,7 +103,7 @@ const SideMenu = ({ type, logout }) => {
     {
       label: (
         <Link to="/issuer/issue" className="sider--link">
-          <HomeOutlined />
+          <SafetyOutlined />
           {`\u00A0 발급할 인증서 등록`}
         </Link>
       ),
@@ -110,11 +112,20 @@ const SideMenu = ({ type, logout }) => {
     {
       label: (
         <Link to="/issuer/userlist" className="sider--link">
-          <HomeOutlined />
+          <UsergroupAddOutlined />
           {`\u00A0 발급 가능한 인원 관리`}
         </Link>
       ),
       key: "issueruserlist",
+    },
+    {
+      label: (
+        <Link to="/issuer/status" className="sider--link">
+          <AreaChartOutlined />
+          {`\u00A0 발급 현황`}
+        </Link>
+      ),
+      key: "issuerstatus",
     },
   ];
   const verifierItems = [
@@ -126,6 +137,15 @@ const SideMenu = ({ type, logout }) => {
         </Link>
       ),
       key: "verifiervplist",
+    },
+    {
+      label: (
+        <Link to="/verifier/status" className="sider--link">
+          <AreaChartOutlined />
+          {`\u00A0 인증 현황`}
+        </Link>
+      ),
+      key: "verifierstatus",
     },
   ];
 

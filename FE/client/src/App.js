@@ -31,6 +31,8 @@ import VerifierVPList from "./page/verifier/verifierVPList";
 // launch page
 import Launch from "./page/launch/launch";
 import HolderVPList from "page/holder/holderVpList";
+import Issuerstatus from "page/issuer/issuerstatus";
+import Verifierstatus from "page/verifier/verifierstatus";
 
 // config
 const { Header, Content, Footer, Sider } = Layout;
@@ -138,6 +140,7 @@ function App() {
                     element={<IssuerIssue user={user} type={type} />}
                   />
                   <Route path="userlist" element={<IssuerUserList />} />
+                  <Route path="status" element={<Issuerstatus />} />
                   {/* Not Found */}
                   <Route path={"*"} element={<NotFound />} />
                   <Route path="" element={<NotFound />} />
@@ -146,6 +149,7 @@ function App() {
                 {/* verifier Route */}
                 <Route path="verifier">
                   <Route path="vplist" element={<VerifierVPList />} />
+                  <Route path="status" element={<Verifierstatus />} />
                 </Route>
               </Routes>
             </Spin>
