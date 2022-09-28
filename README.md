@@ -45,12 +45,12 @@
 
 |                             Icon                              |   Stack   | Description |
 | :-----------------------------------------------------------: | :-------: | ----------- |
-|  <img src = "./Doc/img/stackIcon/nodejs.png" height = 25px>   |  NODEJS   |             |
-|  <img src = "./Doc/img/stackIcon/mongoDB.png" height = 25px>  |  MONGODB  |             |
-|   <img src = "./Doc/img/stackIcon/nginx.png" height = 27px>   |   NGINX   |             |
-| <img src = "./Doc/img/stackIcon/artillery.png" height = 27px> | ARTILLERY |             |
-|   <img src = "./Doc/img/stackIcon/mocha.png" height = 27px>   |   MOCHA   |             |
-|   <img src = "./Doc/img/stackIcon/chai.png" height = 27px>    |   CHAI    |             |
+|  <img src = "./Doc/img/stackIcon/nodejs.png" height = 25px>   |  NODEJS   | API 서버 제작 |
+|  <img src = "./Doc/img/stackIcon/mongoDB.png" height = 25px>  |  MONGODB  | MongoDB Atlas 사용 |
+|   <img src = "./Doc/img/stackIcon/nginx.png" height = 27px>   |   NGINX   | Load Balancing과 static 파일 반환 웹 서버로 사용 |
+| <img src = "./Doc/img/stackIcon/artillery.png" height = 27px> | ARTILLERY | HTTP 프로토콜 부하 테스트 진행시 사용 |
+|   <img src = "./Doc/img/stackIcon/mocha.png" height = 27px>   |   MOCHA   | Unit Test에 사용 |
+|   <img src = "./Doc/img/stackIcon/chai.png" height = 27px>    |   CHAI    | Unit Test에 사용 |
 
 ### Smart Contract
 
