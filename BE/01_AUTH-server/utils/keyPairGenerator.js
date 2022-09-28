@@ -21,7 +21,7 @@ const genKey = () => {
       publicKey: Buffer.from(publicKey).toString("hex"),
     };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 
@@ -34,8 +34,8 @@ const genKeyTest = () => {
     const privateKey = getPrivateKey();
     const publicKey = secp256k1.publicKeyCreate(privateKey);
 
-    console.log(privateKey)
-    console.log(publicKey)
+    // console.log(privateKey)
+    // console.log(publicKey)
 
     // DB 저장
     const enc_privateKey = privateKey.toString("hex");
@@ -49,8 +49,8 @@ const genKeyTest = () => {
     const dec_publicKey = new Uint8Array(Buffer.from(enc_publicKey, 'hex')) 
 
 
-    console.log(dec_privateKey);
-    console.log(dec_publicKey);
+    // console.log(dec_privateKey);
+    // console.log(dec_publicKey);
 
     // 해시
     let hash = CryptoJS.SHA256(str).toString(CryptoJS.enc.Hex);
@@ -58,7 +58,7 @@ const genKeyTest = () => {
     // 암호화
     const sigObj = secp256k1.ecdsaSign(Buffer.from(hash, "hex"), dec_privateKey);
 
-    console.log(sigObj);
+    // console.log(sigObj);
 
     // 복호화
     const result = secp256k1.ecdsaVerify(
@@ -71,11 +71,11 @@ const genKeyTest = () => {
       dec_publicKey
     )
 
-    console.log(result);
+    // console.log(result);
 
 
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 

@@ -43,7 +43,7 @@ const VerifierVPList = () => {
   }, [navigate]);
   // // re-render
   useEffect(() => {
-    console.log(vpList);
+    // console.log(vpList);
   });
 
   const verifyVP = (e) => {
@@ -54,7 +54,7 @@ const VerifierVPList = () => {
       withCredentials: true,
     })
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         if (result.data === "success") {
           message.success("인증에 성공했습니다.");
           vpList[e.target.name].status = "success";

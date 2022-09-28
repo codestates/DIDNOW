@@ -120,7 +120,7 @@ const closeVerifyReqest = async (req, res, next) => {
         verifyFactor[0] = factor_01;
       } catch (error) {
         verifyFactor[0] = false;
-        console.log(error);
+        // console.log(error);
       }
 
       try {
@@ -163,7 +163,7 @@ const closeVerifyReqest = async (req, res, next) => {
         verifyFactor[1] = factor_02;
       } catch (error) {
         verifyFactor[1] = false;
-        console.log(error);
+        // console.log(error);
       }
 
       try {
@@ -184,7 +184,7 @@ const closeVerifyReqest = async (req, res, next) => {
         verifyFactor[2] = factor_03;
       } catch (err) {
         verifyFactor[2] = false;
-        console.log(err);
+        // console.log(err);
       }
 
       try {
@@ -196,11 +196,11 @@ const closeVerifyReqest = async (req, res, next) => {
         verifyFactor[3] = factor_04;
       } catch (err) {
         verifyFactor[3] = false;
-        console.log(err);
+        // console.log(err);
       }
 
       // 결과값 반환
-      console.log(verifyFactor);
+      // console.log(verifyFactor);
       let resultVerify = "";
       if (verifyFactor.every((item) => item)) {
         resultVerify = "success";
@@ -221,7 +221,7 @@ const closeVerifyReqest = async (req, res, next) => {
         { new: true }
       );
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       next(error);
     }
   } else {
