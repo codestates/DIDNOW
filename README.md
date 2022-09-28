@@ -58,10 +58,10 @@
 
 |                             Icon                             |  Stack   | Description |
 | :----------------------------------------------------------: | :------: | ----------- |
-|  <img src = "./Doc/img/stackIcon/react.png" height = 25px>   |  REACT   |             |
-|   <img src = "./Doc/img/stackIcon/antd.png" height = 25px>   |   ANTD   |             |
-| <img src = "./Doc/img/stackIcon/tailwind.png" height = 20px> | TAILWIND |             |
-| <img src = "./Doc/img/stackIcon/threejs.png" height = 25px>  | THREEJS  |             |
+|  <img src = "./Doc/img/stackIcon/react.png" height = 25px>   |  REACT   | 프론트앤드 구성 |
+|   <img src = "./Doc/img/stackIcon/antd.png" height = 25px>   |   ANTD   | 컴포넌트 UI |
+| <img src = "./Doc/img/stackIcon/tailwind.png" height = 20px> | TAILWIND | 컴포넌트 UI |
+| <img src = "./Doc/img/stackIcon/threejs.png" height = 25px>  | THREEJS  | 런칭 페이지 |
 
 ### BackEnd
 
