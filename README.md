@@ -31,6 +31,7 @@
 ## :hammer:기술 스택 (Technique Used)
 
 ![](./Doc/img/draw/stack.png)
+![](./BE/assets/DIDNOW_techStack.png)
 
 ### FrontEnd
 
@@ -66,11 +67,11 @@
 
 |                               Icon                                |        Stack        | Description |
 | :---------------------------------------------------------------: | :-----------------: | ----------- |
-|    <img src = "./Doc/img/stackIcon/docker.png" height = 25px>     |       DOCKER        |             |
-|      <img src = "./Doc/img/stackIcon/ec2.png" height = 30px>      |         EC2         |             |
-|    <img src = "./Doc/img/stackIcon/route53.png" height = 30px>    |      ROUTE 53       |             |
-|      <img src = "./Doc/img/stackIcon/acm.png" height = 30px>      | CERTIFICATE MANAGER |             |
-| <img src = "./Doc/img/stackIcon/githubactions.png" height = 25px> |   GITHUB ACTIONS    |             |
+|    <img src = "./Doc/img/stackIcon/docker.png" height = 25px>     |       DOCKER        | FE, BE 컨테이너화 |
+|      <img src = "./Doc/img/stackIcon/ec2.png" height = 30px>      |         EC2         | 배포 서버 사용 |
+|    <img src = "./Doc/img/stackIcon/route53.png" height = 30px>    |      ROUTE 53       | HTTPS 프로토콜 적용 |
+|      <img src = "./Doc/img/stackIcon/acm.png" height = 30px>      | CERTIFICATE MANAGER | HTTPS 프로토콜 적용 |
+| <img src = "./Doc/img/stackIcon/githubactions.png" height = 25px> |   GITHUB ACTIONS    | CI/CI 배포 자동화 사용 |
 
 ## :construction:Architecture
 
@@ -102,9 +103,23 @@
 
 ### 퍼블릭 블록체인?
 
-![](./Doc/img/flowchart/Holder_FLOW_CHART.png)
-![](./Doc/img/flowchart/Verifier_FLOW_CHART.png)
-![](./Doc/img/flowchart/Issuer_FLOW_CHART.png)
+### Flowchart
+
+![](./BE/assets/DIDNOW_flowchart.png)
+
+### VP 검증과정
+
+#### 1. Holder의 디지털 서명 확인
+![](./BE/assets/VerifyFlowchart_01.png)
+
+#### 2. Issuer의 디지털 서명 복호화 
+![](./BE/assets/VerifyFlowchart_02.png)
+
+#### 3. Issuer DID Document에서 Holder ID 확인
+![](./BE/assets/VerifyFlowchart_03.png)
+
+#### 4. Verifier가 검증할 인증서의 종류 확인
+![](./BE/assets/VerifyFlowchart_04.png)
 
 # :floppy_disk: 설치 & 시작 안내 (Installation Process & Getting Start)
 
