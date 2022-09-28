@@ -8,7 +8,7 @@ const genPrivateKey = (k) => {
     format: "pem",
     passphrase: "top secret",
   });
-  console.log(key)
+  // console.log(key)
   return key;
 };
 //genPrivateKey("1234")
@@ -28,10 +28,10 @@ const genKey = () => {
         passphrase: "top secret",
       },
     });
-    console.log(publicKey,privateKey)
+    // console.log(publicKey,privateKey)
     return { publicKey, privateKey};
   } catch (error) {
-    console.log(error)
+    // console.log(error)
   }
 };
 genKey()

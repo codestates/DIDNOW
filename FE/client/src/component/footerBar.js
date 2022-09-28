@@ -25,7 +25,7 @@ const FooterBar = () => {
           setodj({ ...res1.data });
           sethys({ ...res2.data });
           setabh({ ...res3.data });
-          console.log(res2);
+          // console.log(res2);
         })
       );
   };

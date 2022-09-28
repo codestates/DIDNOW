@@ -73,7 +73,7 @@ const getPemPubKey = async (did) => {
         return cur.publicKey;
       }
     },'')
-    console.log(res)
+    // console.log(res)
     return res;
 };
 
