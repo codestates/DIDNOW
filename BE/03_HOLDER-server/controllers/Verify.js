@@ -86,7 +86,7 @@ const requestVC = async (req, res, next) => {
       });
 
       const mid1 = new Date();
-      console.log("DB 데이터 읽기 : ", mid1 - start, "ms");
+      // console.log("DB 데이터 읽기 : ", mid1 - start, "ms");
 
       // Verifiable Credential 발급
       start = new Date();
@@ -130,7 +130,7 @@ const requestVC = async (req, res, next) => {
       const enc_SignedVC = Buffer.from(signedVC.signature).toString("hex");
 
       const mid2 = new Date();
-      console.log("Verifiable Credential 발급 : ", mid2 - start, "ms");
+      // console.log("Verifiable Credential 발급 : ", mid2 - start, "ms");
 
       /* Blockchain 접근 */
       try {
@@ -159,9 +159,9 @@ const requestVC = async (req, res, next) => {
         );
         const tx2 = new Date();
         
-          console.log("Blockchain 1(addHash(HolderDID)) : ", tx2 - start, "ms");
+          // console.log("Blockchain 1(addHash(HolderDID)) : ", tx2 - start, "ms");
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
 
       // Holder VC List에 저장
@@ -175,7 +175,7 @@ const requestVC = async (req, res, next) => {
       
       res.status(200).json(savedHolderVCList);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       next(error);
     }
   } else {
@@ -260,7 +260,7 @@ const createVerifyRequest = async (req, res, next) => {
 
       res.status(200).json({ data: savedVerifyList, message: "success" });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       next(error);
     }
   } else {

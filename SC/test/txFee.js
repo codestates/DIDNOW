@@ -9,13 +9,13 @@ async function testFunction() {
     const maked = caver.wallet.keyring.generate();
     caver.wallet.add(maked);
     const testDID = "did:klay:"+maked.address.slice(2);
-    console.log(testDID)
+    // console.log(testDID)
 
     // Decrypt keystore
     const keyring = caver.wallet.keyring.createFromPrivateKey(
     process.env.PRIVATEKEY
     );
-    console.log(keyring)
+    // console.log(keyring)
 
     // Add to caver.wallet
     caver.wallet.add(keyring)
@@ -30,14 +30,14 @@ async function testFunction() {
         feeRatio: 50, // Without feeRatio, `send` will use FeeDelegatedSmartContractExecution
         gas: 1000000,
     }, 'addService', testDID, 'testID', 'testPubKey')
-    console.log(`Deployer signed transaction: `)
+    // console.log(`Deployer signed transaction: `)
     //console.log(executionTx)
 
      const signedSender = await caver.wallet.sign(maked.address, executionTx)
-     console.log(signedSender)
+    //  console.log(signedSender)
      const signed  = await caver.wallet.signAsFeePayer(keyring.address, signedSender)
      const receipt = await caver.rpc.klay.sendRawTransaction(signed)
-    console.log(receipt)
+    // console.log(receipt)
 }
 
 testFunction()

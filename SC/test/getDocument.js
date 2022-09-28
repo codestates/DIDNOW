@@ -23,7 +23,7 @@ const DIDContract = new caver.contract(DIDContractABI, DIDContractAddress);
 
 async function test (){
   const res = await DIDContract.methods.getDocument('did:klay:bC14CB49b93Ee36AfdF4b49eCB7C9512f9353c93').call();
-  console.log(res)
+  // console.log(res)
 }
 
 test()
