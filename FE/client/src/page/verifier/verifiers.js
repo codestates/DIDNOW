@@ -40,7 +40,7 @@ const Verifiers = () => {
     <div className="verifiers">
       <Breadcrumb className="holdermanage--breadcrumb" separator=">">
         <Breadcrumb.Item href="/">홈</Breadcrumb.Item>
-        <Breadcrumb.Item href="/holdermanage">Verifier List</Breadcrumb.Item>
+        <Breadcrumb.Item href="/verifier/vplist">Verifier List</Breadcrumb.Item>
       </Breadcrumb>
 
       <div className="verifiers--form">

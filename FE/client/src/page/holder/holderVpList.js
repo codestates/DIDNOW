@@ -3,7 +3,6 @@ import { Row, Col, Breadcrumb, message, Spin, Pagination } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ConsoleSqlOutlined } from "@ant-design/icons";
 
 const HolderVPList = () => {
   // navigate

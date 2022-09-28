@@ -130,7 +130,7 @@ const HolderManage = () => {
       <Breadcrumb className="holdermanage--breadcrumb" separator=">">
         <Breadcrumb.Item href="/">홈</Breadcrumb.Item>
         <Breadcrumb.Item href="/">내 지갑</Breadcrumb.Item>
-        <Breadcrumb.Item href="/holdermanage">인증서 관리</Breadcrumb.Item>
+        <Breadcrumb.Item href="/holder/manage">인증서 관리</Breadcrumb.Item>
       </Breadcrumb>
       {isLoading === false ? (
         <>
@@ -258,7 +258,7 @@ const HolderManage = () => {
                                 key="submit"
                                 onClick={handleOk}
                               >
-                                인증서 요청
+                                인증서 제출
                               </button>
                             </Col>
                             <Col span={12}>
