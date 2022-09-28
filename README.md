@@ -6,14 +6,21 @@
 	<a href="https://github.com/codestates/BEB-05-DIDNOW/graphs/contributors"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/codestates/BEB-05-DIDNOW?color=success"></a>
 	<a href="https://github.com/codestates/BEB-05-DIDNOW/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/codestates/BEB-05-DIDNOW"></a>
 	<a href="https://github.com/codestates/BEB-05-DIDNOW/network/members"><img alt="GitHub forks" src="https://img.shields.io/github/forks/codestates/BEB-05-DIDNOW"></a>
-	<a href="https://github.com/codestates/BEB-05-DIDNOW/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/codestates/BEB-05-DIDNOW"></a>
-  </p>
+  <a href="https://github.com/codestates/BEB-05-DIDNOW/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/codestates/BEB-05-DIDNOW"></a><br/>
+  <a href="https://github.com/codestates/BEB-05-DIDNOW/actions/workflows/deploy.yml"><img alt="GitHub license" src="https://github.com/codestates/BEB-05-DIDNOW/actions/workflows/deploy.yml/badge.svg"></a>
+  <a href="https://github.com/codestates/BEB-05-DIDNOW/issues?q=is%3Aissue+is%3Aclosed"><img alt="GitHub license" src="https://img.shields.io/github/issues-closed-raw/codestates/BEB-05-DIDNOW"></a>
+  <a href="https://github.com/codestates/BEB-05-DIDNOW/milestones"><img alt="GitHub license" src="https://img.shields.io/github/milestones/all/codestates/BEB-05-DIDNOW"></a>
+</p>
+
+## :rocket: https://didnow.cf/
 
 # :books: 목차
 
 - [:book: 프로젝트 소개](#book-프로젝트-소개)
   - [프로젝트 개요](#프로젝트-개요)
   - [프로젝트 요약](#프로젝트-요약)
+  - [프로젝트 플로우차트](#프로젝트-플로우차트)
+  - [DB 스키마](#db-스키마)
 - [:electric_plug: 컴퓨터 구성 / 필수 조건 안내 (Prerequisites)](#electric_plug-컴퓨터-구성--필수-조건-안내-prerequisites)
 - [:wrench: 사용 기술 (Technique)](#wrench-사용-기술-technique)
 
@@ -32,8 +39,12 @@
     - [DID란?](#did란)
     - [퍼블릭 블록체인?](#퍼블릭-블록체인)
 
-- [floppy_disk: 설치 & 시작 안내 (Installation Process & Getting Start)](#floppydisk-설치--시작-안내-installation-process--getting-start)
+- [:floppy_disk: 설치 & 시작 안내 (Installation Process & Getting Start)](#floppydisk-설치--시작-안내-installation-process--getting-start)
 - [:computer: 제공 기능 (Service)](#computer-제공-기능-service)
+  - [Commen](#common)
+  - [Holder](#holder)
+  - [Issuer](#issuer)
+  - [Verifier](#verifier)
 - [:family: 팀 정보 (Team Information)](#family-팀-정보-team-information)
 
 # :book: 프로젝트 소개
@@ -48,6 +59,14 @@
 - 위,변조 불가능한 인증서
 - 인증서 통합 관리 서비스
 
+## 프로젝트 플로우차트
+
+![](./Doc/img/draw/flowchart.png)
+
+## DB 스키마
+
+![](./Doc/img/draw/DB_Schema_Mongo.png)
+
 # :wrench: 사용 기술 (Technique)
 
 ## :hammer:기술 스택 (Technique Used)
@@ -57,23 +76,23 @@
 
 ### FrontEnd
 
-|                             Icon                             |  Stack   | Description |
-| :----------------------------------------------------------: | :------: | ----------- |
+|                             Icon                             |  Stack   | Description     |
+| :----------------------------------------------------------: | :------: | --------------- |
 |  <img src = "./Doc/img/stackIcon/react.png" height = 25px>   |  REACT   | 프론트앤드 구성 |
-|   <img src = "./Doc/img/stackIcon/antd.png" height = 25px>   |   ANTD   | 컴포넌트 UI |
-| <img src = "./Doc/img/stackIcon/tailwind.png" height = 20px> | TAILWIND | 컴포넌트 UI |
-| <img src = "./Doc/img/stackIcon/threejs.png" height = 25px>  | THREEJS  | 런칭 페이지 |
+|   <img src = "./Doc/img/stackIcon/antd.png" height = 25px>   |   ANTD   | 컴포넌트 UI     |
+| <img src = "./Doc/img/stackIcon/tailwind.png" height = 20px> | TAILWIND | 컴포넌트 UI     |
+| <img src = "./Doc/img/stackIcon/threejs.png" height = 25px>  | THREEJS  | 런칭 페이지     |
 
 ### BackEnd
 
-|                             Icon                              |   Stack   | Description |
-| :-----------------------------------------------------------: | :-------: | ----------- |
-|  <img src = "./Doc/img/stackIcon/nodejs.png" height = 25px>   |  NODEJS   | API 서버 4대 제작 |
-|  <img src = "./Doc/img/stackIcon/mongoDB.png" height = 25px>  |  MONGODB  | MongoDB Atlas M0 사용 |
+|                             Icon                              |   Stack   | Description                                      |
+| :-----------------------------------------------------------: | :-------: | ------------------------------------------------ |
+|  <img src = "./Doc/img/stackIcon/nodejs.png" height = 25px>   |  NODEJS   | API 서버 4대 제작                                |
+|  <img src = "./Doc/img/stackIcon/mongoDB.png" height = 25px>  |  MONGODB  | MongoDB Atlas M0 사용                            |
 |   <img src = "./Doc/img/stackIcon/nginx.png" height = 27px>   |   NGINX   | Load Balancing과 static 파일 반환 웹 서버로 사용 |
-| <img src = "./Doc/img/stackIcon/artillery.png" height = 27px> | ARTILLERY | HTTP 프로토콜 부하 테스트 진행시 사용 |
-|   <img src = "./Doc/img/stackIcon/mocha.png" height = 27px>   |   MOCHA   | Unit Test에 사용 |
-|   <img src = "./Doc/img/stackIcon/chai.png" height = 27px>    |   CHAI    | Unit Test Assert Library 사용 |
+| <img src = "./Doc/img/stackIcon/artillery.png" height = 27px> | ARTILLERY | HTTP 프로토콜 부하 테스트 진행시 사용            |
+|   <img src = "./Doc/img/stackIcon/mocha.png" height = 27px>   |   MOCHA   | Unit Test에 사용                                 |
+|   <img src = "./Doc/img/stackIcon/chai.png" height = 27px>    |   CHAI    | Unit Test Assert Library 사용                    |
 
 ### Smart Contract
 
@@ -93,8 +112,7 @@
 |      <img src = "./Doc/img/stackIcon/ec2.png" height = 30px>      |         EC2         | 배포 서버                          |
 |    <img src = "./Doc/img/stackIcon/route53.png" height = 30px>    |      ROUTE 53       | DNS와 EC2서버 연결                 |
 |      <img src = "./Doc/img/stackIcon/acm.png" height = 30px>      | CERTIFICATE MANAGER | SSL 인증서 생성                    |
-| <img src = "./Doc/img/stackIcon/githubactions.png" height = 25px> |   GITHUB ACTIONS    | CI/CI 배포 자동화 사용                     |
-
+| <img src = "./Doc/img/stackIcon/githubactions.png" height = 25px> |   GITHUB ACTIONS    | CI/CI 배포 자동화 사용             |
 
 ## :construction:Architecture
 
@@ -122,10 +140,9 @@
 
 ### DID란?
 
-Decentralized Identity(탈중앙 신원증명, DID)는 데이터의 주권을 개개인에게 부여하고 중앙화된 제3자를 거치지 않고 인증에 성공할 수 있는 차세대 인증 방식입니다. 
+Decentralized Identity(탈중앙 신원증명, DID)는 데이터의 주권을 개개인에게 부여하고 중앙화된 제3자를 거치지 않고 인증에 성공할 수 있는 차세대 인증 방식입니다.
 
-![](./BE/assets/DID_concept.png)  
-
+![](./BE/assets/DID_concept.png)
 
 ### Why public Blockchain?
 
@@ -141,20 +158,32 @@ Decentralized Identity(탈중앙 신원증명, DID)는 데이터의 주권을 �
 ### VP 검증과정
 
 #### 1. Holder의 디지털 서명 확인
+
 ![](./BE/assets/VerifyFlowchart_01.png)
 
-#### 2. Issuer의 디지털 서명 복호화 
+#### 2. Issuer의 디지털 서명 복호화
+
 ![](./BE/assets/VerifyFlowchart_02.png)
 
 #### 3. Issuer DID Document에서 Holder ID 확인
+
 ![](./BE/assets/VerifyFlowchart_03.png)
 
 #### 4. Verifier가 검증할 인증서의 종류 확인
+
 ![](./BE/assets/VerifyFlowchart_04.png)
 
 # :floppy_disk: 설치 & 시작 안내 (Installation Process & Getting Start)
 
-## 1. default.conf 생성
+## 1. FE .env 설정
+
+`FE/client/.env.development`내용을 그대로 복사해 .env를 생성한다.
+
+## 2. BE .env 설정
+
+`BE/01_AUTH-server/.env.example`, `BE/02_ISSUER-server/.env.example`, `BE/03_HOLDER-server/.env.example`, `BE/04_VERIFIER-server/.env.example`를 참고해 각각 .env파일을 생성한다.
+
+## 3. default.conf 생성
 
 `$IP`에 자신이 접속한 IP를 입력하여 default.conf 파일을 생성합니다.
 
@@ -167,7 +196,7 @@ rm ./githubaction.sh
 cd ..
 ```
 
-## 2. docker-compose 실행
+## 4. docker-compose 실행
 
 docker-compose파일을 실행하여 localhost:80에 접속하여 테스트해볼 수 있습니다.
 
@@ -177,26 +206,40 @@ docker-compose up -d
 
 # :computer: 제공 기능 (Service)
 
-## 개인
+## Common
 
-| 인증서 발급 | 인증서 다운로드 | 인증서 제출 |
-| :---------: | :-------------: | :---------: |
-|             |                 |             |
+|                     회원가입                     |
+| :----------------------------------------------: |
+| <img src = "./Doc/gif/signup.gif" width = 500px> |
 
-## 기업
+## Holder
 
-| 인증서 생성 | 인증서 발급 | 인증서 검증 |
-| :---------: | :---------: | :---------: |
-|             |             |             |
+|                     인증서 발급                     |                      인증서 다운로드                      |
+| :-------------------------------------------------: | :-------------------------------------------------------: |
+| <img src = "./Doc/gif/holder_vc.gif" width = 500px> | <img src = "./Doc/gif/holder_download.gif" width = 500px> |
 
+|                       인증서 제출                       |                    인증서 제출 목록                     |
+| :-----------------------------------------------------: | :-----------------------------------------------------: |
+| <img src = "./Doc/gif/holder_submit.gif" width = 500px> | <img src = "./Doc/gif/holder_vplist.gif" width = 500px> |
+
+## Issuer
+
+|                      인증서 제작                      |                      인증서 지급                      |
+| :---------------------------------------------------: | :---------------------------------------------------: |
+| <img src = "./Doc/gif/issuer_make.gif" width = 500px> | <img src = "./Doc/gif/issuer_list.gif" width = 500px> |
+
+## Verifier
+
+|                        인증서 제작                        |
+| :-------------------------------------------------------: |
+| <img src = "./Doc/gif/verifier_verify.gif" width = 500px> |
 
 # :family: 팀 정보 (Team Information)
 
 <h6 align="center">(팀원 정렬 순서는 이름순입니다.)</h6>
 
-| name   | role          | GitHub                                                                                                                              |
-| ------ | ------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| 박찬우 | Front-end     | <a href="https://github.com/tonynotmorty"><img src="http://img.shields.io/badge/tonynotmorty-655ced?style=social&logo=github"/></a> |
-| 안병현 | Front-end     | <a href="https://github.com/qudgus9601"><img src="http://img.shields.io/badge/qudgus9601-655ced?style=social&logo=github"/></a>     |
-| 오동재 | SmartContract | <a href="https://github.com/donggni0712"><img src="http://img.shields.io/badge/donggni0712-655ced?style=social&logo=github"/></a>   |
-| 허윤석 | Back-end      | <a href="https://github.com/ysheokorea"><img src="http://img.shields.io/badge/ysheokorea-655ced?style=social&logo=github"/></a>     |
+| name   | role          | GitHub                                                                                                                            |
+| ------ | ------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| 안병현 | Front-end     | <a href="https://github.com/qudgus9601"><img src="http://img.shields.io/badge/qudgus9601-655ced?style=social&logo=github"/></a>   |
+| 오동재 | SmartContract | <a href="https://github.com/donggni0712"><img src="http://img.shields.io/badge/donggni0712-655ced?style=social&logo=github"/></a> |
+| 허윤석 | Back-end      | <a href="https://github.com/ysheokorea"><img src="http://img.shields.io/badge/ysheokorea-655ced?style=social&logo=github"/></a>   |
