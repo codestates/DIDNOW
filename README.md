@@ -12,7 +12,8 @@
   <a href="https://github.com/codestates/BEB-05-DIDNOW/milestones"><img alt="GitHub license" src="https://img.shields.io/github/milestones/all/codestates/BEB-05-DIDNOW"></a>
 </p>
 
-## :rocket: https://didnow.cf/
+## :rocket: 배포링크 : https://didnow.cf/
+## :movie_camera: 발표영상 : https://youtu.be/G_nWCWi55kE
 
 # :books: 목차
 
@@ -230,7 +231,7 @@ docker-compose up -d
 
 ## Verifier
 
-|                        인증서 제작                        |
+|                        인증서 검증                       |
 | :-------------------------------------------------------: |
 | <img src = "./Doc/gif/verifier_verify.gif" width = 500px> |
 
